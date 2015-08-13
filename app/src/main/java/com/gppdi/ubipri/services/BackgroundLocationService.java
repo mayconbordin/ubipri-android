@@ -23,8 +23,6 @@ public class BackgroundLocationService extends Service implements GoogleApiClien
     private static final String TAG       = "LocationService";
     private static final String LOCK_NAME = "BackgroundLocationService";
 
-    private IBinder mBinder = new LocalBinder();
-
     private GoogleApiClient mLocationClient;
     private LocationRequest mLocationRequest;
     private PendingIntent locationIntent;
@@ -33,12 +31,9 @@ public class BackgroundLocationService extends Service implements GoogleApiClien
     private boolean mInProgress = false;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "Starting service");
+
         PowerManager mgr = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, LOCK_NAME);
         mWakeLock.acquire();
@@ -53,7 +48,7 @@ public class BackgroundLocationService extends Service implements GoogleApiClien
 
     @Override
     public IBinder onBind(Intent intent) {
-        return mBinder;
+        return null;
     }
 
     @Override
@@ -66,6 +61,8 @@ public class BackgroundLocationService extends Service implements GoogleApiClien
 
     @Override
     public void onConnected(Bundle bundle) {
+        Log.d(TAG, "Client connected, building request for periodic updates.");
+
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(1000);
@@ -103,10 +100,11 @@ public class BackgroundLocationService extends Service implements GoogleApiClien
                     .build();
 
             if (!mLocationClient.isConnected() || !mLocationClient.isConnecting()) {
+                Log.d(TAG, "Connecting client for location services.");
                 mLocationClient.connect();
             }
         } else {
-            Log.e(TAG, "unable to connect to google play services.");
+            Log.e(TAG, "Unable to connect to google play services.");
         }
     }
 
@@ -116,12 +114,6 @@ public class BackgroundLocationService extends Service implements GoogleApiClien
         if (mLocationClient != null && mLocationClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mLocationClient, locationIntent);
             mLocationClient.disconnect();
-        }
-    }
-
-    public class LocalBinder extends Binder {
-        public BackgroundLocationService getServerInstance() {
-            return BackgroundLocationService.this;
         }
     }
 }

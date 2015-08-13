@@ -22,34 +22,7 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
-            boolean mUpdatesRequested = false;
-
-            // Open the shared preferences
-            mPrefs = context.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
-
-	        /*
-	         * Get any previous setting for location updates
-	         * Gets "false" if an error occurs
-	         */
-            if (mPrefs.contains("KEY_UPDATES_ON")) {
-                mUpdatesRequested = mPrefs.getBoolean("KEY_UPDATES_ON", false);
-            }
-
-            if (mUpdatesRequested) {
-                ComponentName comp = new ComponentName(context.getPackageName(), BackgroundLocationService.class.getName());
-
-                Log.i(TAG, "Starting service " + comp.toString());
-                ComponentName service = context.startService(new Intent().setComponent(comp));
-
-                if (null == service) {
-                    // something really wrong here
-                    Log.e(TAG, "Could not start service " + comp.toString());
-                }
-            }
-
-        } else {
-            Log.e(TAG, "Received unexpected intent " + intent.toString());
-        }
+        Intent serviceIntent = new Intent(context, BackgroundLocationService.class);
+        context.startService(serviceIntent);
     }
 }
