@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.gppdi.ubipri.MainActivity;
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.services.BackgroundLocationService;
 

@@ -1,4 +1,4 @@
-package com.gppdi.ubipri;
+package com.gppdi.ubipri.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.gppdi.ubipri.fragments.EnvironmentsFragment;
+import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.fragments.HomeFragment;
 import com.gppdi.ubipri.fragments.SettingsFragment;
 import com.mikepenz.iconics.typeface.FontAwesome;
@@ -58,6 +58,16 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
         // display home fragment
         displayView(FRAGMENT_HOME, R.string.action_home);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mDrawer.getCurrentSelection() == mDrawer.getPositionFromIdentifier(FRAGMENT_ENVIRONMENTS)) {
+            displayView(FRAGMENT_HOME, R.string.action_home);
+            mDrawer.setSelectionByIdentifier(FRAGMENT_HOME);
+        }
     }
 
     @Override
@@ -122,8 +132,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 fragment = new HomeFragment();
                 break;
             case FRAGMENT_ENVIRONMENTS:
-                EnvironmentsFragment f = new EnvironmentsFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, f).commit();
+                startActivity(new Intent(this, EnvironmentsActivity.class));
                 break;
             case FRAGMENT_SETTINGS:
                 fragment = new SettingsFragment();
