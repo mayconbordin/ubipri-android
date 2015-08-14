@@ -5,6 +5,9 @@ import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.client.Response;
+import retrofit.http.Field;
+import retrofit.http.FieldMap;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
@@ -14,8 +17,9 @@ import retrofit.http.Query;
  * @author mayconbordin
  */
 public interface ApiService {
+    @FormUrlEncoded
     @POST("/login")
-    void login(@Path("username") String username, @Path("password") String password, Callback<Map> cb);
+    void login(@Field("username") String username, @Field("password") String password, Callback<Map> cb);
 
     @POST("/logout")
     void logout(Callback<Void> cb);

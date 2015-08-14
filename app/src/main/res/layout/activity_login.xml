@@ -16,17 +16,20 @@
         >
 
         <EditText
-            android:id="@+id/etUserName"
+            android:id="@+id/edtUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_top_bg"
             android:padding="10dp"
             android:hint="Email"
             android:textColorHint="#cccccc"
+            android:focusable="true"
+            android:singleLine="true"
+            android:nextFocusDown="@+id/edtPassword"
             />
 
         <EditText
-            android:id="@+id/etPass"
+            android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_bottom_bg"
@@ -34,7 +37,9 @@
             android:padding="10dp"
             android:hint="Password"
             android:textColorHint="#cccccc"
-            android:password="true"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             />
 
         <Button
