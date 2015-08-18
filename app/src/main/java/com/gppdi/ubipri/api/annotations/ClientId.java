@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.modules;
+package com.gppdi.ubipri.api.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -9,5 +9,5 @@ import javax.inject.Qualifier;
 @Qualifier
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ClientSecret {
+public @interface ClientId {
 }

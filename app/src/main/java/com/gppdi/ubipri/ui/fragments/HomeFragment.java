@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.fragments;
+package com.gppdi.ubipri.ui.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;

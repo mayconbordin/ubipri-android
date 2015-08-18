@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.activities;
+package com.gppdi.ubipri.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;

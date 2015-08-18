@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.activities;
+package com.gppdi.ubipri.ui.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,22 +17,14 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.gppdi.ubipri.R;
-import com.gppdi.ubipri.api.ApiService;
-import com.gppdi.ubipri.fragments.HomeFragment;
-import com.gppdi.ubipri.fragments.SettingsFragment;
+import com.gppdi.ubipri.ui.fragments.HomeFragment;
+import com.gppdi.ubipri.ui.fragments.SettingsFragment;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
-
-import java.util.Map;
-
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
     public static final int FRAGMENT_HOME     = 0;

@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.activities;
+package com.gppdi.ubipri.ui.activities;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;

@@ -4,14 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.gppdi.ubipri.modules.ApiModule;
-import com.gppdi.ubipri.modules.AppModule;
+import com.gppdi.ubipri.account.AccountAuthenticator;
+import com.gppdi.ubipri.api.ApiModule;
 
 import java.util.Arrays;
 import java.util.List;
 
 import dagger.ObjectGraph;
-import timber.log.Timber;
 
 /**
  * @author mayconbordin
@@ -35,7 +34,7 @@ public class UbiPriApplication extends Application {
 
     protected List<Object> getModules() {
         return Arrays.<Object>asList(
-            new AppModule(this),
+            new UbiPriModule(this),
             new ApiModule()
         );
     }

@@ -1,8 +1,6 @@
-package com.gppdi.ubipri.activities;
+package com.gppdi.ubipri.ui.activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,9 +12,6 @@ import android.widget.Toast;
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.api.UbiPriClient;
 import com.gppdi.ubipri.utils.DialogUtils;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 
 import java.util.Map;
 

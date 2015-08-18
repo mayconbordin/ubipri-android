@@ -11,38 +11,58 @@ public class Request {
 
     @SerializedName("client_secret")
     private String clientSecret;
-    private String email;
+    private String username;
     private String password;
 
     @SerializedName("grant_type")
     private String grantType;
 
-    public Request() {
+    @SerializedName("refresh_token")
+    private String refreshToken;
+
+    public static class Builder {
+        private Request request;
+
+        public Builder() {
+            request = new Request();
+        }
+
+        public Builder(String grantType) {
+            this();
+            request.grantType = grantType;
+        }
+
+        public Builder client(String clientId, String clientSecret) {
+            request.clientId = clientId;
+            request.clientSecret = clientSecret;
+            return this;
+        }
+
+        public Builder user(String username, String password) {
+            request.username = username;
+            request.password = password;
+            request.grantType = "password";
+            return this;
+        }
+
+        public Builder refreshToken(String refreshToken) {
+            request.refreshToken = refreshToken;
+            request.grantType = "refresh_token";
+            return this;
+        }
+
+        public Builder grantType(String grantType) {
+            request.grantType = grantType;
+            return this;
+        }
+
+        public Request build() {
+            return request;
+        }
+
     }
 
-    private Request(String clientId, String clientSecret, String grantType) {
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.grantType = grantType;
-    }
-
-    private Request(String clientId, String clientSecret, String email, String password, String grantType) {
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.email = email;
-        this.password = password;
-        this.grantType = grantType;
-    }
-
-    public static Request createPasswordGrant(String clientId, String clientSecret, String email, String password)
-    {
-        return new Request(clientId, clientSecret, email, password, "password");
-    }
-
-    public static Request createRefreshTokenGrant(String clientId, String clientSecret, String email, String password)
-    {
-        return new Request(clientId, clientSecret, email, password, "refresh_token");
-    }
+    private Request() { }
 
     public String getClientId() {
         return clientId;
@@ -60,12 +80,12 @@ public class Request {
         this.clientSecret = clientSecret;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -82,5 +102,13 @@ public class Request {
 
     public void setGrantType(String grantType) {
         this.grantType = grantType;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

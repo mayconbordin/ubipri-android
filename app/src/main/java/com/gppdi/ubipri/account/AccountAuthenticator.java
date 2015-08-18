@@ -8,30 +8,35 @@ import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 
+import com.gppdi.ubipri.UbiPriApplication;
 import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.api.AuthConstants;
+import com.gppdi.ubipri.api.annotations.ClientId;
+import com.gppdi.ubipri.api.annotations.ClientSecret;
 import com.gppdi.ubipri.api.oauth2.AccessToken;
-import com.gppdi.ubipri.modules.ClientId;
-import com.gppdi.ubipri.modules.ClientSecret;
+import com.gppdi.ubipri.api.oauth2.Request;
+import com.gppdi.ubipri.ui.activities.AuthenticatorActivity;
 
 import javax.inject.Inject;
 
 import timber.log.Timber;
 
 public class AccountAuthenticator extends AbstractAccountAuthenticator {
+    private static final String TAG = "AccountAuthenticator";
 
     private final Context context;
     @Inject @ClientId String clientId;
     @Inject @ClientSecret String clientSecret;
-    @Inject
-    ApiService apiService;
+    @Inject ApiService apiService;
 
     public AccountAuthenticator(Context context) {
         super(context);
 
         this.context = context;
-        //((App) context.getApplicationContext()).inject(this);
+        ((UbiPriApplication) context.getApplicationContext()).inject(this);
     }
 
     /*
@@ -42,13 +47,16 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType,
                              String authTokenType, String[] requiredFeatures, Bundle options) {
-        Timber.v("addAccount()");
-        /*final Intent intent = new Intent(context, AuthenticatorActivity.class);
+        Log.i(TAG, "addAccount()");
+
+        final Intent intent = new Intent(context, AuthenticatorActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType);
-        intent.putExtra(LoginFragment.PARAM_AUTHTOKEN_TYPE, authTokenType);
-        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);*/
+        intent.putExtra(AuthenticatorActivity.PARAM_AUTHTOKEN_TYPE, authTokenType);
+        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+
         final Bundle bundle = new Bundle();
-        //bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+        bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+
         return bundle;
     }
 
@@ -83,22 +91,27 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         // Extract the username and password from the Account Manager, and ask
         // the server for an appropriate AuthToken
         final AccountManager accountManager = AccountManager.get(context);
+
         // Password is storing the refresh token
         final String password = accountManager.getPassword(account);
+
         if (password != null) {
             Timber.i("Trying to refresh access token");
-            /*try {
-                AccessToken accessToken = apiService.refreshAccessToken(password, clientId, clientSecret);
-                if (accessToken!=null && !TextUtils.isEmpty(accessToken.accessToken)) {
+            try {
+                AccessToken accessToken = apiService.refreshAccessToken(
+                        new Request.Builder().client(clientId, clientSecret).refreshToken(password)
+                                .build());
+
+                if (accessToken != null && !TextUtils.isEmpty(accessToken.getAccessToken())) {
                     bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
-                    bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
-                    bundle.putString(AccountManager.KEY_AUTHTOKEN, accessToken.accessToken);
-                    accountManager.setPassword(account, accessToken.refreshToken);
+                    bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, AuthConstants.ACCOUNT_TYPE);
+                    bundle.putString(AccountManager.KEY_AUTHTOKEN, accessToken.getAccessToken());
+                    accountManager.setPassword(account, accessToken.getRefreshToken());
                     return bundle;
                 }
             } catch (Exception e) {
                 Timber.e(e, "Failed refreshing token.");
-            }*/
+            }
         }
 
         // Otherwise... start the login intent

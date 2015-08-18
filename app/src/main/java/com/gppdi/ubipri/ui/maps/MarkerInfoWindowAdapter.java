@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.maps;
+package com.gppdi.ubipri.ui.maps;
 
 import android.content.Context;
 import android.view.View;

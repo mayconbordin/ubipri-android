@@ -29,4 +29,16 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_environments">Map</string>
+
+
+
+    <!-- AuthenticatorActivity -->
+    <skip />
+    <string name="login_activity_accounttype_label">Account</string>
+    <!-- Label above username EditText -->
+    <string name="login_activity_username_label">Username</string>
+    <!-- Label above password EditText -->
+    <string name="login_activity_password_label">Password</string>
+    <!-- Button to sign in after entering username and password -->
+    <string name="login_activity_ok_button">Sign in</string>
 </resources>

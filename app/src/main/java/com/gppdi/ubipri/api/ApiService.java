@@ -14,19 +14,28 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 /**
  * @author mayconbordin
  */
 public interface ApiService {
 
-    @FormUrlEncoded
     @POST("/oauth/access_token")
     AccessToken getAccessToken(@Body Request request);
 
-    @FormUrlEncoded
     @POST("/oauth/access_token")
     AccessToken refreshAccessToken(@Body Request request);
+
+    @POST("/oauth/access_token")
+    Observable<AccessToken> getAccessTokenObservable(@Body Request request);
+
+    /*@FormUrlEncoded
+    @POST("/oauth/access_token") Observable<AccessToken> getAccessTokenObservable(
+            @Field("username") String email,
+            @Field("password") String password,
+            @Field("client_id") String clientId,
+            @Field("client_secret") String clientSecret);*/
 
     @FormUrlEncoded
     @POST("/login")
