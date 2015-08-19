@@ -24,13 +24,15 @@ public class SplashActivity extends Activity {
 
         startService(new Intent(this, BackgroundLocationService.class));
 
-        if (!UbiPriClient.getInstance(this).isAuthenticated()) {
+        /*if (!UbiPriClient.getInstance(this).isAuthenticated()) {
             Log.i("SplashActivity", "Not authenticated");
             startLoginActivity();
         } else {
             Log.i("SplashActivity", "Authenticated");
             startMainActivity();
-        }
+        }*/
+
+        startMainActivity();
     }
 
     private void startLoginActivity() {

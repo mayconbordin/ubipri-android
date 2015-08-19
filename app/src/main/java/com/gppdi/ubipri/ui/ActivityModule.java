@@ -2,6 +2,7 @@ package com.gppdi.ubipri.ui;
 
 import android.content.Context;
 
+import com.gppdi.ubipri.UbiPriModule;
 import com.gppdi.ubipri.ui.activities.AuthenticatorActivity;
 import com.gppdi.ubipri.ui.activities.BaseActivity;
 import com.gppdi.ubipri.ui.activities.MainActivity;
@@ -11,11 +12,10 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(
-        injects = {
-                MainActivity.class, AuthenticatorActivity.class
-        },
-        complete = false,
-        addsTo = UiModule.class //
+    injects = {
+        MainActivity.class, AuthenticatorActivity.class
+    },
+    addsTo = UbiPriModule.class
 )
 public class ActivityModule {
     private final BaseActivity activity;

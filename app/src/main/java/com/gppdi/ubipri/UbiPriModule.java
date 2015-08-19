@@ -7,6 +7,7 @@ import com.gppdi.ubipri.api.ApiAuthenticator;
 import com.gppdi.ubipri.api.ApiHeaders;
 import com.gppdi.ubipri.api.ApiModule;
 import com.gppdi.ubipri.ui.UiModule;
+import com.gppdi.ubipri.ui.activities.BaseActivity;
 import com.gppdi.ubipri.ui.activities.MainActivity;
 
 import javax.inject.Singleton;
@@ -14,17 +15,14 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * @author mayconbordin
- */
 @Module(
     includes = {
-            ApiModule.class, UiModule.class
+        ApiModule.class, UiModule.class
     },
     injects  = {
-            UbiPriApplication.class, MainActivity.class, ApiHeaders.class, ApiAuthenticator.class
+        UbiPriApplication.class
     },
-    complete = false
+    complete = true
 )
 public class UbiPriModule {
     private final UbiPriApplication app;
@@ -33,13 +31,11 @@ public class UbiPriModule {
         this.app = app;
     }
 
-    @Provides @Singleton
-    public Application provideApplication() {
+    @Provides @Singleton Application provideApplication() {
         return app;
     }
 
-    @Provides @Singleton
-    public AccountManager provideAccountManager() {
+    @Provides @Singleton AccountManager provideAccountManager() {
         return AccountManager.get(app);
     }
 }

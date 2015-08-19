@@ -26,21 +26,25 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
-public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
+import butterknife.InjectView;
+
+public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener {
     public static final int FRAGMENT_HOME     = 0;
     public static final int FRAGMENT_ENVIRONMENTS  = 1;
     public static final int FRAGMENT_SETTINGS = 2;
 
     private CharSequence mTitle;
     private Drawer mDrawer;
-    private Toolbar toolbar;
+    @InjectView(R.id.activity_main_toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
+        inflateLayout(R.layout.activity_main);
+
+        //toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setBackgroundColor(getResources().getColor(R.color.orange_logo));
         setSupportActionBar(toolbar);

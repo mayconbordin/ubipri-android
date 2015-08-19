@@ -29,9 +29,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(
-    injects = {
-            MainActivity.class, LoginActivity.class, AccountAuthenticator.class
-    },
+    injects = {AccountAuthenticator.class},
     complete = false,
     library = true
 )
@@ -40,13 +38,11 @@ public final class ApiModule {
     private static final String CLIENT_ID = "ubipri-android";
     private static final String CLIENT_SECRET = "d86654a991a8558b7ae5350fdb84457b763ad042";
 
-    @Provides @Singleton @ClientId
-    String provideClientId() {
+    @Provides @Singleton @ClientId String provideClientId() {
         return CLIENT_ID;
     }
 
-    @Provides @Singleton @ClientSecret
-    String provideClientSecret() {
+    @Provides @Singleton @ClientSecret String provideClientSecret() {
         return CLIENT_SECRET;
     }
 
@@ -54,8 +50,7 @@ public final class ApiModule {
         return Endpoints.newFixedEndpoint(PRODUCTION_API_URL);
     }
 
-    @Provides
-    Authenticator provideAuthenticator(Application application, AccountManager accountManager) {
+    @Provides Authenticator provideAuthenticator(Application application, AccountManager accountManager) {
         return new ApiAuthenticator(application, accountManager);
     }
 
@@ -67,8 +62,7 @@ public final class ApiModule {
         return new OkClient(client);
     }
 
-    @Provides
-    public Gson provideGson() {
+    @Provides Gson provideGson() {
         return new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
@@ -77,8 +71,7 @@ public final class ApiModule {
                 .create();
     }
 
-    @Provides @Singleton
-    RestAdapter provideRestAdapter(Endpoint endpoint, Client client, ApiHeaders headers, Gson gson) {
+    @Provides @Singleton RestAdapter provideRestAdapter(Endpoint endpoint, Client client, ApiHeaders headers, Gson gson) {
         return new RestAdapter.Builder()
                 .setClient(client)
                 .setEndpoint(endpoint)
@@ -88,8 +81,7 @@ public final class ApiModule {
                 .build();
     }
 
-    @Provides @Singleton
-    ApiService provideApiService(RestAdapter restAdapter) {
+    @Provides @Singleton ApiService provideApiService(RestAdapter restAdapter) {
         return restAdapter.create(ApiService.class);
     }
 

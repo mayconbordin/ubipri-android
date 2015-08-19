@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.gppdi.ubipri.account.AccountAuthenticator;
 import com.gppdi.ubipri.api.ApiModule;
+import com.gppdi.ubipri.ui.UiModule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +35,7 @@ public class UbiPriApplication extends Application {
 
     protected List<Object> getModules() {
         return Arrays.<Object>asList(
-            new UbiPriModule(this),
-            new ApiModule()
+            new UbiPriModule(this)
         );
     }
 

@@ -1,13 +1,19 @@
 package com.gppdi.ubipri.ui.activities;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.OnAccountsUpdateListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.dart.Dart;
 import com.gppdi.ubipri.UbiPriApplication;
+import com.gppdi.ubipri.api.AuthConstants;
 import com.gppdi.ubipri.rx.ActivitySubscriptionManager;
 import com.gppdi.ubipri.rx.SubscriptionManager;
 import com.gppdi.ubipri.ui.ActivityModule;
@@ -23,16 +29,18 @@ import rx.Observer;
 import rx.Subscription;
 
 @SuppressLint("Registered")
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity implements OnAccountsUpdateListener {
     @Inject AppContainer appContainer;
     @Inject ScopedBus bus;
+    @Inject AccountManager accountManager;
 
     private ViewGroup container;
     private ObjectGraph activityGraph;
 
     private SubscriptionManager<Activity> subscriptionManager;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         buildActivityGraphAndInject();
@@ -66,27 +74,36 @@ public class BaseActivity extends Activity {
         return Arrays.<Object>asList(new ActivityModule(this));
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         bus.resumed();
         bus.register(this);
+
+        // Watch to make sure the account still exists.
+        if(requireLogin()) accountManager.addOnAccountsUpdatedListener(this, null, true);
     }
 
-    @Override protected void onPause() {
+    @Override
+    protected void onPause() {
         bus.unregister(this);
         bus.paused();
+
+        if(requireLogin()) accountManager.removeOnAccountsUpdatedListener(this);
+
         super.onPause();
     }
 
-    @Override protected void onDestroy() {
+    @Override
+    protected void onDestroy() {
         // Eagerly clear the reference to the activity graph to allow it to be garbage collected as
         // soon as possible.
         activityGraph = null;
 
         // Clear any subscriptions
-        /*if (subscriptionManager != null) {
+        if (subscriptionManager != null) {
             subscriptionManager.unsubscribeAll();
-        }*/
+        }
 
         super.onDestroy();
     }
@@ -110,5 +127,23 @@ public class BaseActivity extends Activity {
             subscriptionManager = new ActivitySubscriptionManager(this);
         }
         return subscriptionManager.subscribe(source, observer);
+    }
+
+    protected boolean requireLogin() {
+        return true;
+    }
+
+    @Override
+    public void onAccountsUpdated(Account[] accounts) {
+        for (Account account : accounts) {
+            if (AuthConstants.ACCOUNT_TYPE.equals(account.type)) {
+                return;
+            }
+        }
+
+        // No accounts so start the authenticator activity
+        Intent intent = new Intent(this, AuthenticatorActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

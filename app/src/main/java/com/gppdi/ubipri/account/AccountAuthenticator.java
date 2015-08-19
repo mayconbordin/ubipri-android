@@ -116,11 +116,11 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
 
         // Otherwise... start the login intent
         Timber.i("Starting login activity");
-        /*final Intent intent = new Intent(context, AuthenticatorActivity.class);
-        intent.putExtra(LoginFragment.PARAM_USERNAME, account.name);
-        intent.putExtra(LoginFragment.PARAM_AUTHTOKEN_TYPE, authTokenType);
+        final Intent intent = new Intent(context, AuthenticatorActivity.class);
+        intent.putExtra(AuthenticatorActivity.PARAM_USERNAME, account.name);
+        intent.putExtra(AuthenticatorActivity.PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-        bundle.putParcelable(AccountManager.KEY_INTENT, intent);*/
+        bundle.putParcelable(AccountManager.KEY_INTENT, intent);
         return bundle;
     }
 
