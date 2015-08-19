@@ -88,6 +88,10 @@ public class AuthenticatorActivity extends BaseActivity {
         initAccountAuthenticatorResponse();
     }
 
+    @Override
+    protected boolean requireLogin() {
+        return false;
+    }
 
     private void doLogin(final String email, String password) {
         Observable<AccessToken> accessTokenObservable =

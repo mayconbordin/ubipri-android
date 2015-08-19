@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import timber.log.Timber;
 
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity implements OnAccountsUpdateListener {
@@ -140,6 +141,8 @@ public class BaseActivity extends AppCompatActivity implements OnAccountsUpdateL
                 return;
             }
         }
+
+        Timber.i("No account FOUND. Starting Auth activity.");
 
         // No accounts so start the authenticator activity
         Intent intent = new Intent(this, AuthenticatorActivity.class);

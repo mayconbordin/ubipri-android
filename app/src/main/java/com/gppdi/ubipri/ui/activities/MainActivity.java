@@ -27,24 +27,27 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
 import butterknife.InjectView;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener {
     public static final int FRAGMENT_HOME     = 0;
     public static final int FRAGMENT_ENVIRONMENTS  = 1;
     public static final int FRAGMENT_SETTINGS = 2;
 
+    private static final String TAG = "MainActivity ";
+
     private CharSequence mTitle;
     private Drawer mDrawer;
+
     @InjectView(R.id.activity_main_toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Timber.i("onCreate("+savedInstanceState+")");
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
 
         inflateLayout(R.layout.activity_main);
 
-        //toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setBackgroundColor(getResources().getColor(R.color.orange_logo));
         setSupportActionBar(toolbar);
@@ -66,6 +69,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
     @Override
     protected void onResume() {
+        Timber.i("onResume()");
         super.onResume();
 
         if (mDrawer.getCurrentSelection() == mDrawer.getPositionFromIdentifier(FRAGMENT_ENVIRONMENTS)) {
