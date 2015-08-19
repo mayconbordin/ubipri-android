@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.api;
+package com.gppdi.ubipri.api.models;
 
 import java.util.List;
 

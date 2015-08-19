@@ -1,11 +1,10 @@
-package com.gppdi.ubipri.receivers;
+package com.gppdi.ubipri;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
-import com.gppdi.ubipri.services.BackgroundLocationService;
+import com.gppdi.ubipri.location.BackgroundLocationService;
 
 /**
  * @author mayconbordin

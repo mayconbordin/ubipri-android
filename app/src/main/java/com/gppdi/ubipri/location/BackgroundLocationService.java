@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.services;
+package com.gppdi.ubipri.location;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -14,7 +14,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.gppdi.ubipri.receivers.LocationReceiver;
 
 public class BackgroundLocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {

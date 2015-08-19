@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.receivers;
+package com.gppdi.ubipri.location;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

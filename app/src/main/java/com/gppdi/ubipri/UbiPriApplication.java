@@ -4,10 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.gppdi.ubipri.account.AccountAuthenticator;
-import com.gppdi.ubipri.api.ApiModule;
-import com.gppdi.ubipri.ui.UiModule;
-
 import java.util.Arrays;
 import java.util.List;
 

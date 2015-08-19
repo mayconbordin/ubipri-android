@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.account;
+package com.gppdi.ubipri.api.account;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;

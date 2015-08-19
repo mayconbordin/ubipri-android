@@ -53,11 +53,11 @@
 
         <!-- Services and Receivers -->
         <service
-            android:name=".services.BackgroundLocationService"
+            android:name=".location.BackgroundLocationService"
             android:enabled="true" />
 
         <service
-            android:name=".services.AccountAuthenticatorService"
+            android:name=".api.account.AccountAuthenticatorService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
@@ -68,8 +68,8 @@
                 android:resource="@xml/authenticator"/>
         </service>
 
-        <receiver android:name=".receivers.LocationReceiver" />
-        <receiver android:name=".receivers.BootReceiver" >
+        <receiver android:name=".location.LocationReceiver" />
+        <receiver android:name=".BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

@@ -1,11 +1,11 @@
-package com.gppdi.ubipri.services;
+package com.gppdi.ubipri.api.account;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.gppdi.ubipri.account.AccountAuthenticator;
+import com.gppdi.ubipri.api.account.AccountAuthenticator;
 
 public class AccountAuthenticatorService extends Service {
     private static final String TAG = "AuthenticatorService";

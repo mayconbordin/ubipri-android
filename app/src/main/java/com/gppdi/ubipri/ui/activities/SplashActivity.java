@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.gppdi.ubipri.R;
-import com.gppdi.ubipri.services.BackgroundLocationService;
+import com.gppdi.ubipri.location.BackgroundLocationService;
 
 /**
  * @author mayconbordin

@@ -1,5 +1,6 @@
 package com.gppdi.ubipri.api;
 
+import com.gppdi.ubipri.api.models.Environment;
 import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.api.oauth2.Request;
 

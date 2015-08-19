@@ -7,7 +7,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
-import com.gppdi.ubipri.account.AccountAuthenticator;
+import com.gppdi.ubipri.api.account.AccountAuthenticator;
 import com.gppdi.ubipri.api.annotations.ClientId;
 import com.gppdi.ubipri.api.annotations.ClientSecret;
 import com.squareup.okhttp.Authenticator;
