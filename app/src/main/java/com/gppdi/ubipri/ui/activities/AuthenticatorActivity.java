@@ -6,12 +6,14 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dd.CircularProgressButton;
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.api.AuthConstants;
@@ -20,6 +22,10 @@ import com.gppdi.ubipri.api.annotations.ClientSecret;
 import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.api.oauth2.Request;
 import com.gppdi.ubipri.rx.EndlessObserver;
+
+import org.apache.http.HttpStatus;
+
+import java.net.ConnectException;
 
 import javax.inject.Inject;
 
@@ -54,9 +60,10 @@ public class AuthenticatorActivity extends BaseActivity {
     private String mAccountType;
     private String mAuthTokenType;
 
-    @InjectView(R.id.ok_button) Button mSubmit;
-    @InjectView(R.id.username_edit) EditText mUsernameEdit;
-    @InjectView(R.id.password_edit) EditText mPasswordEdit;
+    //@InjectView(R.id.ok_button) Button mSubmit;
+    @InjectView(R.id.btnSingIn) CircularProgressButton mSubmit;
+    @InjectView(R.id.edtUsername) EditText mUsernameEdit;
+    @InjectView(R.id.edtPassword) EditText mPasswordEdit;
 
     @Inject AccountManager accountManager;
     @Inject ApiService apiService;
@@ -81,11 +88,40 @@ public class AuthenticatorActivity extends BaseActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mSubmit.setIndeterminateProgressMode(true);
+                mSubmit.setProgress(50);
+
+                Login login = validateAndGetLogin();
+
+                if (login == null) {
+                    mSubmit.setProgress(0);
+                    return;
+                }
+
                 doLogin(mUsernameEdit.getText().toString(), mPasswordEdit.getText().toString());
             }
         });
 
         initAccountAuthenticatorResponse();
+    }
+
+    private Login validateAndGetLogin() {
+        String username = mUsernameEdit.getText().toString();
+        String password = mPasswordEdit.getText().toString();
+
+        boolean valid = true;
+
+        if (TextUtils.isEmpty(username)) {
+            mUsernameEdit.setError("Username can't be empty");
+            valid = false;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            mPasswordEdit.setError("Password can't be empty");
+            valid = false;
+        }
+
+        return valid ? new Login(username, password) : null;
     }
 
     @Override
@@ -103,6 +139,8 @@ public class AuthenticatorActivity extends BaseActivity {
         subscribe(accessTokenObservable, new EndlessObserver<AccessToken>() {
             @Override
             public void onNext(AccessToken accessToken) {
+                mSubmit.setProgress(100);
+
                 Account account = addOrFindAccount(email, accessToken.getRefreshToken());
                 accountManager.setAuthToken(account, AuthConstants.AUTHTOKEN_TYPE, accessToken.getAccessToken());
                 finishAccountAdd(email, accessToken.getAccessToken(), accessToken.getRefreshToken());
@@ -111,12 +149,37 @@ public class AuthenticatorActivity extends BaseActivity {
             @Override
             public void onError(Throwable throwable) {
                 Log.e(TAG, "Could not sign in", throwable);
-                Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+
+                mSubmit.setProgress(0);
+                String message = "";
 
                 if (throwable instanceof RetrofitError) {
-                    RetrofitError err = (RetrofitError) throwable;
-                    Log.e(TAG, "URL: " + err.getUrl());
+                    RetrofitError error = (RetrofitError) throwable;
+                    Log.e(TAG, "URL: " + error.getUrl());
+
+                    switch (error.getKind()) {
+                        case NETWORK:
+                            message = "Network error";
+                            break;
+                        case HTTP:
+                            if (error.getResponse() != null && error.getResponse().getStatus() == 401) {
+                                message = "Invalid credentials";
+                            } else {
+                                message = "Invalid credentials";
+                            }
+                            break;
+                        case CONVERSION:
+                            message = "Response error";
+                            break;
+                        default:
+                            message = "Unexpected error";
+                            break;
+                    }
+                } else {
+                    message = "Unknown error";
                 }
+
+                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -179,5 +242,15 @@ public class AuthenticatorActivity extends BaseActivity {
             mAccountAuthenticatorResponse = null;
         }
         super.finish();
+    }
+
+    private static class Login {
+        public String username;
+        public String password;
+
+        public Login(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
     }
 }
