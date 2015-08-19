@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,11 +20,7 @@ import com.gppdi.ubipri.api.annotations.ClientId;
 import com.gppdi.ubipri.api.annotations.ClientSecret;
 import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.api.oauth2.Request;
-import com.gppdi.ubipri.rx.EndlessObserver;
-
-import org.apache.http.HttpStatus;
-
-import java.net.ConnectException;
+import com.gppdi.ubipri.utils.rx.EndlessObserver;
 
 import javax.inject.Inject;
 

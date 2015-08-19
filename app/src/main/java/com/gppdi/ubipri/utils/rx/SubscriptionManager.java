@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.rx;
+package com.gppdi.ubipri.utils.rx;
 
 import rx.Observable;
 import rx.Observer;
