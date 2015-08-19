@@ -10,8 +10,6 @@ import com.google.gson.internal.bind.DateTypeAdapter;
 import com.gppdi.ubipri.account.AccountAuthenticator;
 import com.gppdi.ubipri.api.annotations.ClientId;
 import com.gppdi.ubipri.api.annotations.ClientSecret;
-import com.gppdi.ubipri.ui.activities.LoginActivity;
-import com.gppdi.ubipri.ui.activities.MainActivity;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.OkHttpClient;
 
