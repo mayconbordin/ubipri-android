@@ -13,7 +13,10 @@ public class Environment {
     private double operatingRange;
 
     private int version;
-    private Location location;
+    private double latitude;
+    private double longitude;
+
+    //private Location location;
 
     @SerializedName("localization_type")
     private LocalizationType localizationType;
@@ -55,13 +58,13 @@ public class Environment {
         this.version = version;
     }
 
-    public Location getLocation() {
+    /*public Location getLocation() {
         return location;
     }
 
     public void setLocation(Location location) {
         this.location = location;
-    }
+    }*/
 
     public LocalizationType getLocalizationType() {
         return localizationType;
@@ -93,5 +96,21 @@ public class Environment {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

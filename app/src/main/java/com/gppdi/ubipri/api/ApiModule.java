@@ -10,6 +10,8 @@ import com.google.gson.internal.bind.DateTypeAdapter;
 import com.gppdi.ubipri.api.account.AccountAuthenticator;
 import com.gppdi.ubipri.api.annotations.ClientId;
 import com.gppdi.ubipri.api.annotations.ClientSecret;
+import com.gppdi.ubipri.api.json.EnvironmentDeserializer;
+import com.gppdi.ubipri.api.models.Environment;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -64,6 +66,7 @@ public final class ApiModule {
         return new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                .registerTypeAdapter(Environment.class, new EnvironmentDeserializer())
                 .enableComplexMapKeySerialization()
                 .serializeNulls()
                 .create();
