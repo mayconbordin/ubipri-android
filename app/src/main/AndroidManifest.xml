@@ -24,6 +24,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!--
+     Needed by Google Cloud Messaging.
+    -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name=".notification.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name=".notification.permission.C2D_MESSAGE" />
+
+    <!--
      To retrieve OAuth 2.0 tokens or invalidate tokens to disconnect a user. This disconnect
      option is required to comply with the Google+ Sign-In developer policies
     -->
@@ -93,6 +101,30 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name=".notification.receivers" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".notification.services.NotificationGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".notification.services.NotificationInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
 
         <!-- Meta data -->
         <meta-data
