@@ -3,6 +3,7 @@ package com.gppdi.ubipri.data.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.android.gms.location.Geofence;
 import com.google.gson.annotations.SerializedName;
 
 @Table(name = "Environments")
@@ -127,5 +128,14 @@ public class Environment extends Model {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public Geofence toGeofence() {
+        return new Geofence.Builder()
+                .setRequestId(String.valueOf(getId()))
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setCircularRegion(latitude, longitude, (float) operatingRange)
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .build();
     }
 }

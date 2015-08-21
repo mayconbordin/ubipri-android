@@ -55,6 +55,9 @@
         <service
             android:name=".location.BackgroundLocationService"
             android:enabled="true" />
+        <service
+            android:name=".location.GeofenceTransitionsIntentService"
+            android:exported="false" />
 
         <service
             android:name=".api.account.AccountAuthenticatorService"
