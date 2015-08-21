@@ -1,37 +1,60 @@
-package com.gppdi.ubipri.api.models;
+package com.gppdi.ubipri.data.models;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * @author mayconbordin
- */
-public class Environment {
-    private int id;
+@Table(name = "Environments")
+public class Environment extends Model {
+    @Column(name = "ExtId")
+    private int extId;
+
+    @Column(name = "Name")
     private String name;
 
-    @SerializedName("operating_range")
-    private double operatingRange;
-
+    @Column(name = "Version")
     private int version;
+
+    @Column(name = "Latitude", index = true)
     private double latitude;
+
+    @Column(name = "Longitude", index = true)
     private double longitude;
 
-    //private Location location;
+    @SerializedName("operating_range")
+    @Column(name = "OperatingRange")
+    private double operatingRange;
 
     @SerializedName("localization_type")
+    @Column(name = "LocalizationType")
     private LocalizationType localizationType;
 
     @SerializedName("environment_type")
+    @Column(name = "EnvironmentType")
     private EnvironmentType environmentType;
+
+    @Column(name = "Parent")
     private Environment parent;
+
+    @Column(name = "Distance")
     private double distance;
 
-    public int getId() {
-        return id;
+    public Environment() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Environment(String name, double latitude, double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public int getExtId() {
+        return extId;
+    }
+
+    public void setExtId(int extId) {
+        this.extId = extId;
     }
 
     public String getName() {
@@ -57,14 +80,6 @@ public class Environment {
     public void setVersion(int version) {
         this.version = version;
     }
-
-    /*public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }*/
 
     public LocalizationType getLocalizationType() {
         return localizationType;

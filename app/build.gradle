@@ -23,7 +23,7 @@ android {
         }
     }
 
-    
+
 }
 
 dependencies {
@@ -63,8 +63,11 @@ dependencies {
     }
 
     /* ORM */
-    //compile 'com.github.satyan:sugar:1.4'
-    compile 'de.greenrobot:greendao:2.0.0'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+
+    /* Geo */
+    compile 'com.vividsolutions:jts:1.13'
+    compile 'com.spatial4j:spatial4j:0.4.1'
 
     /* Testing */
     testCompile "junit:junit:4.12"

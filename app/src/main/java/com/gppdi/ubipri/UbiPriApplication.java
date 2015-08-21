@@ -6,6 +6,8 @@ import android.util.Log;
 
 //import com.orm.SugarContext;
 
+import com.activeandroid.ActiveAndroid;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +26,14 @@ public class UbiPriApplication extends Application {
         Log.i("UbiPriApplication", "UbiPri application started.");
 
         buildApplicationGraphAndInject();
+
+        ActiveAndroid.initialize(this, true);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        ActiveAndroid.dispose();
     }
 
     private void buildApplicationGraphAndInject() {

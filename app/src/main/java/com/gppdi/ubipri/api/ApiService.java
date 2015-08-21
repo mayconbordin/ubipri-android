@@ -1,8 +1,8 @@
 package com.gppdi.ubipri.api;
 
-import com.gppdi.ubipri.api.models.Environment;
 import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.api.oauth2.Request;
+import com.gppdi.ubipri.data.models.Environment;
 
 import java.util.List;
 import java.util.Map;
@@ -31,19 +31,6 @@ public interface ApiService {
     @POST("/oauth/access_token")
     Observable<AccessToken> getAccessTokenObservable(@Body Request request);
 
-    /*@FormUrlEncoded
-    @POST("/oauth/access_token") Observable<AccessToken> getAccessTokenObservable(
-            @Field("username") String email,
-            @Field("password") String password,
-            @Field("client_id") String clientId,
-            @Field("client_secret") String clientSecret);*/
-
-    @FormUrlEncoded
-    @POST("/login")
-    void login(@Field("username") String username, @Field("password") String password, Callback<Map> cb);
-
-    @POST("/logout")
-    void logout(Callback<Void> cb);
 
     @GET("/environments")
     void getEnvironments(@Query("lat") Double lat, @Query("lon") Double lon, @Query("radius") Double radius, Callback<List<Environment>> cb);

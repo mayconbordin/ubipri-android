@@ -15,7 +15,7 @@ public class UbiPriDaoGenerator {
     private static final String OUT_DIR = PROJECT_DIR + "/../app/src/main/java/";
     
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(VERSION, "com.gppdi.ubipri.dao");
+        Schema schema = new Schema(VERSION, "com.gppdi.ubipri.data.dao");
         
         addTables(schema);
         

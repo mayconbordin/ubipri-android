@@ -1,20 +1,29 @@
-package com.gppdi.ubipri.api.models;
+package com.gppdi.ubipri.data.models;
 
-/**
- * @author mayconbordin
- */
-public class LocalizationType {
-    private int id;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+@Table(name = "LocalizationTypes")
+public class LocalizationType extends Model {
+    @Column(name = "ExtId")
+    private int extId;
+
+    @Column(name = "Name")
     private String name;
+
+    @Column(name = "Precision")
     private double precision;
+
+    @Column(name = "Metric")
     private String metric;
 
-    public int getId() {
-        return id;
+    public int getExtId() {
+        return extId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setExtId(int extId) {
+        this.extId = extId;
     }
 
     public String getName() {

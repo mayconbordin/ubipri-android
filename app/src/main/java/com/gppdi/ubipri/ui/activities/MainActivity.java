@@ -16,7 +16,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.activeandroid.query.Select;
 import com.gppdi.ubipri.R;
+import com.gppdi.ubipri.data.dao.EnvironmentTypeDAO;
+import com.gppdi.ubipri.data.models.EnvironmentType;
 import com.gppdi.ubipri.ui.fragments.HomeFragment;
 import com.gppdi.ubipri.ui.fragments.SettingsFragment;
 import com.mikepenz.iconics.typeface.FontAwesome;
@@ -25,6 +28,8 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
+
+import javax.inject.Inject;
 
 import butterknife.InjectView;
 import timber.log.Timber;
@@ -43,7 +48,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Timber.i("onCreate("+savedInstanceState+")");
+        Timber.i("onCreate(" + savedInstanceState + ")");
         super.onCreate(savedInstanceState);
 
         inflateLayout(R.layout.activity_main);

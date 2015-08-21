@@ -11,7 +11,7 @@ import com.gppdi.ubipri.api.account.AccountAuthenticator;
 import com.gppdi.ubipri.api.annotations.ClientId;
 import com.gppdi.ubipri.api.annotations.ClientSecret;
 import com.gppdi.ubipri.api.json.EnvironmentDeserializer;
-import com.gppdi.ubipri.api.models.Environment;
+import com.gppdi.ubipri.data.models.Environment;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -34,7 +34,7 @@ import retrofit.converter.GsonConverter;
     library = true
 )
 public final class ApiModule {
-    public static final String PRODUCTION_API_URL = "http://10.200.116.246/api/";
+    private static final String PRODUCTION_API_URL = "http://10.200.116.246/api/";
     private static final String CLIENT_ID = "ubipri-android";
     private static final String CLIENT_SECRET = "d86654a991a8558b7ae5350fdb84457b763ad042";
 

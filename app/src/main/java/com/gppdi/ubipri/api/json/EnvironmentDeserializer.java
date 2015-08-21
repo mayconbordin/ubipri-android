@@ -6,9 +6,9 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.gppdi.ubipri.api.models.Environment;
-import com.gppdi.ubipri.api.models.EnvironmentType;
-import com.gppdi.ubipri.api.models.LocalizationType;
+import com.gppdi.ubipri.data.models.Environment;
+import com.gppdi.ubipri.data.models.EnvironmentType;
+import com.gppdi.ubipri.data.models.LocalizationType;
 
 import java.lang.reflect.Type;
 
@@ -21,7 +21,7 @@ public class EnvironmentDeserializer implements JsonDeserializer<Environment> {
         JsonObject o = (JsonObject) json;
 
         Environment e = new Environment();
-        e.setId(o.get("id").getAsInt());
+        e.setExtId(o.get("id").getAsInt());
         e.setName(o.get("name").getAsString());
         e.setOperatingRange(o.get("operating_range").getAsDouble());
         e.setVersion(o.get("version").getAsInt());
