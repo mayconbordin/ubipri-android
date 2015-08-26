@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class Notification extends Model {
 
     @SerializedName("id")
-    @Column(name = "id")
+    @Column(name = "id_event")
     private int eventId;
 
     @SerializedName("timestamp_in")
