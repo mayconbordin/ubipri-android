@@ -71,10 +71,11 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
     }
 
     /**
-     * Returns a formatted string with the difference from now to the timestamp
-     * (e.g. "14:38", "5h", "6d", "Dec 12", "Jan 3, 2015").
-     * @param timestamp    A timestamp (ms) to compare with the current time
-     * @return String indicating how long ago the timestamp is from the current time
+     * Returns a formatted string with the difference between now and some timestamp, or the
+     * formatted timestamp (e.g. "14:38", "5h", "6d", "Dec 12", "Jan 3, 2015"). Indicates when a
+     * message was received.
+     * @param timestamp    A timestamp (ms) to be formatted
+     * @return String with the formatted timestamp
      */
     private String formatTime(long timestamp) {
         final long second = 1000;
