@@ -24,6 +24,19 @@ public class Notification extends Model {
     public enum State { NEW, READ }
     private State state;
 
+    public Notification() {
+        super();
+    }
+
+    public Notification(int eventId, long timestamp, String type, String message, State state) {
+        super();
+        setEventId(eventId);
+        setTimestamp(timestamp);
+        setType(type);
+        setMessage(message);
+        setState(state);
+    }
+
     public int getEventId() {
         return eventId;
     }
