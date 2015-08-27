@@ -13,7 +13,10 @@ public class NotificationDAO extends AbstractDAO<Notification> {
     }
 
     public List<Notification> newest() {
-        return new Select().from(Notification.class).orderBy("timestamp_in DESC").execute();
+        return new Select()
+                .from(Notification.class)
+                .orderBy("timestamp DESC")
+                .execute();
     }
 
 }
