@@ -17,12 +17,12 @@ public class NotificationTest {
 
     @Test
     public void testNotificationFromJSON() {
-        final String json = "{ \"id\": 456, \"timestamp_in\": 3000, \"send_format\": \"SMS\", \"send_message\": \"SMS TEST\" }";
+        final String json = "{ \"id\": 456, \"timestamp_in\": 3000, \"send_format\": 2, \"send_message\": \"SMS TEST\" }";
         Gson gson = new GsonBuilder().create();
         Notification notification = gson.fromJson(json, Notification.class);
         assertTrue(notification.getEventId() == 456);
         assertTrue(notification.getTimestamp() == 3000);
-        assertTrue(notification.getType().equals("SMS"));
+        assertTrue(notification.getFormat() == Notification.FORMAT_SMS);
         assertTrue(notification.getMessage().equals("SMS TEST"));
     }
 

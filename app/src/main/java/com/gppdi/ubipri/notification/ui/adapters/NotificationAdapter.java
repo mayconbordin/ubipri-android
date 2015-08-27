@@ -59,10 +59,10 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         viewHolder.message.setText(notification.getMessage());
         viewHolder.time.setText(formatTime(notification.getTimestamp()));
         switch (notification.getState()) {
-            case NEW:
+            case Notification.STATE_NEW:
                 viewHolder.message.setTypeface(null, Typeface.BOLD);
                 break;
-            case READ:
+            case Notification.STATE_READ:
                 viewHolder.icon.setColorFilter(Color.LTGRAY);
                 break;
         }

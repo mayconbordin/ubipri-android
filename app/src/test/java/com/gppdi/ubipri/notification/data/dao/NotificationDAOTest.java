@@ -22,7 +22,7 @@ public class NotificationDAOTest {
 
     @Test
     public void testCreate() {
-        Notification n = new Notification(1, 1000, "SMS", "SMS Test", Notification.State.READ);
+        Notification n = new Notification(1, 1000, Notification.FORMAT_SMS, "SMS Test", Notification.STATE_READ);
         dao.createOrUpdate(n);
         assertTrue(dao.exists(n.getId()));
     }
@@ -33,13 +33,13 @@ public class NotificationDAOTest {
         assertTrue(dao.count() == 3);
         Notification n = dao.newest().get(0);
         assertTrue(n.getEventId() == 3);
-        assertTrue(n.getState() == Notification.State.NEW);
+        assertTrue(n.getState() == Notification.STATE_NEW);
     }
 
     private void populate() {
-        dao.createOrUpdate(new Notification(1, 1000, "SMS", "SMS Test", Notification.State.READ));
-        dao.createOrUpdate(new Notification(2, 2000, "GCM", "GCM Test", Notification.State.NEW));
-        dao.createOrUpdate(new Notification(3, 3000, "SMS", "SMS Test", Notification.State.NEW));
+        dao.createOrUpdate(new Notification(1, 1000, Notification.FORMAT_SMS, "SMS Test", Notification.STATE_READ));
+        dao.createOrUpdate(new Notification(2, 2000, Notification.FORMAT_GCM, "GCM Test", Notification.STATE_NEW));
+        dao.createOrUpdate(new Notification(3, 3000, Notification.FORMAT_SMS, "SMS Test", Notification.STATE_NEW));
     }
 
 }
