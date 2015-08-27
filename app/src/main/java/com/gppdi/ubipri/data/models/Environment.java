@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 @Table(name = "Environments")
 public class Environment extends Model {
     @Column(name = "ExtId")
+    @SerializedName("id")
     private int extId;
 
     @Column(name = "Name")
