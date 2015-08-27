@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 @Table(name = "Notifications")
 public class Notification extends Model {
 
+    public enum State { NEW, READ }
+
     @SerializedName("id")
     @Column(name = "id_event")
     private int eventId;
@@ -24,7 +26,6 @@ public class Notification extends Model {
     @Column(name = "message")
     private String message;
 
-    public enum State { NEW, READ }
     @Column(name = "state")
     private State state;
 
