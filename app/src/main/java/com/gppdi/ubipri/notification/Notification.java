@@ -13,15 +13,19 @@ public class Notification extends Model {
     private int eventId;
 
     @SerializedName("timestamp_in")
+    @Column(name = "timestamp")
     private long timestamp;
 
     @SerializedName("send_format")
+    @Column(name = "type")
     private String type;
 
     @SerializedName("send_message")
+    @Column(name = "message")
     private String message;
 
     public enum State { NEW, READ }
+    @Column(name = "state")
     private State state;
 
     public Notification() {
