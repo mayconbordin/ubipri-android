@@ -21,6 +21,7 @@ import com.gppdi.ubipri.data.DeviceManager;
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.functionality.FunctionalityManager;
+import com.gppdi.ubipri.notification.ui.fragments.NotificationHistoryFragment;
 import com.gppdi.ubipri.ui.fragments.HomeFragment;
 import com.gppdi.ubipri.ui.fragments.SettingsFragment;
 import com.gppdi.ubipri.utils.rx.EndlessObserver;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     public static final int FRAGMENT_HOME     = 0;
     public static final int FRAGMENT_ENVIRONMENTS  = 1;
     public static final int FRAGMENT_SETTINGS = 2;
+    public static final int FRAGMENT_NOTIFICATIONS = 3;
 
     private static final String TAG = "MainActivity ";
 
@@ -76,7 +78,8 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.action_home).withIcon(FontAwesome.Icon.faw_home).withIdentifier(FRAGMENT_HOME),
                         new PrimaryDrawerItem().withName(R.string.action_environments).withIcon(FontAwesome.Icon.faw_globe).withIdentifier(FRAGMENT_ENVIRONMENTS),
-                        new PrimaryDrawerItem().withName(R.string.action_settings).withIcon(FontAwesome.Icon.faw_gear).withIdentifier(FRAGMENT_SETTINGS)
+                        new PrimaryDrawerItem().withName(R.string.action_settings).withIcon(FontAwesome.Icon.faw_gear).withIdentifier(FRAGMENT_SETTINGS),
+                        new PrimaryDrawerItem().withName(R.string.action_notifications).withIcon(FontAwesome.Icon.faw_bell).withIdentifier(FRAGMENT_NOTIFICATIONS)
                 )
                 .withOnDrawerItemClickListener(this)
                 .build();
@@ -205,6 +208,9 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
                 break;
             case FRAGMENT_SETTINGS:
                 fragment = new SettingsFragment();
+                break;
+            case FRAGMENT_NOTIFICATIONS:
+                fragment = new NotificationHistoryFragment();
                 break;
             default:
                 break;
