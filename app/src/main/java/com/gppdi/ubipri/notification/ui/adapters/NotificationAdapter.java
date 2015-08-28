@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gppdi.ubipri.R;
-import com.gppdi.ubipri.notification.Notification;
+import com.gppdi.ubipri.notification.data.models.Notification;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

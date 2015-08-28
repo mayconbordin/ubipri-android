@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.notification;
+package com.gppdi.ubipri.notification.data.models;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

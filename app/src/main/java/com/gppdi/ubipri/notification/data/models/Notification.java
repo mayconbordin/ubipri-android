@@ -1,4 +1,4 @@
-package com.gppdi.ubipri.notification;
+package com.gppdi.ubipri.notification.data.models;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;

@@ -1,7 +1,7 @@
 package com.gppdi.ubipri.notification.data.dao;
 
 import com.gppdi.ubipri.BuildConfig;
-import com.gppdi.ubipri.notification.Notification;
+import com.gppdi.ubipri.notification.data.models.Notification;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

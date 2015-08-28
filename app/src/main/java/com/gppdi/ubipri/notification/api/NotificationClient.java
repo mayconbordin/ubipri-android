@@ -1,6 +1,6 @@
 package com.gppdi.ubipri.notification.api;
 
-import com.gppdi.ubipri.notification.Notification;
+import com.gppdi.ubipri.notification.data.models.Notification;
 
 import java.util.List;
 

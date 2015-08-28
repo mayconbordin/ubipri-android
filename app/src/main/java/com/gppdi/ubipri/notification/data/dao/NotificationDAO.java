@@ -2,7 +2,7 @@ package com.gppdi.ubipri.notification.data.dao;
 
 import com.activeandroid.query.Select;
 import com.gppdi.ubipri.data.dao.AbstractDAO;
-import com.gppdi.ubipri.notification.Notification;
+import com.gppdi.ubipri.notification.data.models.Notification;
 
 import java.util.List;
 

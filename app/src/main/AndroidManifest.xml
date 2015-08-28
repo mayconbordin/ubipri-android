@@ -144,7 +144,7 @@
             android:name="AA_MODELS"
             android:value="com.gppdi.ubipri.data.models.Environment, com.gppdi.ubipri.data.models.EnvironmentType,
             com.gppdi.ubipri.data.models.LocalizationType, com.gppdi.ubipri.data.models.AccessType, com.gppdi.ubipri.data.models.AccessLevel,
-            com.gppdi.ubipri.data.models.Functionality, com.gppdi.ubipri.notification.Notification" />
+            com.gppdi.ubipri.data.models.Functionality, com.gppdi.ubipri.notification.data.models.Notification" />
 
     </application>
 
