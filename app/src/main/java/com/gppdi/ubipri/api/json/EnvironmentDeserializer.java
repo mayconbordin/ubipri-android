@@ -9,8 +9,13 @@ import com.google.gson.JsonParseException;
 import com.gppdi.ubipri.data.models.Environment;
 import com.gppdi.ubipri.data.models.EnvironmentType;
 import com.gppdi.ubipri.data.models.LocalizationType;
+import com.gppdi.ubipri.utils.GeoUtils;
+import com.spatial4j.core.io.ShapeReader;
+import com.spatial4j.core.shape.Shape;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.ParseException;
 
 /**
  * @author mayconbordin
@@ -23,17 +28,18 @@ public class EnvironmentDeserializer implements JsonDeserializer<Environment> {
         Environment e = new Environment();
         e.setExtId(o.get("id").getAsInt());
         e.setName(o.get("name").getAsString());
-        e.setOperatingRange(o.get("operating_range").getAsDouble());
+        e.setOperatingRange(o.get("operatingRange").getAsDouble());
         e.setVersion(o.get("version").getAsInt());
         e.setDistance(o.get("distance").getAsDouble());
 
-        e.setParent((Environment) context.deserialize(o.get("parent"), Environment.class));
-        e.setEnvironmentType((EnvironmentType) context.deserialize(o.get("environment_type"), EnvironmentType.class));
-        e.setLocalizationType((LocalizationType) context.deserialize(o.get("localization_type"), LocalizationType.class));
+        e.setParentId(o.get("parentId").getAsInt());
+        e.setEnvironmentType((EnvironmentType) context.deserialize(o.get("environmentType"), EnvironmentType.class));
+        e.setLocalizationType((LocalizationType) context.deserialize(o.get("localizationType"), LocalizationType.class));
 
         parseLocation(o, e);
+        parseShape(o, e);
 
-        return null;
+        return e;
     }
 
     private void parseLocation(JsonObject o, Environment e) throws JsonParseException {
@@ -51,5 +57,23 @@ public class EnvironmentDeserializer implements JsonDeserializer<Environment> {
 
         e.setLatitude(coord.get(0).getAsDouble());
         e.setLongitude(coord.get(1).getAsDouble());
+    }
+
+    private void parseShape(JsonObject o, Environment e) throws JsonParseException {
+        if (!o.getAsJsonObject("shape").get("type").getAsString().equals("Polygon")) {
+            throw new JsonParseException("Shape type of Environment has to be a Polygon.");
+        }
+
+        String shapeStr = o.get("shape").toString();
+        ShapeReader reader = GeoUtils.getSpatialContext().getFormats().getGeoJsonReader();
+
+        try {
+            Shape shape = reader.read(shapeStr);
+            e.setShape(shape.toString());
+        } catch (IOException e1) {
+            throw new JsonParseException("Unable to read Environment shape.");
+        } catch (ParseException e1) {
+            throw new JsonParseException("Unable to parse Environment shape.");
+        }
     }
 }

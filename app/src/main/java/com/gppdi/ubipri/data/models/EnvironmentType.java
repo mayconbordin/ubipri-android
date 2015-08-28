@@ -3,10 +3,12 @@ package com.gppdi.ubipri.data.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.gson.annotations.SerializedName;
 
 @Table(name = "EnvironmentTypes")
 public class EnvironmentType extends Model {
     @Column(name = "ExtId")
+    @SerializedName("id")
     private int extId;
 
     @Column(name = "Name")
@@ -26,5 +28,13 @@ public class EnvironmentType extends Model {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvironmentType{" +
+                "extId=" + extId +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -5,6 +5,8 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.android.gms.location.Geofence;
 import com.google.gson.annotations.SerializedName;
+import com.gppdi.ubipri.utils.GeoUtils;
+import com.spatial4j.core.shape.jts.JtsGeometry;
 
 @Table(name = "Environments")
 public class Environment extends Model {
@@ -36,11 +38,14 @@ public class Environment extends Model {
     @Column(name = "EnvironmentType")
     private EnvironmentType environmentType;
 
-    @Column(name = "Parent")
-    private Environment parent;
+    @Column(name = "ParentId")
+    private int parentId;
 
     @Column(name = "Distance")
     private double distance;
+
+    @Column(name = "Shape")
+    private String shape;
 
     public Environment() {
     }
@@ -99,12 +104,12 @@ public class Environment extends Model {
         this.environmentType = environmentType;
     }
 
-    public Environment getParent() {
-        return parent;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setParent(Environment parent) {
-        this.parent = parent;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public double getDistance() {
@@ -131,6 +136,14 @@ public class Environment extends Model {
         this.longitude = longitude;
     }
 
+    public String getShape() {
+        return shape;
+    }
+
+    public void setShape(String shape) {
+        this.shape = shape;
+    }
+
     public Geofence toGeofence() {
         return new Geofence.Builder()
                 .setRequestId(String.valueOf(getId()))
@@ -138,5 +151,22 @@ public class Environment extends Model {
                 .setCircularRegion(latitude, longitude, (float) operatingRange)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "Environment{" +
+                "extId=" + extId +
+                ", name='" + name + '\'' +
+                ", version=" + version +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", operatingRange=" + operatingRange +
+                ", localizationType=" + localizationType +
+                ", environmentType=" + environmentType +
+                ", parentId=" + parentId +
+                ", distance=" + distance +
+                ", shape='" + shape + '\'' +
+                '}';
     }
 }

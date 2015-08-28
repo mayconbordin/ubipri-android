@@ -1,6 +1,7 @@
 package com.gppdi.ubipri.data.dao;
 
 import com.gppdi.ubipri.BuildConfig;
+import com.gppdi.ubipri.data.Fixtures;
 import com.gppdi.ubipri.data.models.Environment;
 
 import junit.framework.TestCase;
@@ -11,6 +12,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -53,10 +55,8 @@ public class EnvironmentDAOTest /*extends TestCase*/ {
     }
 
     protected void populate() {
-        dao.createOrUpdate(new Environment("Porto Alegre", -30.072296142578118,-51.17763595581054));
-        dao.createOrUpdate(new Environment("Campus Vale UFRGS", -30.071927547454848,-51.12007999420165));
-        dao.createOrUpdate(new Environment("Prédio Informática 72", -30.06849765777585,-51.12047672271728));
-        dao.createOrUpdate(new Environment("Apartamento do Borges", -30.039857387542725,-51.20896339416505));
-        dao.createOrUpdate(new Environment("Laboratório 205", -30.0686149597168,-51.1206169128418));
+        for (Environment e : Fixtures.ENVIRONMENTS.values()) {
+            dao.createOrUpdate(e);
+        }
     }
 }

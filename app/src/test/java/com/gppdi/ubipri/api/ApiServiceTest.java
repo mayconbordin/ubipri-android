@@ -16,10 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.gppdi.ubipri.BuildConfig;
+import com.gppdi.ubipri.data.models.Environment;
+import com.gppdi.ubipri.utils.rx.EndlessObserver;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
+import javax.inject.Inject;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -28,6 +35,11 @@ import retrofit.client.Client;
 import retrofit.client.Request;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+import rx.Observable;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @author mayconbordin
@@ -39,30 +51,26 @@ public class ApiServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        /*RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://localhost:9000")
-                .set
-                .build();*/
-
-        api = mock(ApiService.class);//restAdapter.create(ApiService.class);
+        api = new MockApiService();
     }
 
     @Test
     public void testA() throws Exception {
-        verify(api).login(anyString(), anyString(), any(Callback.class));
+        final AtomicReference<Object> testResult = new AtomicReference<>();
 
-        api.login("1234", "12345", new Callback<Map>() {
+        api.getEnvironments(-30.0722961425781, -51.1776359558105, 10.0).subscribe(new EndlessObserver<List<Environment>>() {
             @Override
-            public void success(Map map, Response response) {
-                Log.i("TAG", response.toString());
+            public void onNext(List<Environment> environments) {
+                testResult.set(environments);
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.i("TAG", error.toString());
+            public void onError(Throwable error) {
+                throw new RuntimeException(error);
             }
         });
 
-        assertThat(1).isEqualTo(1);
+        List<Environment> results = (List<Environment>) testResult.get();
+        assertThat(results.size()).isEqualTo(5);
     }
 }

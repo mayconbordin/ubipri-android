@@ -3,10 +3,12 @@ package com.gppdi.ubipri.data.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.gson.annotations.SerializedName;
 
 @Table(name = "LocalizationTypes")
 public class LocalizationType extends Model {
     @Column(name = "ExtId")
+    @SerializedName("id")
     private int extId;
 
     @Column(name = "Name")
@@ -48,5 +50,15 @@ public class LocalizationType extends Model {
 
     public void setMetric(String metric) {
         this.metric = metric;
+    }
+
+    @Override
+    public String toString() {
+        return "LocalizationType{" +
+                "extId=" + extId +
+                ", name='" + name + '\'' +
+                ", precision=" + precision +
+                ", metric='" + metric + '\'' +
+                '}';
     }
 }
