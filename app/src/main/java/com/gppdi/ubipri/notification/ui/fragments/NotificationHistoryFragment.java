@@ -9,9 +9,9 @@ import android.widget.ListView;
 
 import com.activeandroid.ActiveAndroid;
 import com.gppdi.ubipri.R;
-import com.gppdi.ubipri.notification.Notification;
 import com.gppdi.ubipri.notification.api.NotificationClient;
 import com.gppdi.ubipri.notification.data.dao.NotificationDAO;
+import com.gppdi.ubipri.notification.data.models.Notification;
 import com.gppdi.ubipri.notification.services.NotificationService;
 import com.gppdi.ubipri.notification.ui.adapters.NotificationAdapter;
 
