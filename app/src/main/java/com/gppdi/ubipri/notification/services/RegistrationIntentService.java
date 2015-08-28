@@ -62,9 +62,9 @@ public class RegistrationIntentService extends IntentService {
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             sharedPreferences.edit().putBoolean(NotificationPreferences.SENT_TOKEN_TO_SERVER, false).apply();
         }
-        // Notify UI that registration has completed, so the progress indicator can be hidden.
-        Intent registrationComplete = new Intent(NotificationPreferences.REGISTRATION_COMPLETE);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+        //// Notify UI that registration has completed, so the progress indicator can be hidden.
+        //Intent registrationComplete = new Intent(NotificationPreferences.REGISTRATION_COMPLETE);
+        //LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
     /**
