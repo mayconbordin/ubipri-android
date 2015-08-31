@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.activeandroid.ActiveAndroid;
@@ -36,6 +37,15 @@ public class NotificationHistoryFragment extends Fragment {
 
         updateHistory();
         populateListView();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Notification notification = (Notification) parent.getItemAtPosition(position);
+                // TODO: 31/08/15 Display the full message
+            }
+        });
 
         return rootView;
     }
