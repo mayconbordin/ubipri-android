@@ -36,10 +36,12 @@ public class Notification extends Model {
     private String message;
 
     @Column(name = "state")
-    private int state = STATE_NEW;
+    private int state;
 
     public Notification() {
         super();
+        setFormat(FORMAT_NONE);
+        setState(STATE_NEW);
     }
 
     public Notification(int eventId, long timestamp, int format, String message, int state) {
