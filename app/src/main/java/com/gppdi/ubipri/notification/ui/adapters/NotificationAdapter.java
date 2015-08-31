@@ -16,7 +16,9 @@ import com.gppdi.ubipri.notification.data.models.Notification;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NotificationAdapter extends ArrayAdapter<Notification> {
 
@@ -55,9 +57,11 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         }
 
         // Fill and configure view-items according to the notification
-        viewHolder.icon.setImageResource(R.drawable.ic_message_black_24dp);
-        viewHolder.message.setText(notification.getMessage());
-        viewHolder.time.setText(formatTime(notification.getTimestamp()));
+        HashMap<Integer,Integer> icons = new HashMap<>();
+        icons.put(Notification.FORMAT_GCM, R.drawable.ic_message_black_24dp);
+        icons.put(Notification.FORMAT_SMS, R.drawable.ic_sms_black_24dp);
+        icons.put(Notification.FORMAT_EMAIL, R.drawable.ic_email_black_24dp);
+
         switch (notification.getState()) {
             case Notification.STATE_NEW:
                 viewHolder.message.setTypeface(null, Typeface.BOLD);
@@ -66,6 +70,10 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                 viewHolder.icon.setColorFilter(Color.LTGRAY);
                 break;
         }
+
+        viewHolder.icon.setImageResource(icons.get(notification.getFormat()));
+        viewHolder.message.setText(notification.getMessage());
+        viewHolder.time.setText(formatTime(notification.getTimestamp()));
 
         return view;
     }
