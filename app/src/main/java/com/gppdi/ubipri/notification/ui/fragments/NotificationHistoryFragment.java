@@ -2,6 +2,7 @@ package com.gppdi.ubipri.notification.ui.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.gppdi.ubipri.notification.ui.adapters.NotificationAdapter;
 import java.util.List;
 
 public class NotificationHistoryFragment extends Fragment {
+
+    private static final String TAG = "NotificationsFragment";
 
     private ListView listView;
 
@@ -50,6 +53,11 @@ public class NotificationHistoryFragment extends Fragment {
         // Get the new messages from the webservice
         NotificationClient client = NotificationService.createService(NotificationClient.class);
         List<Notification> notifications = client.historyUpdate("user");
+
+        if(notifications.isEmpty()) {
+            Log.i(TAG, "Notification history is up to date");
+            return;
+        }
 
         // Store the received messages in the database
         ActiveAndroid.beginTransaction();
