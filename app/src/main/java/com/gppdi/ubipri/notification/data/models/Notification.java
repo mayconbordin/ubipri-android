@@ -36,7 +36,7 @@ public class Notification extends Model {
     private String message;
 
     @Column(name = "state")
-    private int state;
+    private int state = STATE_NEW;
 
     public Notification() {
         super();
