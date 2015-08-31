@@ -19,4 +19,12 @@ public class NotificationDAO extends AbstractDAO<Notification> {
                 .execute();
     }
 
+    public List<Notification> newestUnread() {
+        return new Select()
+                .from(Notification.class)
+                .where("state == ?", Notification.STATE_NEW)
+                .orderBy("timestamp DESC")
+                .execute();
+    }
+
 }

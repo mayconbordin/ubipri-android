@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricGradleTestRunner.class)
@@ -34,6 +36,17 @@ public class NotificationDAOTest {
         Notification n = dao.newest().get(0);
         assertTrue(n.getEventId() == 3);
         assertTrue(n.getState() == Notification.STATE_NEW);
+    }
+
+    @Test
+    public void testNewestUnread() {
+        populate();
+        assertTrue(dao.count() == 3);
+        List<Notification> notifications = dao.newestUnread();
+        assertTrue(notifications.size() == 2);
+        for(Notification n : notifications) {
+            assertTrue(n.getState() == Notification.STATE_NEW);
+        }
     }
 
     private void populate() {
