@@ -1,29 +1,110 @@
 package com.gppdi.ubipri.data.models;
 
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-/**
- * @author mayconbordin
- */
+@Table(name = "Actions")
 public class Action {
     @SerializedName("id")
+    @Column(name = "ExtId", index = true, unique = true)
     private int extId;
 
+    @Column(name = "Action")
     private String action;
 
-    @SerializedName("start_date")
+    @Column(name = "StartDate")
     private Date startDate;
 
-    @SerializedName("end_date")
+    @Column(name = "EndDate")
     private Date endDate;
 
-    @SerializedName("start_daily_interval")
+    @Column(name = "StartDailyInterval")
     private int startDailyInterval;
 
-    @SerializedName("duration_interval")
+    @Column(name = "DurationInterval")
     private int durationInterval;
 
+    @Column(name = "Environment")
     private Environment environment;
+
+    @Column(name = "AccessLevel")
+    private AccessLevel accessLevel;
+
+    @Column(name = "Functionality")
+    private Functionality functionality;
+
+    public int getExtId() {
+        return extId;
+    }
+
+    public void setExtId(int extId) {
+        this.extId = extId;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getStartDailyInterval() {
+        return startDailyInterval;
+    }
+
+    public void setStartDailyInterval(int startDailyInterval) {
+        this.startDailyInterval = startDailyInterval;
+    }
+
+    public int getDurationInterval() {
+        return durationInterval;
+    }
+
+    public void setDurationInterval(int durationInterval) {
+        this.durationInterval = durationInterval;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    public AccessLevel getAccessLevel() {
+        return accessLevel;
+    }
+
+    public void setAccessLevel(AccessLevel accessLevel) {
+        this.accessLevel = accessLevel;
+    }
+
+    public Functionality getFunctionality() {
+        return functionality;
+    }
+
+    public void setFunctionality(Functionality functionality) {
+        this.functionality = functionality;
+    }
 }

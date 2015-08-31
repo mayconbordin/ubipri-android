@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.api.oauth2.Request;
 import com.gppdi.ubipri.data.Fixtures;
+import com.gppdi.ubipri.data.models.Action;
 import com.gppdi.ubipri.data.models.Environment;
 import com.gppdi.ubipri.data.models.Log;
 
@@ -47,7 +48,12 @@ public class MockApiService implements ApiService {
     }
 
     @Override
-    public Observable<Void> updateUserLocation(@Body Log log) {
+    public Observable<List<Action>> updateUserLocationObservable(@Body Log log) {
         return null;
+    }
+
+    @Override
+    public List<Action> updateUserLocation(@Body Log log) {
+        return Fixtures.getActions();
     }
 }

@@ -10,7 +10,7 @@ import com.spatial4j.core.shape.jts.JtsGeometry;
 
 @Table(name = "Environments")
 public class Environment extends Model {
-    @Column(name = "ExtId")
+    @Column(name = "ExtId", index = true, unique = true)
     @SerializedName("id")
     private int extId;
 
@@ -26,20 +26,20 @@ public class Environment extends Model {
     @Column(name = "Longitude", index = true)
     private double longitude;
 
-    @SerializedName("operating_range")
     @Column(name = "OperatingRange")
     private double operatingRange;
 
-    @SerializedName("localization_type")
     @Column(name = "LocalizationType")
     private LocalizationType localizationType;
 
-    @SerializedName("environment_type")
     @Column(name = "EnvironmentType")
     private EnvironmentType environmentType;
 
     @Column(name = "ParentId")
-    private int parentId;
+    private Integer parentId;
+
+    @Column(name = "Level")
+    private Integer level;
 
     @Column(name = "Distance")
     private double distance;
@@ -50,7 +50,8 @@ public class Environment extends Model {
     public Environment() {
     }
 
-    public Environment(String name, double latitude, double longitude) {
+    public Environment(int extId, String name, double latitude, double longitude) {
+        this.extId = extId;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -104,11 +105,11 @@ public class Environment extends Model {
         this.environmentType = environmentType;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
@@ -144,6 +145,14 @@ public class Environment extends Model {
         this.shape = shape;
     }
 
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     public Geofence toGeofence() {
         return new Geofence.Builder()
                 .setRequestId(String.valueOf(getId()))
@@ -165,6 +174,7 @@ public class Environment extends Model {
                 ", localizationType=" + localizationType +
                 ", environmentType=" + environmentType +
                 ", parentId=" + parentId +
+                ", level=" + level +
                 ", distance=" + distance +
                 ", shape='" + shape + '\'' +
                 '}';

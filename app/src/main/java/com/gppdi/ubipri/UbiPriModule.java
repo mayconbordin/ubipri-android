@@ -2,10 +2,15 @@ package com.gppdi.ubipri;
 
 import android.accounts.AccountManager;
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.gppdi.ubipri.api.ApiModule;
 import com.gppdi.ubipri.data.DataModule;
+import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.ui.UiModule;
+import com.gppdi.ubipri.ui.activities.MainActivity;
+import com.gppdi.ubipri.utils.DeviceUtils;
 
 import javax.inject.Singleton;
 
@@ -34,5 +39,9 @@ public class UbiPriModule {
 
     @Provides @Singleton AccountManager provideAccountManager() {
         return AccountManager.get(app);
+    }
+
+    @Provides @Singleton SharedPreferences provideSharedPreferences() {
+        return app.getSharedPreferences("com.gppdi.ubipri", Context.MODE_PRIVATE);
     }
 }

@@ -2,6 +2,8 @@ package com.gppdi.ubipri.api;
 
 import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.api.oauth2.Request;
+import com.gppdi.ubipri.data.models.Action;
+import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.data.models.Environment;
 import com.gppdi.ubipri.data.models.Log;
 
@@ -33,7 +35,6 @@ public interface ApiService {
     @POST("/oauth/access_token")
     Observable<AccessToken> getAccessTokenObservable(@Body Request request);
 
-
     @GET("/environments")
     Observable<List<Environment>> getEnvironments(@Query("lat") Double lat, @Query("lon") Double lon, @Query("radius") Double radius);
 
@@ -41,5 +42,14 @@ public interface ApiService {
     Observable<Environment> getEnvironment(@Path("id") int id);
 
     @PUT("/user/location")
-    Observable<Void> updateUserLocation(@Body Log log);
+    Observable<List<Action>> updateUserLocationObservable(@Body Log log);
+
+    @PUT("/user/location")
+    List<Action> updateUserLocation(@Body Log log);
+
+    @POST("/user/devices")
+    Map registerUserDevice(@Body Device device);
+
+    @POST("/user/devices")
+    Observable<Map> registerUserDeviceObservable(@Body Device device);
 }

@@ -31,10 +31,14 @@ public class EnvironmentDeserializer implements JsonDeserializer<Environment> {
         e.setOperatingRange(o.get("operatingRange").getAsDouble());
         e.setVersion(o.get("version").getAsInt());
         e.setDistance(o.get("distance").getAsDouble());
-
-        e.setParentId(o.get("parentId").getAsInt());
         e.setEnvironmentType((EnvironmentType) context.deserialize(o.get("environmentType"), EnvironmentType.class));
         e.setLocalizationType((LocalizationType) context.deserialize(o.get("localizationType"), LocalizationType.class));
+
+        JsonElement level = o.get("level");
+        e.setLevel((!level.isJsonNull()) ? level.getAsInt() : null);
+
+        JsonElement parentId = o.get("parentId");
+        e.setParentId((!parentId.isJsonNull()) ? parentId.getAsInt() : null);
 
         parseLocation(o, e);
         parseShape(o, e);

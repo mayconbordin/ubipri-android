@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,12 +15,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.activeandroid.query.Select;
+import com.gppdi.ubipri.api.ApiService;
+import com.gppdi.ubipri.api.oauth2.AccessToken;
+import com.gppdi.ubipri.data.DeviceManager;
 import com.gppdi.ubipri.R;
-import com.gppdi.ubipri.data.dao.EnvironmentTypeDAO;
-import com.gppdi.ubipri.data.models.EnvironmentType;
+import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.ui.fragments.HomeFragment;
 import com.gppdi.ubipri.ui.fragments.SettingsFragment;
+import com.gppdi.ubipri.utils.rx.EndlessObserver;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -29,9 +30,13 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import butterknife.InjectView;
+import retrofit.RetrofitError;
+import rx.Observable;
 import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemClickListener {
@@ -43,6 +48,9 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
     private CharSequence mTitle;
     private Drawer mDrawer;
+
+    @Inject DeviceManager deviceManager;
+    @Inject ApiService apiService;
 
     @InjectView(R.id.activity_main_toolbar) Toolbar toolbar;
 
@@ -70,6 +78,8 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
         // display home fragment
         displayView(FRAGMENT_HOME, R.string.action_home);
+
+        checkDeviceRegistered();
     }
 
     @Override
@@ -135,6 +145,39 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         }
 
         return displayView(drawerItem.getIdentifier(), null);
+    }
+
+    private void checkDeviceRegistered() {
+        if (!deviceManager.getDevice().isRegistered()) {
+            Log.i(TAG, "Device not registered: " + deviceManager.getDevice().toString());
+
+            Observable<Map> registerDeviceObservable = apiService.registerUserDeviceObservable(deviceManager.getDevice());
+
+            subscribe(registerDeviceObservable, new EndlessObserver<Map>() {
+                @Override
+                public void onNext(Map map) {
+                    Log.i(TAG, "Device registered");
+                    deviceManager.saveDevice();
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    if (throwable instanceof RetrofitError) {
+                        RetrofitError error = (RetrofitError) throwable;
+
+                        if (error.getKind().equals(RetrofitError.Kind.HTTP) &&
+                                error.getResponse() != null && error.getResponse().getStatus() == 409) {
+                            Log.i(TAG, "Device already registered");
+                            deviceManager.saveDevice();
+                        }
+
+                        Log.e(TAG, error.getMessage(), error);
+                    }
+                }
+            });
+        } else {
+            Log.i(TAG, "Device registered: " + deviceManager.getDevice().toString());
+        }
     }
 
     private boolean displayView(int id, Integer nameRes) {

@@ -121,6 +121,17 @@ public class GeoUtils {
             this.bottom = bottom;
             this.left = left;
         }
+
+        @Override
+        public String toString() {
+            return "CircleBBox{" +
+                    "center=" + center +
+                    ", top=" + top +
+                    ", right=" + right +
+                    ", bottom=" + bottom +
+                    ", left=" + left +
+                    '}';
+        }
     }
     
     public static enum DistanceUnit {

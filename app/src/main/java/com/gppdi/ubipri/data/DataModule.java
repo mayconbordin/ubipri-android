@@ -1,9 +1,9 @@
 package com.gppdi.ubipri.data;
 
 import android.app.Application;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
 
+import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.data.dao.EnvironmentDAO;
 import com.gppdi.ubipri.data.dao.EnvironmentTypeDAO;
 import com.gppdi.ubipri.data.dao.LocalizationTypeDAO;
@@ -28,5 +28,13 @@ public class DataModule {
 
     @Provides @Singleton LocalizationTypeDAO provideLocalizationTypeDao() {
         return new LocalizationTypeDAO();
+    }
+
+    @Provides @Singleton DataService provideDataService(ApiService apiService, EnvironmentDAO environmentDAO) {
+        return new DataService(apiService, environmentDAO);
+    }
+
+    @Provides @Singleton DeviceManager provideDeviceManager(Application app, SharedPreferences sharedPreferences) {
+        return new DeviceManager(app, sharedPreferences);
     }
 }

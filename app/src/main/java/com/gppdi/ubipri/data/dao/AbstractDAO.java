@@ -62,5 +62,12 @@ public class AbstractDAO<T extends Model> {
         return new Select().from(typeClass).count();
     }
 
+    public boolean existsExtId(int extId) {
+        return new Select().from(typeClass).where("ExtId = ?", extId).exists();
+    }
+
+    public T findByExtId(int extId) {
+        return new Select().from(typeClass).where("ExtId = ?", extId).executeSingle();
+    }
 
 }
