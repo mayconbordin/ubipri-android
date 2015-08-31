@@ -58,7 +58,7 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         // Fill and configure view-items according to the notification
         HashMap<Integer,Integer> icons = new HashMap<>();
-        icons.put(Notification.FORMAT_GCM, R.drawable.ic_message_black_24dp);
+        icons.put(Notification.FORMAT_GCM, R.drawable.ic_notifications_black_24dp);
         icons.put(Notification.FORMAT_SMS, R.drawable.ic_sms_black_24dp);
         icons.put(Notification.FORMAT_EMAIL, R.drawable.ic_email_black_24dp);
 
