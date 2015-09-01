@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +19,13 @@ import dagger.ObjectGraph;
  */
 public class UbiPriApplication extends Application {
     private ObjectGraph applicationGraph;
+
+    private List<Object> modules;
+
+    public UbiPriApplication() {
+        modules = new ArrayList<>();
+        modules.add(new UbiPriModule(this));
+    }
 
     @Override
     public void onCreate() {
@@ -41,10 +49,8 @@ public class UbiPriApplication extends Application {
         applicationGraph.inject(this);
     }
 
-    protected List<Object> getModules() {
-        return Arrays.<Object>asList(
-            new UbiPriModule(this)
-        );
+    public List<Object> getModules() {
+        return modules;
     }
 
     public void inject(Object o) {

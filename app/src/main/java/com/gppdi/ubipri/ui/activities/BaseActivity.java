@@ -37,7 +37,6 @@ public class BaseActivity extends AppCompatActivity implements OnAccountsUpdateL
 
     private ViewGroup container;
     private ObjectGraph activityGraph;
-
     private SubscriptionManager<Activity> subscriptionManager;
 
     @Override

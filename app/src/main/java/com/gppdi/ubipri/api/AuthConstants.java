@@ -12,4 +12,6 @@ public interface AuthConstants {
 
     // Auth token type
     String AUTHTOKEN_TYPE = ACCOUNT_TYPE;
+
+    String AUTHTOKEN_EXPIRATION = "expiration";
 }

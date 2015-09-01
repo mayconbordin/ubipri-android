@@ -34,7 +34,8 @@ import retrofit.converter.GsonConverter;
     library = true
 )
 public final class ApiModule {
-    private static final String PRODUCTION_API_URL = "http://10.200.116.246/api/";
+    private static final String SIGAI_API_URL = "http://10.200.116.246/api/";
+    private static final String UBIPRI_API_URL = "http://10.200.116.246:9000/";
     private static final String CLIENT_ID = "ubipri-android";
     private static final String CLIENT_SECRET = "d86654a991a8558b7ae5350fdb84457b763ad042";
 
@@ -46,9 +47,9 @@ public final class ApiModule {
         return CLIENT_SECRET;
     }
 
-    @Provides @Singleton Endpoint provideEndpoint() {
+    /*@Provides @Singleton Endpoint provideEndpoint() {
         return Endpoints.newFixedEndpoint(PRODUCTION_API_URL);
-    }
+    }*/
 
     @Provides Authenticator provideAuthenticator(Application application, AccountManager accountManager) {
         return new ApiAuthenticator(application, accountManager);
@@ -62,6 +63,10 @@ public final class ApiModule {
         return new OkClient(client);
     }
 
+    @Provides @Singleton ApiHeaders provideApiHeaders(Application application) {
+        return new ApiHeaders(application);
+    }
+
     @Provides Gson provideGson() {
         return new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -72,18 +77,35 @@ public final class ApiModule {
                 .create();
     }
 
-    @Provides @Singleton RestAdapter provideRestAdapter(Endpoint endpoint, Client client, ApiHeaders headers, Gson gson) {
+    /*@Provides @Singleton RestAdapter provideRestAdapter(Endpoint endpoint, Client client, ApiHeaders headers, Gson gson) {
         return new RestAdapter.Builder()
                 .setClient(client)
                 .setEndpoint(endpoint)
                 .setConverter(new GsonConverter(gson))
                 .setRequestInterceptor(headers)
-                //.setErrorHandler(new RestErrorHandler())
                 .build();
+    }*/
+
+    @Provides @Singleton ApiService provideApiService(Client client, ApiHeaders headers, Gson gson) {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setClient(client)
+                .setEndpoint(Endpoints.newFixedEndpoint(UBIPRI_API_URL))
+                .setConverter(new GsonConverter(gson))
+                .setRequestInterceptor(headers)
+                .build();
+
+        return restAdapter.create(ApiService.class);
     }
 
-    @Provides @Singleton ApiService provideApiService(RestAdapter restAdapter) {
-        return restAdapter.create(ApiService.class);
+    @Provides @Singleton ApiAuthService provideApiAuthService(Client client, ApiHeaders headers, Gson gson) {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setClient(client)
+                .setEndpoint(Endpoints.newFixedEndpoint(SIGAI_API_URL))
+                .setConverter(new GsonConverter(gson))
+                .setRequestInterceptor(headers)
+                .build();
+
+        return restAdapter.create(ApiAuthService.class);
     }
 
     /*@Provides @Singleton ApiDatabase provideApiDatabase(ApiService service) {

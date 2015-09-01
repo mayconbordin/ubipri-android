@@ -1,13 +1,21 @@
 package com.gppdi.ubipri.data.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * @author mayconbordin
  */
 public class Device {
     private String code;
     private String name;
-    private String deviceType = "Android";
+
+    @SerializedName("deviceType")
+    private String deviceType;
     private transient boolean registered = true;
+
+    public Device() {
+        deviceType = "Android";
+    }
 
     public String getCode() {
         return code;

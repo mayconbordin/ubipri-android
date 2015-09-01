@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.gppdi.ubipri.UbiPriApplication;
+import com.gppdi.ubipri.api.ApiAuthService;
 import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.api.AuthConstants;
 import com.gppdi.ubipri.api.annotations.ClientId;
@@ -30,7 +31,7 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
     private final Context context;
     @Inject @ClientId String clientId;
     @Inject @ClientSecret String clientSecret;
-    @Inject ApiService apiService;
+    @Inject ApiAuthService apiService;
 
     public AccountAuthenticator(Context context) {
         super(context);
@@ -76,14 +77,14 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType,
                                Bundle options) throws NetworkErrorException {
-        Timber.d("getAuthToken() account="+account.name+ " type="+account.type);
+        Log.i(TAG, "getAuthToken() account=" + account.name + " type=" + account.type);
 
         final Bundle bundle = new Bundle();
 
         // If the caller requested an authToken type we don't support, then
         // return an error
         if (!authTokenType.equals(AuthConstants.AUTHTOKEN_TYPE)) {
-            Timber.d("invalid authTokenType" + authTokenType);
+            Log.i(TAG, "invalid authTokenType" + authTokenType);
             bundle.putString(AccountManager.KEY_ERROR_MESSAGE, "invalid authTokenType");
             return bundle;
         }
@@ -96,7 +97,7 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         final String password = accountManager.getPassword(account);
 
         if (password != null) {
-            Timber.i("Trying to refresh access token");
+            Log.i(TAG, "Trying to refresh access token");
             try {
                 AccessToken accessToken = apiService.refreshAccessToken(
                         new Request.Builder().client(clientId, clientSecret).refreshToken(password)
@@ -107,15 +108,16 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
                     bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, AuthConstants.ACCOUNT_TYPE);
                     bundle.putString(AccountManager.KEY_AUTHTOKEN, accessToken.getAccessToken());
                     accountManager.setPassword(account, accessToken.getRefreshToken());
+                    accountManager.setUserData(account, AuthConstants.AUTHTOKEN_EXPIRATION, String.valueOf(accessToken.getExpirationTime()));
                     return bundle;
                 }
             } catch (Exception e) {
-                Timber.e(e, "Failed refreshing token.");
+                Log.e(TAG, "Failed refreshing token.", e);
             }
         }
 
         // Otherwise... start the login intent
-        Timber.i("Starting login activity");
+        Log.i(TAG, "Starting login activity");
         final Intent intent = new Intent(context, AuthenticatorActivity.class);
         intent.putExtra(AuthenticatorActivity.PARAM_USERNAME, account.name);
         intent.putExtra(AuthenticatorActivity.PARAM_AUTHTOKEN_TYPE, authTokenType);

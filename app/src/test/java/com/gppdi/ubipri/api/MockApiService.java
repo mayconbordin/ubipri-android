@@ -6,10 +6,12 @@ import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.api.oauth2.Request;
 import com.gppdi.ubipri.data.Fixtures;
 import com.gppdi.ubipri.data.models.Action;
+import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.data.models.Environment;
 import com.gppdi.ubipri.data.models.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,5 +57,15 @@ public class MockApiService implements ApiService {
     @Override
     public List<Action> updateUserLocation(@Body Log log) {
         return Fixtures.getActions();
+    }
+
+    @Override
+    public Map registerUserDevice(@Body Device device) {
+        return null;
+    }
+
+    @Override
+    public Observable<Map> registerUserDeviceObservable(@Body Device device) {
+        return Observable.<Map>from(new HashMap());
     }
 }

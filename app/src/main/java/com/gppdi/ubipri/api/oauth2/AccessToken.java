@@ -2,6 +2,8 @@ package com.gppdi.ubipri.api.oauth2;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * @author mayconbordin
  */
@@ -17,6 +19,12 @@ public class AccessToken {
 
     @SerializedName("refresh_token")
     private String refreshToken;
+
+    private long createdAt;
+
+    public AccessToken() {
+        createdAt = System.currentTimeMillis();
+    }
 
     public String getAccessToken() {
         return accessToken;
@@ -50,4 +58,15 @@ public class AccessToken {
         this.refreshToken = refreshToken;
     }
 
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public long getExpirationTime() {
+        return createdAt + (expiresIn * 1000);
+    }
 }

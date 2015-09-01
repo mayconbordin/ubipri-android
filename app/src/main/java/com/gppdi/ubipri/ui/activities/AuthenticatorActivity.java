@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
 import com.gppdi.ubipri.R;
+import com.gppdi.ubipri.api.ApiAuthService;
 import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.api.AuthConstants;
 import com.gppdi.ubipri.api.annotations.ClientId;
@@ -61,7 +62,7 @@ public class AuthenticatorActivity extends BaseActivity {
     @InjectView(R.id.edtPassword) EditText mPasswordEdit;
 
     @Inject AccountManager accountManager;
-    @Inject ApiService apiService;
+    @Inject ApiAuthService apiService;
     @Inject @ClientId String clientId;
     @Inject @ClientSecret String clientSecret;
 
@@ -136,7 +137,7 @@ public class AuthenticatorActivity extends BaseActivity {
             public void onNext(AccessToken accessToken) {
                 mSubmit.setProgress(100);
 
-                Account account = addOrFindAccount(email, accessToken.getRefreshToken());
+                Account account = addOrFindAccount(email, accessToken.getRefreshToken(), accessToken.getExpirationTime());
                 accountManager.setAuthToken(account, AuthConstants.AUTHTOKEN_TYPE, accessToken.getAccessToken());
                 finishAccountAdd(email, accessToken.getAccessToken(), accessToken.getRefreshToken());
             }
@@ -179,7 +180,7 @@ public class AuthenticatorActivity extends BaseActivity {
         });
     }
 
-    private Account addOrFindAccount(String email, String password) {
+    private Account addOrFindAccount(String email, String password, long expiration) {
         Account[] accounts = accountManager.getAccountsByType(AuthConstants.ACCOUNT_TYPE);
         Account account = accounts.length != 0 ? accounts[0] :
                 new Account(email, AuthConstants.ACCOUNT_TYPE);
@@ -189,6 +190,9 @@ public class AuthenticatorActivity extends BaseActivity {
         } else {
             accountManager.setPassword(accounts[0], password);
         }
+
+        accountManager.setUserData(accounts[0], AuthConstants.AUTHTOKEN_EXPIRATION, String.valueOf(expiration));
+
         return account;
     }
 
