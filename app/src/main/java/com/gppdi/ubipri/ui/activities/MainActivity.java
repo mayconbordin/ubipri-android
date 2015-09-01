@@ -15,12 +15,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.data.DeviceManager;
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.functionality.FunctionalityManager;
+import com.gppdi.ubipri.notification.services.RegistrationIntentService;
 import com.gppdi.ubipri.notification.ui.fragments.NotificationHistoryFragment;
 import com.gppdi.ubipri.ui.fragments.HomeFragment;
 import com.gppdi.ubipri.ui.fragments.SettingsFragment;
@@ -86,6 +90,14 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
         // display home fragment
         displayView(FRAGMENT_HOME, R.string.action_home);
+
+        checkDeviceRegistered();
+
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
     }
 
     @Override
@@ -230,5 +242,26 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
             Log.e("MainActivity", "Error in creating fragment");
             return false;
         }
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                //finish();
+            }
+            return false;
+        }
+        return true;
     }
 }
