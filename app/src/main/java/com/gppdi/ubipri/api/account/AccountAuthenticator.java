@@ -104,6 +104,8 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
                                 .build());
 
                 if (accessToken != null && !TextUtils.isEmpty(accessToken.getAccessToken())) {
+                    Log.i(TAG, "Token refreshed.");
+
                     bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
                     bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, AuthConstants.ACCOUNT_TYPE);
                     bundle.putString(AccountManager.KEY_AUTHTOKEN, accessToken.getAccessToken());

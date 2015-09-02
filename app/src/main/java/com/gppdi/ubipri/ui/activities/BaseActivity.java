@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.dart.Dart;
@@ -31,6 +32,8 @@ import timber.log.Timber;
 
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity implements OnAccountsUpdateListener {
+    private static final String TAG = "BaseActivity";
+
     @Inject AppContainer appContainer;
     @Inject ScopedBus bus;
     @Inject AccountManager accountManager;
@@ -137,15 +140,21 @@ public class BaseActivity extends AppCompatActivity implements OnAccountsUpdateL
     public void onAccountsUpdated(Account[] accounts) {
         for (Account account : accounts) {
             if (AuthConstants.ACCOUNT_TYPE.equals(account.type)) {
+                Log.i(TAG, "Account found. Continue.");
+                onUserLoggedIn();
                 return;
             }
         }
 
-        Timber.i("No account FOUND. Starting Auth activity.");
+        Log.i(TAG, "No account FOUND. Starting Auth activity.");
 
         // No accounts so start the authenticator activity
         Intent intent = new Intent(this, AuthenticatorActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void onUserLoggedIn() {
+
     }
 }

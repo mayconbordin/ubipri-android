@@ -186,12 +186,13 @@ public class AuthenticatorActivity extends BaseActivity {
                 new Account(email, AuthConstants.ACCOUNT_TYPE);
 
         if (accounts.length == 0) {
-            accountManager.addAccountExplicitly(account, password, null);
+            Bundle data = new Bundle();
+            data.putLong(AuthConstants.AUTHTOKEN_EXPIRATION, expiration);
+            accountManager.addAccountExplicitly(account, password, data);
         } else {
             accountManager.setPassword(accounts[0], password);
+            accountManager.setUserData(accounts[0], AuthConstants.AUTHTOKEN_EXPIRATION, String.valueOf(expiration));
         }
-
-        accountManager.setUserData(accounts[0], AuthConstants.AUTHTOKEN_EXPIRATION, String.valueOf(expiration));
 
         return account;
     }

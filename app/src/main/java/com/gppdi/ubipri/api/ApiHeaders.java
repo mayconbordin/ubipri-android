@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 
@@ -37,22 +38,22 @@ public final class ApiHeaders implements RequestInterceptor {
                 Log.i(TAG, "Token "+token+" expired, getting new token.");
                 accountManager.invalidateAuthToken(AuthConstants.AUTHTOKEN_TYPE, token);
 
-               // try {
-                    //token = accountManager.blockingGetAuthToken(accounts[0], AuthConstants.AUTHTOKEN_TYPE, true);
+                final AtomicReference<String> tokenResult = new AtomicReference<>();
+                accountManager.getAuthToken(accounts[0], AuthConstants.AUTHTOKEN_TYPE, null, true, new AccountManagerCallback<Bundle>() {
+                    @Override
+                    public void run(AccountManagerFuture<Bundle> future) {
+                        try {
+                            String token = future.getResult().getString(AccountManager.KEY_AUTHTOKEN);
+                            Log.i(TAG, "Token: " + token);
+                            tokenResult.set(future.getResult().getString(AccountManager.KEY_AUTHTOKEN));
 
-                    accountManager.getAuthToken(accounts[0], AuthConstants.AUTHTOKEN_TYPE, null, true, new AccountManagerCallback<Bundle>() {
-                        @Override
-                        public void run(AccountManagerFuture<Bundle> future) {
-                            try {
-                                Log.i(TAG, "Token: " + future.getResult().getString(AccountManager.KEY_AUTHTOKEN));
-                            } catch (Exception e) {
-                                Log.e(TAG, "Unable to refresh token: "+e.getMessage(), e);
-                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Unable to refresh token: "+e.getMessage(), e);
                         }
-                    }, null);
-                /*} catch (IOException | AuthenticatorException | OperationCanceledException e) {
-                    Log.e(TAG, "Unable to refresh token: "+e.getMessage(), e);
-                }*/
+                    }
+                }, null);
+
+                token = tokenResult.get();
             }
 
             if (token != null) {

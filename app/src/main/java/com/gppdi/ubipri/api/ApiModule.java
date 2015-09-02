@@ -102,7 +102,7 @@ public final class ApiModule {
                 .setClient(client)
                 .setEndpoint(Endpoints.newFixedEndpoint(SIGAI_API_URL))
                 .setConverter(new GsonConverter(gson))
-                .setRequestInterceptor(headers)
+                //.setRequestInterceptor(headers)
                 .build();
 
         return restAdapter.create(ApiAuthService.class);

@@ -79,8 +79,6 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
         // display home fragment
         displayView(FRAGMENT_HOME, R.string.action_home);
-
-        checkDeviceRegistered();
     }
 
     @Override
@@ -148,13 +146,20 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
         return displayView(drawerItem.getIdentifier(), null);
     }
 
+    @Override
+    public void onUserLoggedIn() {
+        super.onUserLoggedIn();
+
+        checkDeviceRegistered();
+    }
+
     public void checkDeviceRegistered() {
         if (!deviceManager.getDevice().isRegistered()) {
             Log.i(TAG, "Device not registered: " + deviceManager.getDevice().toString());
 
             Observable<Map> registerDeviceObservable = apiService.registerUserDeviceObservable(deviceManager.getDevice());
 
-            subscribe(registerDeviceObservable, new EndlessObserver < Map > () {
+            subscribe(registerDeviceObservable, new EndlessObserver<Map>() {
                 @Override
                 public void onNext (Map map){
                     Log.i(TAG, "Device registered");
@@ -162,7 +167,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
                 }
 
                 @Override
-                public void onError (Throwable throwable){
+                public void onError (Throwable throwable) {
                     if (throwable instanceof RetrofitError) {
                         RetrofitError error = (RetrofitError) throwable;
 
@@ -170,45 +175,19 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
                             if (error.getResponse() != null && error.getResponse().getStatus() == 409) {
                                 Log.i(TAG, "Device already registered");
                                 deviceManager.saveDevice();
+                                return;
                             }
 
                             if (error.getResponse() != null && error.getResponse().getStatus() == 401) {
-                                Log.e(TAG, "Unauthorized");
-                                Log.e(TAG, error.toString());
+                                Log.e(TAG, "Unauthorized: "+error.getUrl());
+                                return;
                             }
-
-                            Log.e(TAG, "Body: "+error.getBody());
                         }
 
                         Log.e(TAG, error.getMessage(), error);
                     }
                 }
             });
-
-            /*Observable<Map> registerDeviceObservable = apiService.registerUserDeviceObservable(deviceManager.getDevice());
-
-            subscribe(registerDeviceObservable, new EndlessObserver<Map>() {
-                @Override
-                public void onNext(Map map) {
-                    Log.i(TAG, "Device registered");
-                    deviceManager.saveDevice();
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    if (throwable instanceof RetrofitError) {
-                        RetrofitError error = (RetrofitError) throwable;
-
-                        if (error.getKind().equals(RetrofitError.Kind.HTTP) &&
-                                error.getResponse() != null && error.getResponse().getStatus() == 409) {
-                            Log.i(TAG, "Device already registered");
-                            deviceManager.saveDevice();
-                        }
-
-                        Log.e(TAG, error.getMessage(), error);
-                    }
-                }
-            });*/
         } else {
             Log.i(TAG, "Device registered: " + deviceManager.getDevice().toString());
         }
