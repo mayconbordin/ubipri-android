@@ -148,12 +148,16 @@ public class BackgroundLocationService extends Service implements GoogleApiClien
     }
 
     private void startGeofenceMonitoring() {
+        Log.i(TAG, "Starting geofence monitoring...");
+
         // Create intent for handling geofence events
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         mGeofenceRequestIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Start monitoring the geofences
         //LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
+
+        Log.i(TAG, "Geofence monitoring started.");
     }
 
     private void updateGeofenceMonitoring(Parcelable data) {

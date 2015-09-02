@@ -8,14 +8,19 @@ import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 import com.google.android.gms.location.LocationServices;
+import com.gppdi.ubipri.data.dao.EnvironmentDAO;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Listens for geofence transition changes.
  */
 public class GeofenceTransitionsIntentService extends IntentService {
     private static final String TAG = "GeofenceService";
+
+    @Inject EnvironmentDAO environmentDAO;
 
     public GeofenceTransitionsIntentService() {
         super(GeofenceTransitionsIntentService.class.getSimpleName());

@@ -22,10 +22,35 @@ import javax.inject.Inject;
 public class DataService {
     private ApiService api;
     private EnvironmentDAO environmentDAO;
+    private DeviceManager deviceManager;
 
-    public DataService(ApiService api, EnvironmentDAO environmentDAO) {
+    public DataService(ApiService api, EnvironmentDAO environmentDAO, DeviceManager deviceManager) {
         this.api = api;
         this.environmentDAO = environmentDAO;
+        this.deviceManager = deviceManager;
+    }
+
+    /**
+     * Get list of environments from the server, save them locally (overwriting if necessary).
+     *
+     * @param center
+     * @param radius
+     * @return
+     */
+    public List<Environment> getEnvironments(Location center, double radius) {
+        List<Environment> environments = api.getEnvironments(center.getLatitude(), center.getLongitude(), radius);
+
+        for (Environment environment : environments) {
+            Environment temp = environmentDAO.findByExtId(environment.getExtId());
+
+            if (temp != null && environment.getVersion() > temp.getVersion()) {
+                environmentDAO.delete(temp);
+            }
+
+            environmentDAO.createOrUpdate(environment);
+        }
+
+        return environments;
     }
 
     /**
@@ -43,7 +68,7 @@ public class DataService {
 
         for (Environment e : environments.values()) {
             Log log = new Log();
-            log.setDeviceCode("");
+            log.setDeviceCode(deviceManager.getDevice().getCode());
             log.setEnvironmentId(e.getExtId());
             log.setExiting(exiting);
 

@@ -36,7 +36,9 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import butterknife.InjectView;
+import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -161,35 +163,29 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
             device.setFunctionalities(functionalityManager.getSupportedFunctionalities());
             Log.i(TAG, "Device not registered: " + device);
 
-            Observable<Map> registerDeviceObservable = apiService.registerUserDeviceObservable(device);
-
-            subscribe(registerDeviceObservable, new EndlessObserver<Map>() {
+            apiService.registerUserDevice(device, new Callback<Map>() {
                 @Override
-                public void onNext (Map map){
+                public void success(Map map, Response response) {
                     Log.i(TAG, "Device registered");
                     deviceManager.saveDevice();
                 }
 
                 @Override
-                public void onError (Throwable throwable) {
-                    if (throwable instanceof RetrofitError) {
-                        RetrofitError error = (RetrofitError) throwable;
-
-                        if (error.getKind().equals(RetrofitError.Kind.HTTP)) {
-                            if (error.getResponse() != null && error.getResponse().getStatus() == 409) {
-                                Log.i(TAG, "Device already registered");
-                                deviceManager.saveDevice();
-                                return;
-                            }
-
-                            if (error.getResponse() != null && error.getResponse().getStatus() == 401) {
-                                Log.e(TAG, "Unauthorized: "+error.getUrl());
-                                return;
-                            }
+                public void failure(RetrofitError error) {
+                    if (error.getKind().equals(RetrofitError.Kind.HTTP)) {
+                        if (error.getResponse() != null && error.getResponse().getStatus() == 409) {
+                            Log.i(TAG, "Device already registered");
+                            deviceManager.saveDevice();
+                            return;
                         }
 
-                        Log.e(TAG, error.getMessage(), error);
+                        if (error.getResponse() != null && error.getResponse().getStatus() == 401) {
+                            Log.e(TAG, "Unauthorized: "+error.getUrl());
+                            return;
+                        }
                     }
+
+                    Log.e(TAG, error.getMessage(), error);
                 }
             });
         } else {

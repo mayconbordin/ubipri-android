@@ -25,18 +25,11 @@ import rx.Observable;
  * @author mayconbordin
  */
 public interface ApiService {
-/*
-    @POST("/oauth/access_token")
-    AccessToken getAccessToken(@Body Request request);
-
-    @POST("/oauth/access_token")
-    AccessToken refreshAccessToken(@Body Request request);
-
-    @POST("/oauth/access_token")
-    Observable<AccessToken> getAccessTokenObservable(@Body Request request);
-*/
     @GET("/environments")
-    Observable<List<Environment>> getEnvironments(@Query("lat") Double lat, @Query("lon") Double lon, @Query("radius") Double radius);
+    List<Environment> getEnvironments(@Query("lat") Double lat, @Query("lon") Double lon, @Query("radius") Double radius);
+
+    @GET("/environments")
+    Observable<List<Environment>> getEnvironmentsObservable(@Query("lat") Double lat, @Query("lon") Double lon, @Query("radius") Double radius);
 
     @GET("/environments/{id}")
     Observable<Environment> getEnvironment(@Path("id") int id);
@@ -48,7 +41,7 @@ public interface ApiService {
     List<Action> updateUserLocation(@Body Log log);
 
     @POST("/user/devices")
-    Map registerUserDevice(@Body Device device);
+    void registerUserDevice(@Body Device device, Callback<Map> cb);
 
     @POST("/user/devices")
     Observable<Map> registerUserDeviceObservable(@Body Device device);
