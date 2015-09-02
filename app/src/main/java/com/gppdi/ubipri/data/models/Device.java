@@ -2,6 +2,8 @@ package com.gppdi.ubipri.data.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * @author mayconbordin
  */
@@ -11,6 +13,9 @@ public class Device {
 
     @SerializedName("deviceType")
     private String deviceType;
+
+    private List<String> functionalities;
+
     private transient boolean registered = true;
 
     public Device() {
@@ -49,12 +54,21 @@ public class Device {
         this.registered = registered;
     }
 
+    public List<String> getFunctionalities() {
+        return functionalities;
+    }
+
+    public void setFunctionalities(List<String> functionalities) {
+        this.functionalities = functionalities;
+    }
+
     @Override
     public String toString() {
         return "Device{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", deviceType='" + deviceType + '\'' +
+                ", functionalities=" + functionalities +
                 ", registered=" + registered +
                 '}';
     }

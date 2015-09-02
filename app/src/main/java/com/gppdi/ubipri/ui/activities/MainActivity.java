@@ -20,6 +20,7 @@ import com.gppdi.ubipri.api.oauth2.AccessToken;
 import com.gppdi.ubipri.data.DeviceManager;
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.data.models.Device;
+import com.gppdi.ubipri.functionality.FunctionalityManager;
 import com.gppdi.ubipri.ui.fragments.HomeFragment;
 import com.gppdi.ubipri.ui.fragments.SettingsFragment;
 import com.gppdi.ubipri.utils.rx.EndlessObserver;
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
     private Drawer mDrawer;
 
     @Inject DeviceManager deviceManager;
+    @Inject FunctionalityManager functionalityManager;
     @Inject ApiService apiService;
 
     @InjectView(R.id.activity_main_toolbar) Toolbar toolbar;
@@ -155,9 +157,11 @@ public class MainActivity extends BaseActivity implements Drawer.OnDrawerItemCli
 
     public void checkDeviceRegistered() {
         if (!deviceManager.getDevice().isRegistered()) {
-            Log.i(TAG, "Device not registered: " + deviceManager.getDevice().toString());
+            Device device = deviceManager.getDevice();
+            device.setFunctionalities(functionalityManager.getSupportedFunctionalities());
+            Log.i(TAG, "Device not registered: " + device);
 
-            Observable<Map> registerDeviceObservable = apiService.registerUserDeviceObservable(deviceManager.getDevice());
+            Observable<Map> registerDeviceObservable = apiService.registerUserDeviceObservable(device);
 
             subscribe(registerDeviceObservable, new EndlessObserver<Map>() {
                 @Override

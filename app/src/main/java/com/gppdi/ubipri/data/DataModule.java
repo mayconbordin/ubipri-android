@@ -7,6 +7,7 @@ import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.data.dao.EnvironmentDAO;
 import com.gppdi.ubipri.data.dao.EnvironmentTypeDAO;
 import com.gppdi.ubipri.data.dao.LocalizationTypeDAO;
+import com.gppdi.ubipri.functionality.FunctionalityManager;
 
 import javax.inject.Singleton;
 
@@ -36,5 +37,9 @@ public class DataModule {
 
     @Provides @Singleton DeviceManager provideDeviceManager(Application app, SharedPreferences sharedPreferences) {
         return new DeviceManager(app, sharedPreferences);
+    }
+
+    @Provides @Singleton FunctionalityManager provideFunctionalityManager(Application app) {
+        return new FunctionalityManager(app);
     }
 }
