@@ -1,5 +1,6 @@
 package com.gppdi.ubipri.data.dao;
 
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.query.Select;
 
@@ -26,6 +27,23 @@ public class AbstractDAO<T extends Model> {
     public T createOrUpdate(T entity) {
         entity.save();
         return entity;
+    }
+
+    public List<T> createOrUpdate(List<T> entityList) {
+        ActiveAndroid.beginTransaction();
+        try {
+            for (T entity : entityList) {
+                entity.save();
+            }
+            ActiveAndroid.setTransactionSuccessful();
+            return entityList;
+        }
+        catch (Exception e) {
+            return null;
+        }
+        finally {
+            ActiveAndroid.endTransaction();
+        }
     }
 
     public boolean exists(Long id) {
