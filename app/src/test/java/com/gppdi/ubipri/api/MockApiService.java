@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -25,23 +26,13 @@ import rx.Observable;
  */
 public class MockApiService implements ApiService {
     @Override
-    public AccessToken getAccessToken(@Body Request request) {
-        return null;
+    public List<Environment> getEnvironments(@Query("lat") Double lat, @Query("lon") Double lon, @Query("radius") Double radius) {
+        return new ArrayList<Environment>(Fixtures.ENVIRONMENTS.values());
     }
 
     @Override
-    public AccessToken refreshAccessToken(@Body Request request) {
+    public Observable<List<Environment>> getEnvironmentsObservable(@Query("lat") Double lat, @Query("lon") Double lon, @Query("radius") Double radius) {
         return null;
-    }
-
-    @Override
-    public Observable<AccessToken> getAccessTokenObservable(@Body Request request) {
-        return null;
-    }
-
-    @Override
-    public Observable<List<Environment>> getEnvironments(@Query("lat") Double lat, @Query("lon") Double lon, @Query("radius") Double radius) {
-        return Observable.<List<Environment>>from(new ArrayList<Environment>(Fixtures.ENVIRONMENTS.values()));
     }
 
     @Override
@@ -60,8 +51,8 @@ public class MockApiService implements ApiService {
     }
 
     @Override
-    public Map registerUserDevice(@Body Device device) {
-        return null;
+    public void registerUserDevice(@Body Device device, Callback<Map> cb) {
+
     }
 
     @Override

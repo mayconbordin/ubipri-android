@@ -3,6 +3,7 @@ package com.gppdi.ubipri.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
 import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.data.dao.EnvironmentDAO;
 import com.gppdi.ubipri.data.dao.EnvironmentTypeDAO;
@@ -31,8 +32,10 @@ public class DataModule {
         return new LocalizationTypeDAO();
     }
 
-    @Provides @Singleton DataService provideDataService(ApiService apiService, EnvironmentDAO environmentDAO) {
-        return new DataService(apiService, environmentDAO);
+    @Provides @Singleton DataService provideDataService(ApiService apiService, EnvironmentDAO environmentDAO,
+                                                        DeviceManager deviceManager, SharedPreferences sharedPreferences,
+                                                        Gson gson) {
+        return new DataService(apiService, environmentDAO, deviceManager, sharedPreferences, gson);
     }
 
     @Provides @Singleton DeviceManager provideDeviceManager(Application app, SharedPreferences sharedPreferences) {

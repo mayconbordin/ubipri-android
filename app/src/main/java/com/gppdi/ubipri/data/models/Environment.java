@@ -155,7 +155,7 @@ public class Environment extends Model {
 
     public Geofence toGeofence() {
         return new Geofence.Builder()
-                .setRequestId(String.valueOf(getId()))
+                .setRequestId(String.valueOf(getExtId()))
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                 .setCircularRegion(latitude, longitude, (float) operatingRange)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
