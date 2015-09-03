@@ -40,7 +40,7 @@ public class NotificationDAOTest {
     @Test
     public void testNewestByIdSingle() {
         populate();
-        assertTrue(dao.count() == 1);
+        assertTrue(dao.count() == 3);
         Notification n = dao.newestByIdSingle();
         assertTrue(n.getEventId() == 3);
     }
