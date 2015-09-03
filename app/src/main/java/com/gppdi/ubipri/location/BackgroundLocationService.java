@@ -268,9 +268,11 @@ public class BackgroundLocationService extends InjectingService implements Googl
             for (Environment e : environments) {
                 if (mGeofenceList.size() == GEOFENCE_LIMIT) break;
                 mGeofenceList.add(e.toGeofence());
+
+                Log.i(TAG, "Environment: "+e);
             }
 
-            mGeofenceList.add(createMasterGeofence(center, RADIUS_M));
+            //mGeofenceList.add(createMasterGeofence(center, RADIUS_M));
         } catch (RetrofitError e) {
             Log.e(TAG, "Unable to get list of environments.", e);
         }

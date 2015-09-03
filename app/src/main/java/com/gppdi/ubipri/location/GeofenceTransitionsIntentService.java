@@ -20,8 +20,6 @@ import javax.inject.Inject;
 public class GeofenceTransitionsIntentService extends IntentService {
     private static final String TAG = "GeofenceService";
 
-    @Inject EnvironmentDAO environmentDAO;
-
     public GeofenceTransitionsIntentService() {
         super(GeofenceTransitionsIntentService.class.getSimpleName());
     }
@@ -53,9 +51,14 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 // Get triggered geofences
                 List<Geofence> geofences = geoFenceEvent.getTriggeringGeofences();
 
+                Log.i(TAG, "Entered "+geofences);
+
             } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
 
+                // Get triggered geofences
+                List<Geofence> geofences = geoFenceEvent.getTriggeringGeofences();
 
+                Log.i(TAG, "Exited "+geofences);
 
                 // If exited the larger area, trigger new geofence list
 

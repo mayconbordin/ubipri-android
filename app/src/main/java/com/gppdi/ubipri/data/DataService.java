@@ -73,6 +73,8 @@ public class DataService {
     public List<Environment> getEnvironments(Location center, double radius) throws RetrofitError {
         List<Environment> environments = api.getEnvironments(center.getLatitude(), center.getLongitude(), radius);
 
+        android.util.Log.i(TAG, "Found "+environments.size()+" environments within a radius of "+radius+"m");
+
         for (Environment environment : environments) {
             Environment temp = environmentDAO.findByExtId(environment.getExtId());
 
