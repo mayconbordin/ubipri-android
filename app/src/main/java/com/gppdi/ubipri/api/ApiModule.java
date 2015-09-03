@@ -12,6 +12,7 @@ import com.gppdi.ubipri.api.annotations.ClientId;
 import com.gppdi.ubipri.api.annotations.ClientSecret;
 import com.gppdi.ubipri.api.json.EnvironmentDeserializer;
 import com.gppdi.ubipri.data.models.Environment;
+import com.gppdi.ubipri.notification.api.ApiNotificationService;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -34,6 +35,7 @@ import retrofit.converter.GsonConverter;
     library = true
 )
 public final class ApiModule {
+    private static final String NOTIFICATION_API_URL = "http://10.200.116.240:8080/";
     private static final String SIGAI_API_URL = "http://10.200.116.37/api/";
     private static final String UBIPRI_API_URL = "http://10.200.116.37:9000/";
     private static final String CLIENT_ID = "ubipri-android";
@@ -111,4 +113,16 @@ public final class ApiModule {
     /*@Provides @Singleton ApiDatabase provideApiDatabase(ApiService service) {
         return new ApiDatabase(service);
     }*/
+
+    @Provides @Singleton
+    ApiNotificationService provideApiNotificationService(Client client, ApiHeaders headers, Gson gson) {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setClient(client)
+                .setEndpoint(Endpoints.newFixedEndpoint(NOTIFICATION_API_URL))
+                .setConverter(new GsonConverter(gson))
+                .setRequestInterceptor(headers)
+                .build();
+
+        return restAdapter.create(ApiNotificationService.class);
+    }
 }
