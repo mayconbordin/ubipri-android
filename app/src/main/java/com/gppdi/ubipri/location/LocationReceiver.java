@@ -18,10 +18,12 @@ public class LocationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Location location = (Location) intent.getExtras().get(FusedLocationProviderApi.KEY_LOCATION_CHANGED);
 
-        /*if (location != null) {
-            Log.d(TAG, location.toString());
-        } else {
-            Log.d(TAG, "Location is null.");
-        }*/
+        if (location != null) {
+            Log.i(TAG, "Sending update intent to LocationService");
+
+            Intent i = new Intent(context, BackgroundLocationService.class);
+            i.putExtra(BackgroundLocationService.EXTRA_UPDATE_GEOFENCES, location);
+            context.startService(i);
+        }
     }
 }

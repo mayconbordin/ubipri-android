@@ -27,6 +27,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import retrofit.RetrofitError;
+
 /**
  * @author mayconbordin
  */
@@ -68,17 +70,22 @@ public class DataService {
      * @param radius
      * @return
      */
-    public List<Environment> getEnvironments(Location center, double radius) {
+    public List<Environment> getEnvironments(Location center, double radius) throws RetrofitError {
         List<Environment> environments = api.getEnvironments(center.getLatitude(), center.getLongitude(), radius);
 
         for (Environment environment : environments) {
             Environment temp = environmentDAO.findByExtId(environment.getExtId());
 
-            if (temp != null && environment.getVersion() > temp.getVersion()) {
-                environmentDAO.delete(temp);
+            // if environment already exists
+            if (temp != null) {
+                // replace if has a new version
+                if (environment.getVersion() > temp.getVersion()) {
+                    environmentDAO.delete(temp);
+                    environmentDAO.createOrUpdate(environment);
+                }
+            } else {
+                environmentDAO.createOrUpdate(environment);
             }
-
-            environmentDAO.createOrUpdate(environment);
         }
 
         return environments;
@@ -91,7 +98,7 @@ public class DataService {
      * @param location
      * @param geofences
      */
-    public List<Action> updateLocation(Location location, List<Geofence> geofences, boolean exiting) {
+    public List<Action> updateLocation(Location location, List<Geofence> geofences, boolean exiting) throws RetrofitError {
         Map<Integer, Environment> environments = loadEnvironments(geofences);
         Environment narrowestEnvironment = findNarrowestEnvironment(environments);
 

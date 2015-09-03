@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import com.gppdi.ubipri.api.ApiModule;
 import com.gppdi.ubipri.data.DataModule;
 import com.gppdi.ubipri.data.models.Device;
+import com.gppdi.ubipri.location.BackgroundLocationService;
 import com.gppdi.ubipri.ui.UiModule;
 import com.gppdi.ubipri.ui.activities.MainActivity;
 import com.gppdi.ubipri.utils.DeviceUtils;
@@ -22,7 +23,7 @@ import dagger.Provides;
         ApiModule.class, UiModule.class, DataModule.class
     },
     injects  = {
-        UbiPriApplication.class
+        UbiPriApplication.class, BackgroundLocationService.class
     },
     complete = true
 )
