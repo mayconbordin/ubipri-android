@@ -35,7 +35,14 @@ public class NotificationDAOTest {
         assertTrue(dao.count() == 3);
         Notification n = dao.newest().get(0);
         assertTrue(n.getEventId() == 3);
-        assertTrue(n.getState() == Notification.STATE_NEW);
+    }
+
+    @Test
+    public void testNewestByIdSingle() {
+        populate();
+        assertTrue(dao.count() == 1);
+        Notification n = dao.newestByIdSingle();
+        assertTrue(n.getEventId() == 3);
     }
 
     @Test
