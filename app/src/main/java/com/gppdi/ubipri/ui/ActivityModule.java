@@ -7,6 +7,7 @@ import com.gppdi.ubipri.UbiPriModule;
 import com.gppdi.ubipri.ui.activities.AuthenticatorActivity;
 import com.gppdi.ubipri.ui.activities.BaseActivity;
 import com.gppdi.ubipri.ui.activities.MainActivity;
+import com.gppdi.ubipri.ui.fragments.HomeFragment;
 import com.gppdi.ubipri.utils.rx.ActivitySubscriptionManager;
 import com.gppdi.ubipri.utils.rx.SubscriptionManager;
 import com.squareup.otto.Bus;
@@ -16,7 +17,7 @@ import javax.inject.Singleton;
 
 @Module(
     injects = {
-        MainActivity.class, AuthenticatorActivity.class
+        MainActivity.class, AuthenticatorActivity.class, HomeFragment.class
     },
     addsTo = UbiPriModule.class
 )

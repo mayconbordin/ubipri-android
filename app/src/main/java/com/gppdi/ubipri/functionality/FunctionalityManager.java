@@ -50,6 +50,18 @@ public class FunctionalityManager {
         return supported;
     }
 
+    public List<FnListItem> getSupportedFunctionalitiesAsItems() {
+        List<FnListItem> supported = new ArrayList<>();
+
+        for (Map.Entry<String,Fn> e : functionalities.entrySet()) {
+            if (e.getValue().exists()) {
+                supported.add(new FnListItem(e.getKey(), e.getValue()));
+            }
+        }
+
+        return supported;
+    }
+
     public void applyAll(List<Action> actions) {
         for (Action action : actions) {
             Fn fn = get(action.getFunctionality().getName());

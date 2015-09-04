@@ -9,15 +9,24 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.gppdi.ubipri.R;
+import com.gppdi.ubipri.functionality.FunctionalityManager;
+import com.gppdi.ubipri.ui.adapter.FunctionalityAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * @author mayconbordin
  */
-public class HomeFragment extends Fragment {
-    private ListView listFunctionalities;
+public class HomeFragment extends BaseFragment {
+    @InjectView(R.id.listFunctionalities) ListView listFunctionalities;
+    @Inject FunctionalityManager functionalityManager;
+    private FunctionalityAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,14 +37,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        List<String> items = new ArrayList<>();
-        items.add("Camera");
-        items.add("WiFi");
-
-
-        listFunctionalities = (ListView) rootView.findViewById(R.id.listFunctionalities);
-        listFunctionalities.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.functionality_row, R.id.itemName, items));
-
+        ButterKnife.inject(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        adapter = new FunctionalityAdapter(getActivity(), functionalityManager.getSupportedFunctionalitiesAsItems());
+        listFunctionalities.setAdapter(adapter);
     }
 }

@@ -27,6 +27,12 @@ public class FnMobileNetwork extends FnAbstract<Boolean> {
 
     @Override
     public boolean isEnabled() {
+        try {
+            return getMobileDataEnabled();
+        }  catch (Exception e) {
+            Log.e(TAG, "Unable to read Mobile Network state.", e);
+        }
+
         return false;
     }
 
@@ -53,5 +59,23 @@ public class FnMobileNetwork extends FnAbstract<Boolean> {
 
         setMobileDataEnabledMethod.setAccessible(true);
         setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+    }
+
+    private boolean getMobileDataEnabled() throws ReflectiveOperationException {
+        final ConnectivityManager connManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        final Class connManagerClass          = Class.forName(connManager.getClass().getName());
+        final Field iConnectivityManagerField = connManagerClass.getDeclaredField("mService");
+
+        iConnectivityManagerField.setAccessible(true);
+
+        final Object iConnectivityManager       = iConnectivityManagerField.get(connManager);
+        final Class iConnectivityManagerClass   = Class.forName(iConnectivityManager.getClass().getName());
+        final Method getMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("getMobileDataEnabled");
+
+        getMobileDataEnabledMethod.setAccessible(true);
+        Object enabled = getMobileDataEnabledMethod.invoke(iConnectivityManager);
+
+        return (boolean) enabled;
     }
 }
