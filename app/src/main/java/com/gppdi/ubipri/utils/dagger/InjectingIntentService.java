@@ -1,12 +1,11 @@
-package com.gppdi.ubipri.utils;
+package com.gppdi.ubipri.utils.dagger;
 
+import android.app.IntentService;
 import android.app.Service;
 
 import com.gppdi.ubipri.UbiPriApplication;
-import com.gppdi.ubipri.ui.ActivityModule;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import dagger.ObjectGraph;
@@ -14,8 +13,17 @@ import dagger.ObjectGraph;
 /**
  * @author mayconbordin
  */
-public abstract class InjectingService extends Service {
+public abstract class InjectingIntentService extends IntentService {
     private ObjectGraph mObjectGraph;
+
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public InjectingIntentService(String name) {
+        super(name);
+    }
 
     @Override
     public void onCreate() {

@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -23,14 +22,13 @@ import com.google.android.gms.location.LocationServices;
 import com.gppdi.ubipri.api.AuthConstants;
 import com.gppdi.ubipri.data.DataService;
 import com.gppdi.ubipri.data.models.Environment;
-import com.gppdi.ubipri.utils.InjectingService;
+import com.gppdi.ubipri.utils.dagger.InjectingService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.ObjectGraph;
 import retrofit.RetrofitError;
 
 import static com.gppdi.ubipri.location.LocationConstants.*;
@@ -43,9 +41,8 @@ public class BackgroundLocationService extends InjectingService implements Googl
 
     private static final int GEOFENCE_LIMIT = 99;
 
-    public static final String MASTER_GEOFENCE_ID = "MasterGeofence";
     public static final String EXTRA_UPDATE_GEOFENCES = "updateGeofences";
-    public static final double RADIUS_M = 2000; // 2km
+    public static final String EXTRA_START_GEOFENCES  = "startGeofences";
 
     private GoogleApiClient mApiClient;
     private LocationRequest mLocationRequest;
@@ -82,13 +79,22 @@ public class BackgroundLocationService extends InjectingService implements Googl
             accountManager.addOnAccountsUpdatedListener(this, null, true);
         }
 
+        // Update list of geofences for the new location
         if (intent.hasExtra(EXTRA_UPDATE_GEOFENCES)) {
-            //updateGeofenceMonitoring(intent.getParcelableExtra(EXTRA_UPDATE_GEOFENCES));
-
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     updateGeofenceMonitoring(intent.getParcelableExtra(EXTRA_UPDATE_GEOFENCES));
+                }
+            }).start();
+        }
+
+        // start the geofence monitoring, if it hasn't started yet
+        if (intent.hasExtra(EXTRA_START_GEOFENCES) && mIsConnected && hasAccount()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    startGeofenceMonitoring();
                 }
             }).start();
         }
@@ -116,8 +122,7 @@ public class BackgroundLocationService extends InjectingService implements Googl
 
         startLocationUpdates();
 
-        if (hasAccount(accountManager.getAccounts())) {
-            //startGeofenceMonitoring();
+        if (hasAccount()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -229,10 +234,10 @@ public class BackgroundLocationService extends InjectingService implements Googl
         // Start monitoring the geofences
         LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList, mGeofenceRequestIntent);
 
-        Log.i(TAG, "Geofence monitoring started.");
+        Log.i(TAG, "Geofence monitoring started with "+mGeofenceList.size()+" geofences.");
     }
 
-    private void updateGeofenceMonitoring(Parcelable data) {
+    private synchronized void updateGeofenceMonitoring(Parcelable data) {
         Location location = (Location) data;
 
         // stop the monitoring
@@ -245,14 +250,14 @@ public class BackgroundLocationService extends InjectingService implements Googl
         startGeofenceMonitoring();
     }
 
-    private void stopGeofenceMonitoring() {
+    private synchronized void stopGeofenceMonitoring() {
         if (mGeofenceRequestIntent != null) {
             LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
             mGeofenceRequestIntent = null;
         }
     }
 
-    private void updateGeofencesList(Location center) {
+    private synchronized void updateGeofencesList(Location center) {
         Log.i(TAG, "Getting/Updating list of geofences for "+center);
 
         if (center == null) {
@@ -267,12 +272,12 @@ public class BackgroundLocationService extends InjectingService implements Googl
 
             for (Environment e : environments) {
                 if (mGeofenceList.size() == GEOFENCE_LIMIT) break;
-                mGeofenceList.add(e.toGeofence());
+                mGeofenceList.add(createGeofence(e));
 
                 Log.i(TAG, "Environment: "+e);
             }
 
-            //mGeofenceList.add(createMasterGeofence(center, RADIUS_M));
+            mGeofenceList.add(createMasterGeofence(center, RADIUS_M));
         } catch (RetrofitError e) {
             Log.e(TAG, "Unable to get list of environments.", e);
         }
@@ -287,6 +292,29 @@ public class BackgroundLocationService extends InjectingService implements Googl
                 .build();
     }
 
+    public Geofence createGeofence(Environment environment) {
+        return new Geofence.Builder()
+                .setRequestId(String.valueOf(environment.getExtId()))
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setCircularRegion(environment.getLatitude(), environment.getLongitude(), (float) (environment.getOperatingRange() + GEOFENCE_RADIUS_MARGIN))
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .build();
+    }
+
+    /**
+     * Check if the account manager has at least one account for the application, i.e. the application is
+     * registered and the user is signed in.
+     * @return
+     */
+    private boolean hasAccount() {
+        return hasAccount(accountManager.getAccounts());
+    }
+
+    /**
+     * Check among the list of accounts if at least one of them is valid.
+     * @param accounts
+     * @return
+     */
     private boolean hasAccount(Account[] accounts) {
         for (Account account : accounts) {
             if (AuthConstants.ACCOUNT_TYPE.equals(account.type)) {

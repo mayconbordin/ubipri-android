@@ -2,6 +2,7 @@ package com.gppdi.ubipri.functionality;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.common.collect.ImmutableMap;
 import com.gppdi.ubipri.data.models.Action;
@@ -15,6 +16,8 @@ import java.util.Map;
  * @author mayconbordin
  */
 public class FunctionalityManager {
+    private static final String TAG = "FunctionalityManager";
+
     private Map<String, Fn> functionalities = new HashMap<>();
     private Context ctx;
 
@@ -51,6 +54,8 @@ public class FunctionalityManager {
         for (Action action : actions) {
             Fn fn = get(action.getFunctionality().getName());
             Object actionValue = parseAction(action.getAction());
+
+            Log.i(TAG, "Functionality="+action.getFunctionality().getName()+"; Action="+action.getAction());
 
             if (fn.exists()) {
                 fn.toggle(actionValue);

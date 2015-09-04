@@ -1,10 +1,15 @@
 package com.gppdi.ubipri.data.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * @author mayconbordin
  */
 public class Log {
+    @SerializedName("deviceCode")
     private String deviceCode;
+
+    @SerializedName("environmentId")
     private int environmentId;
     private boolean exiting = false;
 

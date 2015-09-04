@@ -12,6 +12,7 @@ import com.gppdi.ubipri.data.models.Action;
 import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.data.models.Environment;
 import com.gppdi.ubipri.data.models.Log;
+import com.gppdi.ubipri.location.LocationConstants;
 import com.gppdi.ubipri.utils.GeoUtils;
 import com.spatial4j.core.shape.Point;
 import com.spatial4j.core.shape.SpatialRelation;
@@ -37,13 +38,16 @@ public class DataService {
     private static final String CURRENT_ENVIRONMENT = "current_environment";
     private static final String CURRENT_ACTIONS     = "current_actions";
 
+    private static final Type actionsListType = new TypeToken<ArrayList<Action>>(){}.getType();
+
     private ApiService api;
     private EnvironmentDAO environmentDAO;
     private DeviceManager deviceManager;
     private SharedPreferences sharedPreferences;
     private Gson gson;
 
-    private Type actionsListType = new TypeToken<ArrayList<Action>>(){}.getType();
+    private Environment currentEnvironment;
+    private List<Action> currentActions;
 
     /**
      * Create a data service.
@@ -101,40 +105,48 @@ public class DataService {
      * @param geofences
      */
     public List<Action> updateLocation(Location location, List<Geofence> geofences, boolean exiting) throws RetrofitError {
-        Map<Integer, Environment> environments = loadEnvironments(geofences);
-        Environment narrowestEnvironment = findNarrowestEnvironment(environments);
+        if (geofences.isEmpty()) {
+            android.util.Log.w(TAG, "Received an empty list of geofences.");
+            return null;
+        }
 
-        List<Action> actions = null;
+        Map<Integer, Environment> environments = loadEnvironments(geofences);
+        currentEnvironment = findNarrowestEnvironment(environments);
+
         Device device = deviceManager.getDevice();
 
-        for (Environment e : environments.values()) {
-            if (!isUserWithin(location, e)) {
-                android.util.Log.i(TAG, location + " not within " + e);
-                continue;
+        try {
+            for (Environment e : environments.values()) {
+                if (LocationConstants.ENVIRONMENT_SHAPE_CHECK && !isUserWithin(location, e)) {
+                    android.util.Log.i(TAG, location + " not within " + e);
+                    continue;
+                }
+
+                android.util.Log.i(TAG, "Check-" + (exiting ? "out" : "in") + " " + e);
+
+                Log log = new Log();
+                log.setDeviceCode(device.getCode());
+                log.setEnvironmentId(e.getExtId());
+                log.setExiting(exiting);
+
+                List<Action> tmpActions = api.updateUserLocation(log);
+
+                // will only apply the actions of the narrowest environment
+                if (e.getExtId() == currentEnvironment.getExtId()) {
+                    currentActions = tmpActions;
+                }
             }
 
-            android.util.Log.i(TAG, "Check-" + (exiting ? "out" : "in") + " " + e);
-
-            Log log = new Log();
-            log.setDeviceCode(device.getCode());
-            log.setEnvironmentId(e.getExtId());
-            log.setExiting(exiting);
-
-            List<Action> tmpActions = api.updateUserLocation(log);
-
-            // will only apply the actions of the narrowest environment
-            if (e.getExtId() == narrowestEnvironment.getExtId()) {
-                actions = tmpActions;
+            if (!exiting) {
+                saveCurrentEnvironment(currentEnvironment, currentActions);
+            } else {
+                clearCurrentEnvironment();
             }
+        } catch (RetrofitError e) {
+            android.util.Log.e(TAG, "Unable to check-in/out of environment(s).", e);
         }
 
-        if (!exiting) {
-            saveCurrentEnvironment(narrowestEnvironment, actions);
-        } else {
-            clearCurrentEnvironment();
-        }
-
-        return actions;
+        return currentActions;
     }
 
     /**
@@ -142,13 +154,17 @@ public class DataService {
      * @return
      */
     public Environment getCurrentEnvironment() {
-        Integer id = sharedPreferences.getInt(CURRENT_ENVIRONMENT, -1);
+        if (currentEnvironment == null) {
+            Integer id = sharedPreferences.getInt(CURRENT_ENVIRONMENT, -1);
 
-        if (id == -1) {
-            return null;
+            if (id == -1) {
+                return null;
+            }
+
+            currentEnvironment = environmentDAO.findByExtId(id);
         }
 
-        return environmentDAO.findByExtId(id);
+        return currentEnvironment;
     }
 
     /**
@@ -156,13 +172,17 @@ public class DataService {
      * @return
      */
     public List<Action> getCurrentActions() {
-        String json = sharedPreferences.getString(CURRENT_ACTIONS, "");
+        if (currentActions == null) {
+            String json = sharedPreferences.getString(CURRENT_ACTIONS, "");
 
-        if (json.length() == 0) {
-            return null;
+            if (json.length() == 0) {
+                return null;
+            }
+
+            currentActions = gson.fromJson(json, actionsListType);
         }
 
-        return gson.fromJson(json, actionsListType);
+        return currentActions;
     }
 
     /**

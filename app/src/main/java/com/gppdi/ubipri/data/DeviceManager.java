@@ -31,6 +31,8 @@ public class DeviceManager {
             if (deviceCode == null) {
                 device.setCode(DeviceUtils.getDeviceId(application));
                 device.setRegistered(false);
+            } else {
+                device.setCode(deviceCode);
             }
 
             device.setName(DeviceUtils.getDeviceName());

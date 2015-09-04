@@ -153,15 +153,6 @@ public class Environment extends Model {
         this.level = level;
     }
 
-    public Geofence toGeofence() {
-        return new Geofence.Builder()
-                .setRequestId(String.valueOf(getExtId()))
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                .setCircularRegion(latitude, longitude, (float) operatingRange)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .build();
-    }
-
     @Override
     public String toString() {
         return "Environment{" +

@@ -107,4 +107,14 @@ public class Action {
     public void setFunctionality(Functionality functionality) {
         this.functionality = functionality;
     }
+
+    @Override
+    public String toString() {
+        return "Action{" +
+                "extId=" + extId +
+                ", action='" + action + '\'' +
+                ", functionality=" + functionality +
+                ", accessLevel=" + accessLevel +
+                '}';
+    }
 }
