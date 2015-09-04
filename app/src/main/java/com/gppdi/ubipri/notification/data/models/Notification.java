@@ -40,7 +40,10 @@ public class Notification extends Model {
 
     public Notification() {
         super();
+        setEventId(0);
+        setTimestamp(0);
         setFormat(FORMAT_NONE);
+        setMessage(null);
         setState(STATE_NEW);
     }
 
