@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="com.gppdi.ubipri.notification.ui.fragments.NotificationFragment"
     >
 
     <RelativeLayout
@@ -14,31 +16,33 @@
         >
 
         <ImageView
-            android:id="@+id/imageViewNotification"
+            android:id="@+id/notificationFormatImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_sms_black_24dp" />
+            android:src="@drawable/ic_sms_black_24dp"
+            android:tint="@android:color/secondary_text_light"
+            />
 
         <TextView
-            android:id="@+id/textViewNotificationFormat"
+            android:id="@+id/notificationFormat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/imageViewNotification"
-            android:layout_toEndOf="@id/imageViewNotification"
+            android:layout_toRightOf="@id/notificationFormatImage"
+            android:layout_toEndOf="@id/notificationFormatImage"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="SMS Message"
             android:textColor="@android:color/secondary_text_light"
             />
 
         <TextView
-            android:id="@+id/textViewNotificationTime"
+            android:id="@+id/notificationTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewNotificationFormat"
-            android:layout_toRightOf="@+id/imageViewNotification"
-            android:layout_toEndOf="@+id/imageViewNotification"
+            android:layout_below="@+id/notificationFormat"
+            android:layout_toRightOf="@+id/notificationFormatImage"
+            android:layout_toEndOf="@+id/notificationFormatImage"
             android:text="13h00  Jan 1, 2015"
             android:textColor="@android:color/tertiary_text_light"
             />
@@ -46,13 +50,13 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/notificationMessage"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:padding="16dp"
         android:elevation="4dp"
-        android:layout_below="@id/notificationHeader"
         android:background="@android:color/white"
         />
 
-</RelativeLayout>
+</LinearLayout>

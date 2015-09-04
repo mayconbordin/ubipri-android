@@ -47,9 +47,9 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
             view = inflater.inflate(resource, viewGroup, false);
 
             // Remember the layout views for faster access
-            viewHolder.icon = (ImageView) view.findViewById(R.id.imgNotificationType);
-            viewHolder.message = (TextView) view.findViewById(R.id.txtNotificationsMessage);
-            viewHolder.time = (TextView) view.findViewById(R.id.txtNotificationsTime);
+            viewHolder.icon = (ImageView) view.findViewById(R.id.notificationsFormatImage);
+            viewHolder.message = (TextView) view.findViewById(R.id.notificationsMessage);
+            viewHolder.time = (TextView) view.findViewById(R.id.notificationsTime);
 
             view.setTag(viewHolder);
         } else {

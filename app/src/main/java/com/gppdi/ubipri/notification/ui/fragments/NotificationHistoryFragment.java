@@ -30,7 +30,6 @@ public class NotificationHistoryFragment extends Fragment {
 
     @Inject ApiNotificationService apiNotificationService;
 
-    private ListView listView;
     private TextView updateTextView;
 
     private List<Notification> notificationList;
@@ -45,8 +44,8 @@ public class NotificationHistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notification_hist, container, false);
-        listView = (ListView) rootView.findViewById(R.id.listNotifications);
-        updateTextView = (TextView) rootView.findViewById(R.id.textViewNotificationsUpdate);
+        ListView listView = (ListView) rootView.findViewById(R.id.notificationsList);
+        updateTextView = (TextView) rootView.findViewById(R.id.notificationsUpdateMessage);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
