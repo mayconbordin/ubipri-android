@@ -71,7 +71,10 @@ public class NotificationHistoryFragment extends Fragment {
         updateTextView.setVisibility(View.VISIBLE);
 
         // Get the latest notification stored in the local database
-        Notification lastNotification = notificationDAO.newestByIdSingle();
+        Notification lastNotification = notificationDAO.newestSingle();
+        if(lastNotification == null) {
+            lastNotification = new Notification();
+        }
 
         // Get the new messages from the webservice
         apiNotificationService.historyUpdate(lastNotification, new Callback<List<Notification>>() {
