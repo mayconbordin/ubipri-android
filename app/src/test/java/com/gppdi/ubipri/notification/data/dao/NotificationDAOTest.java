@@ -38,6 +38,14 @@ public class NotificationDAOTest {
     }
 
     @Test
+    public void testNewestSingle() {
+        populate();
+        assertTrue(dao.count() == 3);
+        Notification n = dao.newestSingle();
+        assertTrue(n.getEventId() == 3);
+    }
+
+    @Test
     public void testNewestByIdSingle() {
         populate();
         assertTrue(dao.count() == 3);

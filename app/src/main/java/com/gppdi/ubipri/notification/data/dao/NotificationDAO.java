@@ -19,6 +19,13 @@ public class NotificationDAO extends AbstractDAO<Notification> {
                 .execute();
     }
 
+    public Notification newestSingle() {
+        return new Select()
+                .from(Notification.class)
+                .orderBy("timestamp DESC")
+                .executeSingle();
+    }
+
     public Notification newestByIdSingle() {
         return new Select()
                 .from(Notification.class)
