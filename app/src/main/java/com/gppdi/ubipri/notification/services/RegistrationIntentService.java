@@ -31,24 +31,22 @@ public class RegistrationIntentService extends IntentService {
     @Inject
     ApiNotificationService apiNotificationService;
 
-    private final Context context;
-    private final SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     public RegistrationIntentService() {
         super(TAG);
-        context = this;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         try {
             // In the (unlikely) event that multiple refresh operations occur simultaneously,
             // ensure that they are processed sequentially.
             synchronized (TAG) {
                 // Initially this call goes out to the network to retrieve the token,
                 // subsequent calls are local.
-                InstanceID instanceID = InstanceID.getInstance(context);
+                InstanceID instanceID = InstanceID.getInstance(this);
                 String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                         GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
                 Log.i(TAG, "GCM Registration Token: " + token);
