@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.notification.api.ApiNotificationService;
@@ -30,6 +31,7 @@ public class NotificationHistoryFragment extends Fragment {
     @Inject ApiNotificationService apiNotificationService;
 
     private ListView listView;
+    private TextView updateTextView;
 
     private List<Notification> notificationList;
     private NotificationDAO notificationDAO;
@@ -44,6 +46,7 @@ public class NotificationHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notification_hist, container, false);
         listView = (ListView) rootView.findViewById(R.id.listNotifications);
+        updateTextView = (TextView) rootView.findViewById(R.id.textViewNotificationsUpdate);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -65,6 +68,9 @@ public class NotificationHistoryFragment extends Fragment {
     }
 
     private void updateHistory() {
+        updateTextView.setText(R.string.notification_update_in_progress);
+        updateTextView.setVisibility(View.VISIBLE);
+
         // Get the latest notification stored in the local database
         Notification lastNotification = notificationDAO.newestByIdSingle();
 
@@ -77,11 +83,13 @@ public class NotificationHistoryFragment extends Fragment {
                     notificationList = notificationDAO.newest();
                     notificationAdapter.notifyDataSetChanged();
                 }
+                updateTextView.setVisibility(View.GONE);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.e(TAG, "Error updating the message history");
+                updateTextView.setText(R.string.notification_update_error);
             }
         });
     }

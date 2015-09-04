@@ -7,13 +7,24 @@
     >
 
     <TextView
-        android:id="@+id/textView3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:elevation="8dp"
         android:text="@string/action_notifications"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/tertiary_text_light"
+        />
+
+    <TextView
+        android:id="@+id/textViewNotificationsUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="8dp"
+        android:text="@string/notification_update_in_progress"
+        android:textColor="@android:color/tertiary_text_light"
+        android:textStyle="italic"
         />
 
     <ListView
