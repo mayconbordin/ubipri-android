@@ -21,4 +21,7 @@ public interface LocationConstants {
 
     // Margin (in meters) appended to the radius of the geofence
     double GEOFENCE_RADIUS_MARGIN = 150; // append to the geofence radius
+
+    String EVENT_ENVIRONMENT_CHANGED = "EnvironmentChangedEvent";
+    String ENVIRONMENT_NAME = "environmentName";
 }

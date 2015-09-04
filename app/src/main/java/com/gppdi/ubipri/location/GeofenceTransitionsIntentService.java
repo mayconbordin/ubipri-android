@@ -3,6 +3,7 @@ package com.gppdi.ubipri.location;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
@@ -17,6 +18,8 @@ import com.gppdi.ubipri.utils.dagger.InjectingIntentService;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import static com.gppdi.ubipri.location.LocationConstants.*;
 
 /**
  * Listens for geofence transition changes.
@@ -62,8 +65,10 @@ public class GeofenceTransitionsIntentService extends InjectingIntentService {
             Log.i(TAG, "Applying actions...");
             functionalityManager.applyAll(actions);
 
-            // create intent to apply actions
-            // and show them on screen
+            // create intent to update functionalities on screen
+            Intent envChanged = new Intent(EVENT_ENVIRONMENT_CHANGED);
+            envChanged.putExtra(ENVIRONMENT_NAME, dataService.getCurrentEnvironment().getName());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(envChanged);
         }
     }
 

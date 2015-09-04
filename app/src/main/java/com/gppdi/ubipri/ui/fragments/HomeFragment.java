@@ -1,19 +1,22 @@
 package com.gppdi.ubipri.ui.fragments;
 
-import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.functionality.FunctionalityManager;
+import static com.gppdi.ubipri.location.LocationConstants.*;
 import com.gppdi.ubipri.ui.adapter.FunctionalityAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -24,9 +27,20 @@ import butterknife.InjectView;
  * @author mayconbordin
  */
 public class HomeFragment extends BaseFragment {
+    private static final String TAG = "HomeFragment";
+
     @InjectView(R.id.listFunctionalities) ListView listFunctionalities;
+    @InjectView(R.id.txtEnvironmentName) TextView environmentName;
+
     @Inject FunctionalityManager functionalityManager;
     private FunctionalityAdapter adapter;
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onEnvironmentChange(intent);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,5 +61,19 @@ public class HomeFragment extends BaseFragment {
 
         adapter = new FunctionalityAdapter(getActivity(), functionalityManager.getSupportedFunctionalitiesAsItems());
         listFunctionalities.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(EVENT_ENVIRONMENT_CHANGED));
+    }
+
+    protected void onEnvironmentChange(Intent intent) {
+        Log.i(TAG, "Updating list of functionalities.");
+        adapter.notifyDataSetChanged();
+
+        environmentName.setText(intent.getStringExtra(ENVIRONMENT_NAME));
     }
 }
