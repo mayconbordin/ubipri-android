@@ -1,8 +1,11 @@
 package com.gppdi.ubipri.notification.services;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.android.gms.iid.InstanceIDListenerService;
+import com.gppdi.ubipri.notification.preferences.NotificationPreferences;
 
 
 public class NotificationInstanceIDListenerService extends InstanceIDListenerService {
@@ -17,6 +20,8 @@ public class NotificationInstanceIDListenerService extends InstanceIDListenerSer
     @Override
     public void onTokenRefresh() {
         // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.edit().putBoolean(NotificationPreferences.SENT_TOKEN_TO_SERVER, false).apply();
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
     }

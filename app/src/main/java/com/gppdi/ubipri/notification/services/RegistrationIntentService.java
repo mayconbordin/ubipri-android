@@ -80,19 +80,21 @@ public class RegistrationIntentService extends IntentService {
         // You should store a boolean that indicates whether the generated token has been
         // sent to your server. If the boolean is false, send the token to your server,
         // otherwise your server should have already received the token.
-        apiNotificationService.registerGcmToken(token, new Callback() {
-            @Override
-            public void success(Object o, Response response) {
-                sharedPreferences.edit().putBoolean(NotificationPreferences.SENT_TOKEN_TO_SERVER, true).apply();
-                Log.i(TAG, "GCM token successfully registered in the notification server");
-            }
+        if(!sharedPreferences.getBoolean(NotificationPreferences.SENT_TOKEN_TO_SERVER, false)) {
+            apiNotificationService.registerGcmToken(token, new Callback() {
+                @Override
+                public void success(Object o, Response response) {
+                    sharedPreferences.edit().putBoolean(NotificationPreferences.SENT_TOKEN_TO_SERVER, true).apply();
+                    Log.i(TAG, "GCM token successfully registered in the notification server");
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                sharedPreferences.edit().putBoolean(NotificationPreferences.SENT_TOKEN_TO_SERVER, false).apply();
-                Log.e(TAG, "Failed to register the GCM token in the notification server");
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                    sharedPreferences.edit().putBoolean(NotificationPreferences.SENT_TOKEN_TO_SERVER, false).apply();
+                    Log.e(TAG, "Failed to register the GCM token in the notification server");
+                }
+            });
+        }
     }
 
     /**
