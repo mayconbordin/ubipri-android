@@ -12,6 +12,7 @@ import com.gppdi.ubipri.api.annotations.ClientId;
 import com.gppdi.ubipri.api.annotations.ClientSecret;
 import com.gppdi.ubipri.api.json.EnvironmentDeserializer;
 import com.gppdi.ubipri.data.models.Environment;
+import com.gppdi.ubipri.location.GeofenceTransitionsIntentServiceTest;
 import com.gppdi.ubipri.ui.activities.MainActivityTest;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.OkHttpClient;
@@ -31,7 +32,7 @@ import retrofit.converter.GsonConverter;
 import static org.mockito.Mockito.mock;
 
 @Module(
-    injects = {AccountAuthenticator.class, MainActivityTest.class},
+    injects = {AccountAuthenticator.class, MainActivityTest.class, GeofenceTransitionsIntentServiceTest.class},
     complete = false,
     library = true
 )

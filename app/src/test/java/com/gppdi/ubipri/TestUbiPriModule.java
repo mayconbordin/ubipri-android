@@ -5,9 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.gppdi.ubipri.api.ApiModule;
 import com.gppdi.ubipri.api.TestApiModule;
-import com.gppdi.ubipri.data.DataModule;
+import com.gppdi.ubipri.data.TestDataModule;
 import com.gppdi.ubipri.location.BackgroundLocationService;
 import com.gppdi.ubipri.location.GeofenceTransitionsIntentService;
 import com.gppdi.ubipri.ui.UiModule;
@@ -19,7 +18,7 @@ import dagger.Provides;
 
 @Module(
     includes = {
-        TestApiModule.class, UiModule.class, DataModule.class
+        TestApiModule.class, UiModule.class, TestDataModule.class
     },
     injects  = {
         TestUbiPriApplication.class, BackgroundLocationService.class, GeofenceTransitionsIntentService.class

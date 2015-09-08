@@ -1,6 +1,9 @@
 package com.gppdi.ubipri.ui.activities;
 
+import android.widget.TextView;
+
 import com.gppdi.ubipri.BuildConfig;
+import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.TestUbiPriApplication;
 import com.gppdi.ubipri.api.ApiService;
 import com.gppdi.ubipri.data.DeviceManager;
@@ -54,6 +57,12 @@ public class MainActivityTest {
         activity = Robolectric.buildActivity(MainActivity.class).create().get();
 
         ((TestUbiPriApplication)activity.getApplication()).inject(this);
+    }
+
+    @Test
+    public void testCheckCurrentFragment() {
+        TextView txtEnvName = (TextView) activity.findViewById(R.id.txtEnvironmentName);
+        assertThat(txtEnvName).isNotNull();
     }
 
     @Test
