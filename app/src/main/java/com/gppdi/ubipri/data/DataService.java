@@ -204,6 +204,9 @@ public class DataService {
      * Clear the current environment variables.
      */
     private void clearCurrentEnvironment() {
+        currentEnvironment = null;
+        currentActions = null;
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(CURRENT_ENVIRONMENT, -1);
         editor.putString(CURRENT_ACTIONS, "");

@@ -63,7 +63,7 @@ public class GeofenceTransitionsIntentService extends InjectingIntentService {
 
         Log.i(TAG, "Actions: "+actions);
 
-        if (actions != null) {
+        if (actions != null && !exiting) {
             Log.i(TAG, "Applying actions...");
             functionalityManager.applyAll(actions);
 

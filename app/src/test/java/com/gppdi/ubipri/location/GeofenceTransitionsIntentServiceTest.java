@@ -16,6 +16,7 @@ import com.gppdi.ubipri.BuildConfig;
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.TestUbiPriApplication;
 import com.gppdi.ubipri.api.ApiService;
+import com.gppdi.ubipri.data.DataService;
 import com.gppdi.ubipri.data.DeviceManager;
 import com.gppdi.ubipri.data.Fixtures;
 import com.gppdi.ubipri.data.dao.EnvironmentDAO;
@@ -57,6 +58,7 @@ public class GeofenceTransitionsIntentServiceTest {
 
     @Inject ApiService apiService;
     @Inject EnvironmentDAO environmentDAO;
+    @Inject DataService dataService;
 
     @BeforeClass
     public static void setUpClass() {
@@ -104,6 +106,37 @@ public class GeofenceTransitionsIntentServiceTest {
         // Api service should be called four times
         verify(apiService, times(4)).updateUserLocation(any(Log.class));
         verify(environmentDAO, times(4)).findByExtId(anyInt());
+
+        assertThat(dataService.getCurrentEnvironment().getExtId()).isEqualTo(5);
+    }
+
+    @Test
+    public void testOnHandleIntentExiting() {
+        // Set result of mock methods
+        when(apiService.updateUserLocation(any(Log.class))).thenReturn(Fixtures.getActions());
+        when(environmentDAO.findByExtId(anyInt())).thenAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                Integer id = (Integer) invocation.getArguments()[0];
+                return Fixtures.getEnvironment(id);
+            }
+        });
+
+        // Set results for geofencing event
+        GeofencingEvent event = mock(GeofencingEvent.class);
+        when(event.hasError()).thenReturn(false);
+        when(event.getGeofenceTransition()).thenReturn(Geofence.GEOFENCE_TRANSITION_EXIT);
+        when(event.getTriggeringLocation()).thenReturn(Fixtures.LOCATION_LAB205);
+        when(event.getTriggeringGeofences()).thenReturn(Fixtures.getEnvironmentsAsGeofencesFiltered(ImmutableList.of(4)));
+
+        // Call method to be tested
+        intentService.onHandleIntent(event);
+
+        // Api service should be called four times
+        verify(apiService, times(4)).updateUserLocation(any(Log.class));
+        verify(environmentDAO, times(4)).findByExtId(anyInt());
+
+        assertThat(dataService.getCurrentEnvironment()).isNull();
     }
 
 }

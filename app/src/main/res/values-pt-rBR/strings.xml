@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">UbiPri</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="action_websearch">Web search</string>
+
+    <string name="action_home">Início</string>
+    <string name="action_environments">Ambientes</string>
+    <string name="action_settings">Configurações</string>
+
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="title_activity_environments">Ambientes</string>
+
+
+
+    <!-- AuthenticatorActivity -->
+    <skip />
+    <string name="login_activity_accounttype_label">Conta</string>
+    <!-- Label above username EditText -->
+    <string name="login_activity_username_label">Usuário</string>
+    <!-- Label above password EditText -->
+    <string name="login_activity_password_label">Senha</string>
+    <!-- Button to sign in after entering username and password -->
+    <string name="login_activity_ok_button">Entrar</string>
+</resources>
