@@ -41,6 +41,12 @@ public class DeviceManager {
         return device;
     }
 
+    public boolean isDeviceRegistered() {
+        String deviceCode = sharedPreferences.getString(DEVICE_CODE, null);
+
+        return (deviceCode != null);
+    }
+
     public void saveDevice() {
         device.setRegistered(true);
         sharedPreferences.edit().putString(DEVICE_CODE, device.getCode()).commit();

@@ -33,19 +33,26 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginRight="25dp" />
 
             <TextView
                 android:id="@+id/txtEnvironmentName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="SENAI"
+                android:text="Faculdade de Tecnologia Porto Alegre - FATEC"
                 android:enabled="true"
-                android:textSize="18dp"
-                android:layout_centerVertical="true"
+                android:textSize="16dp"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/txtEnvironmentLabel"
+                android:layout_toEndOf="@+id/txtEnvironmentLabel"
+                android:textAlignment="center"
+                android:gravity="center"
+                />
 
         </RelativeLayout>
 

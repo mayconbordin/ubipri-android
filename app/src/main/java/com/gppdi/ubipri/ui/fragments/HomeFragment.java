@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.functionality.FunctionalityManager;
 import static com.gppdi.ubipri.location.LocationConstants.*;
+
+import com.gppdi.ubipri.ui.activities.BaseActivity;
 import com.gppdi.ubipri.ui.adapter.FunctionalityAdapter;
 
 import javax.inject.Inject;
@@ -43,11 +45,6 @@ public class HomeFragment extends BaseFragment {
     };
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -67,6 +64,7 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        // register listener for changes on the environment
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(EVENT_ENVIRONMENT_CHANGED));
     }
 

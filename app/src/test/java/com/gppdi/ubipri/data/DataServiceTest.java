@@ -20,6 +20,7 @@ import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.data.models.Environment;
 import com.gppdi.ubipri.data.models.Log;
 
+import static com.gppdi.ubipri.location.LocationConstants.GEOFENCE_RADIUS_MARGIN;
 import static org.assertj.core.api.Assertions.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -116,7 +117,12 @@ public class DataServiceTest {
         // create geofences for these environments
         List<Geofence> geofences = new ArrayList<>();
         for (Environment e : environmentList) {
-            geofences.add(e.toGeofence());
+            geofences.add(new Geofence.Builder()
+                    .setRequestId(String.valueOf(e.getExtId()))
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .setCircularRegion(e.getLatitude(), e.getLongitude(), (float) e.getOperatingRange())
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .build());
         }
 
         // return the environment by ext id

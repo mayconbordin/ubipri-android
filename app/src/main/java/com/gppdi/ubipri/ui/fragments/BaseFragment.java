@@ -19,6 +19,8 @@ public class BaseFragment extends Fragment {
 
         // Inject extras
         Dart.inject(this);
+
+        BaseActivity.get(this).inject(this);
     }
 
     @Override
