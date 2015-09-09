@@ -13,6 +13,7 @@ import com.gppdi.ubipri.api.annotations.ClientSecret;
 import com.gppdi.ubipri.api.json.EnvironmentDeserializer;
 import com.gppdi.ubipri.data.models.Environment;
 import com.gppdi.ubipri.notification.api.ApiNotificationService;
+import com.gppdi.ubipri.notification.services.RegistrationIntentService;
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -30,7 +31,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(
-    injects = {AccountAuthenticator.class},
+    injects = {AccountAuthenticator.class, RegistrationIntentService.class},
     complete = false,
     library = true
 )
