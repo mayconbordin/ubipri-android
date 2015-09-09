@@ -16,13 +16,11 @@
 
     <string name="notification_update_in_progress">Updating…</string>
     <string name="notification_update_error">Unable to update. Try again later.</string>
-    <string-array name="notification_type">
-        <item>Message</item>
-        <item>Notification</item>
-        <item>SMS Message</item>
-        <item>E-mail</item>
-        <item>Message</item>
-    </string-array>
+    <string name="notification_type_none">Message</string>
+    <string name="notification_type_gcm">Notification</string>
+    <string name="notification_type_sms">SMS Message</string>
+    <string name="notification_type_email">E-mail</string>
+    <string name="notification_type_history">Message</string>
 
 
     <!-- AuthenticatorActivity -->

@@ -12,13 +12,12 @@ import android.widget.TextView;
 
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.notification.data.models.Notification;
+import com.gppdi.ubipri.notification.utils.NotificationUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NotificationAdapter extends ArrayAdapter<Notification> {
 
@@ -56,12 +55,6 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        // Fill and configure view-items according to the notification
-        HashMap<Integer,Integer> icons = new HashMap<>();
-        icons.put(Notification.FORMAT_GCM, R.drawable.ic_notifications_black_24dp);
-        icons.put(Notification.FORMAT_SMS, R.drawable.ic_sms_black_24dp);
-        icons.put(Notification.FORMAT_EMAIL, R.drawable.ic_email_black_24dp);
-
         switch (notification.getState()) {
             case Notification.STATE_NEW:
                 viewHolder.message.setTypeface(null, Typeface.BOLD);
@@ -71,7 +64,7 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                 break;
         }
 
-        viewHolder.icon.setImageResource(icons.get(notification.getFormat()));
+        viewHolder.icon.setImageResource(NotificationUtil.getNotificationIcon(notification));
         viewHolder.message.setText(notification.getMessage());
         viewHolder.time.setText(formatTime(notification.getTimestamp()));
 

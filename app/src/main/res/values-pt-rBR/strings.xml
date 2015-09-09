@@ -8,11 +8,19 @@
     <string name="action_home">Início</string>
     <string name="action_environments">Ambientes</string>
     <string name="action_settings">Configurações</string>
+    <string name="action_notifications">Notificações</string>
 
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="title_activity_maps">Mapa</string>
     <string name="title_activity_environments">Ambientes</string>
 
+    <string name="notification_update_in_progress">Atualizando…</string>
+    <string name="notification_update_error">Não foi possível atualizar. Tente mais tarde.</string>
+    <string name="notification_type_none">Mensagem</string>
+    <string name="notification_type_gcm">Notificação</string>
+    <string name="notification_type_sms">Mensagem SMS</string>
+    <string name="notification_type_email">E-mail</string>
+    <string name="notification_type_history">Mensagem</string>
 
 
     <!-- AuthenticatorActivity -->

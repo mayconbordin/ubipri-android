@@ -9,10 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gppdi.ubipri.R;
-import com.gppdi.ubipri.notification.data.models.Notification;
+import com.gppdi.ubipri.notification.utils.NotificationUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,13 +69,8 @@ public class NotificationFragment extends Fragment {
         TextView timeTextView = (TextView) rootView.findViewById(R.id.notificationTime);
         TextView messageTextView = (TextView) rootView.findViewById(R.id.notificationMessage);
 
-        HashMap<Integer,Integer> icons = new HashMap<>();
-        icons.put(Notification.FORMAT_GCM, R.drawable.ic_notifications_black_24dp);
-        icons.put(Notification.FORMAT_SMS, R.drawable.ic_sms_black_24dp);
-        icons.put(Notification.FORMAT_EMAIL, R.drawable.ic_email_black_24dp);
-
-        formatImageView.setImageResource(icons.get(format));
-        titleTextView.setText(getResources().getStringArray(R.array.notification_type)[format]);
+        formatImageView.setImageResource(NotificationUtil.getNotificationIcon(format));
+        titleTextView.setText(NotificationUtil.getNotificationFormatString(format));
         timeTextView.setText(SimpleDateFormat.getDateInstance().format(timestamp));
         messageTextView.setText(message);
 
