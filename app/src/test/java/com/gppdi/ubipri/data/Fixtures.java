@@ -39,6 +39,7 @@ public class Fixtures {
 
     public static final Location LOCATION_POA = createLocation(-30.072296142578118, -51.17763595581054);
     public static final Location LOCATION_LAB205 = createLocation(-30.06858398802797, -51.12058103084564);
+    public static final Location LOCATION_INF72 = createLocation(-30.06849765777585, -51.12047672271728);
 
     private static Gson gson;
 
@@ -69,6 +70,16 @@ public class Fixtures {
             if (e.getExtId() == id) {
                 return e;
             }
+        }
+
+        return null;
+    }
+
+    public static Geofence getEnvironmentAsGeofence(int id) {
+        Environment e = getEnvironment(id);
+
+        if (e != null) {
+            return createGeofence(e);
         }
 
         return null;

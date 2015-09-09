@@ -2,6 +2,7 @@ package com.gppdi.ubipri.data;
 
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.gson.Gson;
@@ -11,7 +12,6 @@ import com.gppdi.ubipri.data.dao.EnvironmentDAO;
 import com.gppdi.ubipri.data.models.Action;
 import com.gppdi.ubipri.data.models.Device;
 import com.gppdi.ubipri.data.models.Environment;
-import com.gppdi.ubipri.data.models.Log;
 import com.gppdi.ubipri.location.LocationConstants;
 import com.gppdi.ubipri.utils.GeoUtils;
 import com.spatial4j.core.shape.Point;
@@ -77,7 +77,7 @@ public class DataService {
     public List<Environment> getEnvironments(Location center, double radius) throws RetrofitError {
         List<Environment> environments = api.getEnvironments(center.getLatitude(), center.getLongitude(), radius);
 
-        android.util.Log.i(TAG, "Found "+environments.size()+" environments within a radius of "+radius+"m");
+        Log.i(TAG, "Found " + environments.size() + " environments within a radius of " + radius + "m");
 
         for (Environment environment : environments) {
             Environment temp = environmentDAO.findByExtId(environment.getExtId());
@@ -106,44 +106,44 @@ public class DataService {
      */
     public List<Action> updateLocation(Location location, List<Geofence> geofences, boolean exiting) throws RetrofitError {
         if (geofences.isEmpty()) {
-            android.util.Log.w(TAG, "Received an empty list of geofences.");
+            Log.w(TAG, "Received an empty list of geofences.");
             return null;
         }
 
-        Map<Integer, Environment> environments = loadEnvironments(geofences);
-        currentEnvironment = findNarrowestEnvironment(environments);
-
         Device device = deviceManager.getDevice();
+        Map<Integer, Environment> environments = loadEnvironments(geofences);
+        currentEnvironment = findCurrentEnvironment(location, environments, exiting);
 
-        try {
-            for (Environment e : environments.values()) {
-                if (LocationConstants.ENVIRONMENT_SHAPE_CHECK && !isUserWithin(location, e)) {
-                    android.util.Log.i(TAG, location + " not within " + e);
-                    continue;
-                }
+        Log.i(TAG, "Current environment: " + currentEnvironment);
 
-                android.util.Log.i(TAG, "Check-" + (exiting ? "out" : "in") + " " + e);
-
-                Log log = new Log();
-                log.setDeviceCode(device.getCode());
-                log.setEnvironmentId(e.getExtId());
-                log.setExiting(exiting);
-
-                List<Action> tmpActions = api.updateUserLocation(log);
-
-                // will only apply the actions of the narrowest environment
-                if (e.getExtId() == currentEnvironment.getExtId()) {
-                    currentActions = tmpActions;
-                }
+        for (Environment e : environments.values()) {
+            // will only check this if the shape check is enabled and is entering the environment
+            if (LocationConstants.ENVIRONMENT_SHAPE_CHECK && !exiting && !isUserWithin(location, e)) {
+                Log.i(TAG, location + " not within " + e);
+                continue;
             }
 
-            if (!exiting) {
-                saveCurrentEnvironment(currentEnvironment, currentActions);
-            } else {
-                clearCurrentEnvironment();
+            List<Action> actions = sendLog(e, device, exiting);
+
+            // will only apply the actions for the narrowest environment
+            // it only applies for when user is entering the environment
+            if (!exiting && e.getExtId() == currentEnvironment.getExtId()) {
+                currentActions = actions;
             }
-        } catch (RetrofitError e) {
-            android.util.Log.e(TAG, "Unable to check-in/out of environment(s).", e);
+        }
+
+        // if entering, just save current environment and its actions
+        if (!exiting) {
+            saveCurrentEnvironment(currentEnvironment, currentActions);
+        }
+        // if exiting and has a current environment (not within the list of geofences)
+        else if (currentEnvironment != null) {
+            currentActions = sendLog(currentEnvironment, device, false);
+            saveCurrentEnvironment(currentEnvironment, currentActions);
+        }
+        // in this case the user is not inside any registered environment
+        else {
+            clearCurrentEnvironment();
         }
 
         return currentActions;
@@ -186,6 +186,31 @@ public class DataService {
     }
 
     /**
+     * Send log for check-in/out of environment.
+     *
+     * @param environment
+     * @param device
+     * @param exiting
+     * @return
+     */
+    private List<Action> sendLog(Environment environment, Device device, boolean exiting) {
+        Log.i(TAG, "Check-" + (exiting ? "out" : "in") + " " + environment);
+
+        try {
+            com.gppdi.ubipri.data.models.Log log = new com.gppdi.ubipri.data.models.Log();
+            log.setDeviceCode(device.getCode());
+            log.setEnvironmentId(environment.getExtId());
+            log.setExiting(exiting);
+
+            return api.updateUserLocation(log);
+        } catch (RetrofitError e) {
+            Log.e(TAG, "Unable to check-in/out of environment(s).", e);
+        }
+
+        return null;
+    }
+
+    /**
      * Save the current environment and list of actions for future retrieval.
      *
      * @param environment
@@ -214,8 +239,10 @@ public class DataService {
     }
 
     /**
-     * Transforms the location into a point and the environment shape into a polygon, then check if
-     * the point is within the polygon in order to certify that the user entered the location.
+     * If the shape check is enabled, transforms the location into a
+     * point and the environment shape into a polygon, then check if the point is within the polygon
+     * in order to certify that the user entered the location. Otherwise, uses the environment location
+     * and operating range to check if the user location is within the environment radius.
      *
      * @param location
      * @param environment
@@ -223,17 +250,52 @@ public class DataService {
      */
     private boolean isUserWithin(Location location, Environment environment) {
         try {
-            Point point       = GeoUtils.getSpatialContext().makePoint(location.getLongitude(), location.getLatitude());
-            JtsGeometry shape = (JtsGeometry) GeoUtils.getSpatialContext().getFormats().getWktReader().read(environment.getShape());
+            Point point = GeoUtils.getSpatialContext().makePoint(location.getLongitude(), location.getLatitude());
 
-            SpatialRelation relation = point.relate(shape);
-
-            return relation == SpatialRelation.WITHIN;
+            if (LocationConstants.ENVIRONMENT_SHAPE_CHECK) {
+                JtsGeometry shape = (JtsGeometry) GeoUtils.getSpatialContext().getFormats().getWktReader().read(environment.getShape());
+                return (point.relate(shape) == SpatialRelation.WITHIN);
+            } else {
+                Point envPoint = GeoUtils.getSpatialContext().makePoint(environment.getLongitude(), environment.getLatitude());
+                double distance = GeoUtils.DistanceUnit.DEGREES.toKm(GeoUtils.distanceHarvesine(envPoint, point)) * 1000;
+                return (distance <= environment.getOperatingRange());
+            }
         } catch (IOException | ParseException e) {
-            android.util.Log.e(TAG, "Unable to read shape.", e);
+            Log.e(TAG, "Unable to read shape.", e);
         }
 
         return true;
+    }
+
+    /**
+     * Find the current environment the user is in.
+     *
+     * @param location
+     * @param environments
+     * @param exiting
+     * @return
+     */
+    private Environment findCurrentEnvironment(Location location, Map<Integer, Environment> environments, boolean exiting) {
+        Environment currentEnvironment = findNarrowestEnvironment(environments);
+
+        // If is entering an environment, the narrowest one is the current
+        // Also, if there is no parent environment, there is nothing to search
+        if (!exiting || currentEnvironment == null || currentEnvironment.getParentId() == null) {
+            return currentEnvironment;
+        }
+
+        Environment temp = currentEnvironment;
+
+        // find parent environment and check if user is within it
+        while (temp != null || temp.getParentId() != null) {
+            temp = environmentDAO.findByExtId(temp.getParentId());
+
+            if (temp != null && isUserWithin(location, temp)) {
+                break;
+            }
+        }
+
+        return temp;
     }
 
     /**

@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -86,6 +87,8 @@ public class DataServiceTest {
 
     @Test
     public void testGetEnvironments() {
+        System.out.println("TEST: Get environments");
+
         List<Environment> environmentList = Fixtures.getEnvironments();
         Location center = new Location("mocked");
         center.setLatitude(-30.072296142578118);
@@ -106,7 +109,9 @@ public class DataServiceTest {
     }
 
     @Test
-    public void testUpdateLocation() {
+    public void testUpdateLocationEnteredLab205() {
+        System.out.println("TEST: Update user location, entered Lab 205");
+
         // List of environments the user will enter
         Collection<Environment> environmentList = Collections2.filter(Fixtures.getEnvironments(), new Predicate<Environment>() {
             @Override public boolean apply(Environment environment) {
@@ -134,12 +139,8 @@ public class DataServiceTest {
         when(editor.putInt("current_environment", 5)).thenReturn(editor);
         when(editor.putString(anyString(), anyString())).thenReturn(editor);
 
-        // current user location that triggered the geofences
-        Location location = new Location("mocked");
-        location.setLatitude(-30.06858398802797);
-        location.setLongitude(-51.12058103084564);
-
-        List<Action> actions = dataService.updateLocation(location, geofences, false);
+        // update user location - entered Lab 205
+        List<Action> actions = dataService.updateLocation(Fixtures.LOCATION_LAB205, geofences, false);
 
         assertThat(actions.size()).isEqualTo(1);
 
@@ -148,6 +149,40 @@ public class DataServiceTest {
         verify(apiService, times(environmentList.size())).updateUserLocation(any(Log.class));
 
         verify(editor).putInt("current_environment", 5);
+        verify(editor).putString(anyString(), anyString());
+        verify(editor).apply();
+    }
+
+    @Test
+    public void testUpdateLocationExitedLab205() {
+        System.out.println("TEST: Update user location, exited Lab 205");
+
+        // create geofences for the Lab 205 environment
+        List<Geofence> geofences = new ArrayList<>();
+        geofences.add(Fixtures.getEnvironmentAsGeofence(5));
+
+        // return the environment object for the Lab 205
+        when(environmentDAO.findByExtId(5)).thenReturn(Fixtures.getEnvironment(5));
+        when(environmentDAO.findByExtId(3)).thenReturn(Fixtures.getEnvironment(3));
+
+        when(apiService.updateUserLocation(any(Log.class))).thenReturn(Fixtures.getActions());
+        when(editor.putInt("current_environment", 3)).thenReturn(editor);
+        when(editor.putString(anyString(), anyString())).thenReturn(editor);
+
+        // update user location - exited Lab 205, still inside INF72 building
+        List<Action> actions = dataService.updateLocation(Fixtures.LOCATION_INF72, geofences, true);
+
+        assertThat(actions).isNotNull();
+        assertThat(actions.size()).isEqualTo(1);
+
+        // verify that the underlying componentes have been called for the exiting environment
+        verify(deviceManager, times(1)).getDevice();
+        verify(environmentDAO, times(1)).findByExtId(5);
+        verify(environmentDAO, times(1)).findByExtId(3);
+        verify(apiService, times(2)).updateUserLocation(any(Log.class));
+
+        // verify the current environment
+        verify(editor).putInt("current_environment", 3);
         verify(editor).putString(anyString(), anyString());
         verify(editor).apply();
     }
