@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.gppdi.ubipri.UbiPriModule;
+import com.gppdi.ubipri.notification.ui.fragments.NotificationHistoryFragment;
 import com.gppdi.ubipri.ui.activities.AuthenticatorActivity;
 import com.gppdi.ubipri.ui.activities.BaseActivity;
 import com.gppdi.ubipri.ui.activities.MainActivity;
@@ -18,7 +19,7 @@ import javax.inject.Singleton;
 
 @Module(
     injects = {
-        MainActivity.class, AuthenticatorActivity.class, HomeFragment.class, RegisterActivity.class
+        MainActivity.class, AuthenticatorActivity.class, HomeFragment.class, RegisterActivity.class, NotificationHistoryFragment.class
     },
     addsTo = UbiPriModule.class
 )

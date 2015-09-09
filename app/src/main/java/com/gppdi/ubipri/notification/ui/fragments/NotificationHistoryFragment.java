@@ -1,6 +1,5 @@
 package com.gppdi.ubipri.notification.ui.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,21 +14,24 @@ import com.gppdi.ubipri.notification.api.ApiNotificationService;
 import com.gppdi.ubipri.notification.data.dao.NotificationDAO;
 import com.gppdi.ubipri.notification.data.models.Notification;
 import com.gppdi.ubipri.notification.ui.adapters.NotificationAdapter;
+import com.gppdi.ubipri.ui.fragments.BaseFragment;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class NotificationHistoryFragment extends Fragment {
+public class NotificationHistoryFragment extends BaseFragment {
 
     private static final String TAG = "NotificationsFragment";
 
     @Inject ApiNotificationService apiNotificationService;
 
+    private ListView listView;
     private TextView updateTextView;
 
     private List<Notification> notificationList;
@@ -37,15 +39,23 @@ public class NotificationHistoryFragment extends Fragment {
     private NotificationAdapter notificationAdapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_notification_hist, container, false);
+        listView = (ListView) rootView.findViewById(R.id.notificationsList);
+        updateTextView = (TextView) rootView.findViewById(R.id.notificationsUpdateMessage);
+
+        ButterKnife.inject(this, rootView);
+        return rootView;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_notification_hist, container, false);
-        ListView listView = (ListView) rootView.findViewById(R.id.notificationsList);
-        updateTextView = (TextView) rootView.findViewById(R.id.notificationsUpdateMessage);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        notificationDAO = new NotificationDAO();
+        notificationList = notificationDAO.newest();
+        notificationAdapter = new NotificationAdapter(this.getActivity(), R.layout.row_notification_hist, notificationList);
+        listView.setAdapter(notificationAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -56,14 +66,7 @@ public class NotificationHistoryFragment extends Fragment {
             }
         });
 
-        notificationDAO = new NotificationDAO();
-        notificationList = notificationDAO.newest();
-        notificationAdapter = new NotificationAdapter(this.getActivity(), R.layout.row_notification_hist, notificationList);
-        listView.setAdapter(notificationAdapter);
-
         updateHistory();
-
-        return rootView;
     }
 
     private void updateHistory() {
