@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gppdi.ubipri.R;
+import com.gppdi.ubipri.data.DataService;
+import com.gppdi.ubipri.data.models.Environment;
 import com.gppdi.ubipri.functionality.FunctionalityManager;
 import static com.gppdi.ubipri.location.LocationConstants.*;
 
@@ -35,12 +37,14 @@ public class HomeFragment extends BaseFragment {
     @InjectView(R.id.txtEnvironmentName) TextView environmentName;
 
     @Inject FunctionalityManager functionalityManager;
+    @Inject DataService dataService;
     private FunctionalityAdapter adapter;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            onEnvironmentChange(intent);
+            String name = intent.getStringExtra(ENVIRONMENT_NAME);
+            onEnvironmentChange(name);
         }
     };
 
@@ -66,12 +70,25 @@ public class HomeFragment extends BaseFragment {
 
         // register listener for changes on the environment
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(EVENT_ENVIRONMENT_CHANGED));
+
+        Environment e = dataService.getCurrentEnvironment();
+        if (e != null) {
+            onEnvironmentChange(e.getName());
+        }
     }
 
-    protected void onEnvironmentChange(Intent intent) {
-        Log.i(TAG, "Updating list of functionalities.");
-        adapter.notifyDataSetChanged();
+    @Override
+    public void onPause() {
+        super.onPause();
 
-        environmentName.setText(intent.getStringExtra(ENVIRONMENT_NAME));
+        // Unregister broadcaster
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+    }
+
+    protected void onEnvironmentChange(String envName) {
+        Log.i(TAG, "Updating list of functionalities.");
+
+        adapter.notifyDataSetChanged();
+        environmentName.setText(envName);
     }
 }

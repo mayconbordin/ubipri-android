@@ -28,7 +28,7 @@ public class Action {
     private int durationInterval;
 
     @Column(name = "Environment")
-    private Environment environment;
+    private transient Environment environment;
 
     @Column(name = "AccessLevel")
     private AccessLevel accessLevel;

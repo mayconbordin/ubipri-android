@@ -23,6 +23,10 @@ import java.text.ParseException;
 public class EnvironmentDeserializer implements JsonDeserializer<Environment> {
     @Override
     public Environment deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+        if (json == null) {
+            return null;
+        }
+
         JsonObject o = (JsonObject) json;
 
         Environment e = new Environment();
@@ -47,6 +51,8 @@ public class EnvironmentDeserializer implements JsonDeserializer<Environment> {
     }
 
     private void parseLocation(JsonObject o, Environment e) throws JsonParseException {
+        if (o == null || !o.has("location") || o.get("location").isJsonNull()) return;
+
         JsonObject location = o.getAsJsonObject("location");
 
         if (!location.get("type").getAsString().equals("Point")) {
@@ -64,6 +70,8 @@ public class EnvironmentDeserializer implements JsonDeserializer<Environment> {
     }
 
     private void parseShape(JsonObject o, Environment e) throws JsonParseException {
+        if (o == null || !o.has("shape") || o.get("shape").isJsonNull()) return;
+
         if (!o.getAsJsonObject("shape").get("type").getAsString().equals("Polygon")) {
             throw new JsonParseException("Shape type of Environment has to be a Polygon.");
         }
