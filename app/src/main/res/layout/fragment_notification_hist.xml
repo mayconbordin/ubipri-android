@@ -7,16 +7,6 @@
     >
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:elevation="8dp"
-        android:text="@string/action_notifications"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/tertiary_text_light"
-        />
-
-    <TextView
         android:id="@+id/notificationsUpdateMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

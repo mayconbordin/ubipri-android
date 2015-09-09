@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:elevation="8dp"
+        android:elevation="5dp"
         android:background="@android:color/white"
         >
 
@@ -53,9 +53,9 @@
         android:id="@+id/notificationMessage"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
         android:padding="16dp"
-        android:elevation="4dp"
+        android:elevation="3dp"
         android:background="@android:color/white"
         />
 
