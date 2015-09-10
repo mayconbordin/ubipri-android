@@ -21,7 +21,7 @@
 
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Name"
+            android:text="@string/user_name"
             android:textSize="18dp" />
 
         <EditText
@@ -40,7 +40,7 @@
 
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Email"
+            android:text="@string/user_email"
             android:textSize="18dp" />
 
         <EditText
@@ -58,7 +58,7 @@
 
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Password"
+            android:text="@string/user_password"
             android:textSize="18dp" />
 
         <EditText
@@ -76,7 +76,7 @@
 
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Confirm"
+            android:text="@string/user_confirm_password"
             android:textSize="18dp" />
 
         <EditText
@@ -100,9 +100,9 @@
             android:layout_marginTop="10dp"
             android:textColor="#ffffff"
             android:textSize="15sp"
-            app:cpb_textComplete="Done"
-            app:cpb_textError="Error"
-            app:cpb_textIdle="Register" />
+            app:cpb_textComplete="@string/done"
+            app:cpb_textError="@string/error"
+            app:cpb_textIdle="@string/register" />
 
     </LinearLayout>
 

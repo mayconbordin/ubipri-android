@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_top_bg"
             android:padding="10dp"
-            android:hint="Email"
+            android:hint="@string/user_email"
             android:textColorHint="#cccccc"
             android:focusable="true"
             android:singleLine="true"
@@ -39,7 +39,7 @@
             android:background="@drawable/edittext_bottom_bg"
             android:layout_marginTop="-2dp"
             android:padding="10dp"
-            android:hint="Password"
+            android:hint="@string/user_password"
             android:textColorHint="#cccccc"
             android:inputType="textPassword"
             android:singleLine="true"
@@ -54,15 +54,15 @@
             android:layout_marginTop="10dp"
             android:textColor="#ffffff"
             android:textSize="15sp"
-            app:cpb_textComplete="Done"
-            app:cpb_textError="Error"
-            app:cpb_textIdle="Sign In" />
+            app:cpb_textComplete="@string/done"
+            app:cpb_textError="@string/error"
+            app:cpb_textIdle="@string/sign_in" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Create an Account"
+            android:text="@string/create_account"
             android:id="@+id/txtCreateAccount"
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"
@@ -75,134 +75,3 @@
 
 
 </RelativeLayout>
-<!--
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
-
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingTop="5dip"
-            android:paddingBottom="13dip"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip">
-
-            <TextView
-                android:id="@+id/message_one"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip" />
-
-            <TextView
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_activity_accounttype_label" />
-
-            <Spinner android:id="@+id/accountType_spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawSelectorOnTop="true"/>
-
-            <TextView
-                android:id="@+id/message_two"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip" />
-
-            <TextView
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_activity_username_label" />
-
-            <EditText
-                android:id="@+id/username_edit"
-                android:singleLine="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:minWidth="250dip"
-                android:scrollHorizontally="true"
-                android:capitalize="none"
-                android:autoText="false"
-                android:inputType="textEmailAddress" />
-
-            <TextView
-                android:id="@+id/username_fixed"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:singleLine="true"
-                android:layout_marginTop="2dip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold"
-                android:singleLine="true"
-                android:layout_marginTop="2dip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_activity_password_label" />
-
-            <EditText
-                android:id="@+id/password_edit"
-                android:singleLine="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:minWidth="250dip"
-                android:scrollHorizontally="true"
-                android:capitalize="none"
-                android:autoText="false"
-                android:password="true"
-                android:inputType="textPassword" />
-
-            <TextView
-                android:id="@+id/message_bottom"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#c6c3c6"
-        android:minHeight="54dip"
-        android:paddingTop="4dip"
-        android:paddingLeft="2dip"
-        android:paddingRight="2dip">
-
-        <com.dd.CircularProgressButton
-            android:id="@+id/ok_button"
-            android:layout_width="196dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="16dp"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            app:cpb_textComplete="Done"
-            app:cpb_textError="Error"
-            app:cpb_textIdle="Login" />
-
-    </FrameLayout>
-
-</LinearLayout>-->

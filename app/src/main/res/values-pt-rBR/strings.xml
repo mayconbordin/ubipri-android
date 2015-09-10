@@ -24,4 +24,15 @@
     <string name="login_activity_password_label">Senha</string>
     <!-- Button to sign in after entering username and password -->
     <string name="login_activity_ok_button">Entrar</string>
+    <string name="user_name">Nome</string>
+    <string name="user_email">Email</string>
+    <string name="user_password">Senha</string>
+    <string name="user_confirm_password">Confirmar</string>
+    <string name="register">Registrar</string>
+    <string name="error">Erro</string>
+    <string name="done">Pronto</string>
+    <string name="create_account">Criar uma Conta</string>
+    <string name="sign_in">Entrar</string>
+    <string name="environment">Ambiente</string>
+    <string name="settings">Configurações</string>
 </resources>

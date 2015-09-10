@@ -1,22 +1,5 @@
 <resources>
     <string name="app_name">UbiPri</string>
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
@@ -41,4 +24,15 @@
     <string name="login_activity_password_label">Password</string>
     <!-- Button to sign in after entering username and password -->
     <string name="login_activity_ok_button">Sign in</string>
+    <string name="user_name">Name</string>
+    <string name="user_email">Email</string>
+    <string name="user_password">Password</string>
+    <string name="user_confirm_password">Confirm</string>
+    <string name="register">Register</string>
+    <string name="error">Error</string>
+    <string name="done">Done</string>
+    <string name="create_account">Create an Account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="environment">Environment</string>
+    <string name="settings">Settings</string>
 </resources>
