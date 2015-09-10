@@ -34,8 +34,8 @@ import retrofit.converter.GsonConverter;
     library = true
 )
 public final class ApiModule {
-    private static final String SIGAI_API_URL = "http://10.200.116.246/api/";
-    private static final String UBIPRI_API_URL = "http://10.200.116.246:9000/";
+    private static final String SIGAI_API_URL = "http://10.200.116.37/api/";
+    private static final String UBIPRI_API_URL = "http://10.200.116.37:9000/";
     private static final String CLIENT_ID = "ubipri-android";
     private static final String CLIENT_SECRET = "d86654a991a8558b7ae5350fdb84457b763ad042";
 

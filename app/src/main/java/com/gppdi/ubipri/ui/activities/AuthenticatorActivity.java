@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
@@ -60,6 +61,7 @@ public class AuthenticatorActivity extends BaseActivity {
     @InjectView(R.id.btnSingIn) CircularProgressButton mSubmit;
     @InjectView(R.id.edtUsername) EditText mUsernameEdit;
     @InjectView(R.id.edtPassword) EditText mPasswordEdit;
+    @InjectView(R.id.txtCreateAccount) TextView createAccount;
 
     @Inject AccountManager accountManager;
     @Inject ApiAuthService apiService;
@@ -95,6 +97,13 @@ public class AuthenticatorActivity extends BaseActivity {
                 }
 
                 doLogin(mUsernameEdit.getText().toString(), mPasswordEdit.getText().toString());
+            }
+        });
+
+        createAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AuthenticatorActivity.this, RegisterActivity.class));
             }
         });
 

@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="10dp"
-        >
+        android:id="@+id/linearLayout">
 
         <EditText
             android:id="@+id/edtUsername"
@@ -58,7 +58,21 @@
             app:cpb_textError="Error"
             app:cpb_textIdle="Sign In" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Create an Account"
+            android:id="@+id/txtCreateAccount"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="42dp"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true" />
+
     </LinearLayout>
+
+
 
 </RelativeLayout>
 <!--
