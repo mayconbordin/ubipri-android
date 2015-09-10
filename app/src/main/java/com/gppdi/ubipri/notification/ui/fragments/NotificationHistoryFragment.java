@@ -94,6 +94,7 @@ public class NotificationHistoryFragment extends BaseFragment {
             @Override
             public void failure(RetrofitError error) {
                 Log.e(TAG, "Error updating the message history");
+                Log.e(TAG, error.toString());
                 updateTextView.setText(R.string.notification_update_error);
             }
         });
