@@ -3,8 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gppdi.ubipri.notification.ui.fragments.NotificationFragment"
-    >
+    tools:context="com.gppdi.ubipri.notification.ui.activities.NotificationActivity">
 
     <RelativeLayout
         android:id="@+id/notificationHeader"
