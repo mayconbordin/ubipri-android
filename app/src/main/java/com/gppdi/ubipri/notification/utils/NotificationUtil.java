@@ -1,7 +1,5 @@
 package com.gppdi.ubipri.notification.utils;
 
-import android.content.res.Resources;
-
 import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.notification.data.models.Notification;
 
@@ -36,11 +34,11 @@ public class NotificationUtil {
         return icon;
     }
 
-    public static String getNotificationFormatString(Notification notification) {
-        return getNotificationFormatString(notification.getFormat());
+    public static int getNotificationFormatStringRes(Notification notification) {
+        return getNotificationFormatStringRes(notification.getFormat());
     }
 
-    public static String getNotificationFormatString(int format) {
+    public static int getNotificationFormatStringRes(int format) {
         int stringResource;
         switch (format) {
             case Notification.FORMAT_NONE:
@@ -62,7 +60,7 @@ public class NotificationUtil {
                 stringResource = R.string.notification_type_none;
                 break;
         }
-        return Resources.getSystem().getString(stringResource);
+        return stringResource;
     }
 
 }
