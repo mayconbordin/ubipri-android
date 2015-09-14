@@ -92,13 +92,13 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         if(isSameYear(nDate,now)) {
             if (isSameMonth(nDate,now)) {
                 long diff = now.getTimeInMillis() - nDate.getTimeInMillis();
-                if(diff < hour) return SimpleDateFormat.getTimeInstance().format(nDate);
+                if(diff < hour) return SimpleDateFormat.getTimeInstance().format(nDate.getTime());
                 if(diff < day) return String.valueOf(diff/hour) + "h";
                 if(diff < week) return String.valueOf(diff/day) + "d";
             }
-            return SimpleDateFormat.getDateInstance(DateFormat.SHORT).format(nDate);
+            return SimpleDateFormat.getDateInstance(DateFormat.SHORT).format(nDate.getTime());
         }
-        return SimpleDateFormat.getDateInstance().format(nDate);
+        return SimpleDateFormat.getDateInstance().format(nDate.getTime());
     }
 
     private boolean isSameYear(Calendar a, Calendar b) {
