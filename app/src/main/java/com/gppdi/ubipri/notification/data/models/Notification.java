@@ -5,10 +5,18 @@ import android.os.Bundle;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Table(name = "Notifications")
 public class Notification extends Model {
+
+    // Local database column names
+    public static final String FIELD_ID = "EventId";
+    public static final String FIELD_TIMESTAMP = "Timestamp";
+    public static final String FIELD_FORMAT = "Format";
+    public static final String FIELD_MESSAGE = "Message";
+    public static final String FIELD_STATE = "State";
 
     // Possible state values
     public static final int STATE_NEW = 0;
@@ -21,23 +29,23 @@ public class Notification extends Model {
     public static final int FORMAT_EMAIL = 3;
     public static final int FORMAT_HISTORY = 4;
 
-    @SerializedName("id")
-    @Column(name = "id_event")
+    @Expose @SerializedName("id")
+    @Column(name = FIELD_ID)
     private int eventId;
 
-    @SerializedName("timestamp_in")
-    @Column(name = "timestamp")
+    @Expose @SerializedName("timestamp_in")
+    @Column(name = FIELD_TIMESTAMP)
     private long timestamp;
 
-    @SerializedName("send_format")
-    @Column(name = "format")
+    @Expose @SerializedName("send_format")
+    @Column(name = FIELD_FORMAT)
     private int format;
 
-    @SerializedName("send_message")
-    @Column(name = "message")
+    @Expose @SerializedName("send_message")
+    @Column(name = FIELD_MESSAGE)
     private String message;
 
-    @Column(name = "state")
+    @Column(name = FIELD_STATE)
     private int state;
 
     public Notification() {
@@ -60,21 +68,21 @@ public class Notification extends Model {
 
     public Notification(Bundle bundle) {
         init(
-                bundle.getInt("id"),
-                bundle.getLong("timestamp"),
-                bundle.getInt("format"),
-                bundle.getString("message"),
-                bundle.getInt("state")
+                bundle.getInt(FIELD_ID),
+                bundle.getLong(FIELD_TIMESTAMP),
+                bundle.getInt(FIELD_FORMAT),
+                bundle.getString(FIELD_MESSAGE),
+                bundle.getInt(FIELD_STATE)
         );
     }
 
     public Bundle getBundle() {
         Bundle bundle = new Bundle();
-        bundle.putInt("id", getEventId());
-        bundle.putLong("timestamp", getTimestamp());
-        bundle.putInt("format", getFormat());
-        bundle.putString("message", getMessage());
-        bundle.putInt("state", getState());
+        bundle.putInt(FIELD_ID, getEventId());
+        bundle.putLong(FIELD_TIMESTAMP, getTimestamp());
+        bundle.putInt(FIELD_FORMAT, getFormat());
+        bundle.putString(FIELD_MESSAGE, getMessage());
+        bundle.putInt(FIELD_STATE, getState());
         return bundle;
     }
 
