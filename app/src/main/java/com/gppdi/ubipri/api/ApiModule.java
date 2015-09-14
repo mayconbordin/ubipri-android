@@ -72,6 +72,7 @@ public final class ApiModule {
 
     @Provides Gson provideGson() {
         return new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
                 .registerTypeAdapter(Environment.class, new EnvironmentDeserializer())
