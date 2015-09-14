@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.gppdi.ubipri.notification.ui.activities.NotificationActivity">
 
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/notificationActionDelete"
+        android:title="@string/notification_action_delete"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_delete_black_24dp"
+        />
 
 </menu>
