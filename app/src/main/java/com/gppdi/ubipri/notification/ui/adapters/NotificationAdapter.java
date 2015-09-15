@@ -23,6 +23,11 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
     private int resource;
 
+    public void update(List<Notification> notifications) {
+        clear();
+        addAll(notifications);
+    }
+
     private static class ViewHolder {
         ImageView icon;
         TextView message;
