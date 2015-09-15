@@ -30,7 +30,7 @@ public class Notification extends Model {
     public static final int FORMAT_HISTORY = 4;
 
     @Expose @SerializedName("id")
-    @Column(name = FIELD_ID)
+    @Column(name = FIELD_ID, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private int eventId;
 
     @Expose @SerializedName("timestamp_in")
