@@ -1,5 +1,6 @@
 package com.gppdi.ubipri.notification.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.gppdi.ubipri.R;
 import com.gppdi.ubipri.notification.api.ApiNotificationService;
 import com.gppdi.ubipri.notification.data.dao.NotificationDAO;
 import com.gppdi.ubipri.notification.data.models.Notification;
+import com.gppdi.ubipri.notification.ui.activities.NotificationActivity;
 import com.gppdi.ubipri.notification.ui.adapters.NotificationAdapter;
 import com.gppdi.ubipri.ui.fragments.BaseFragment;
 
@@ -34,7 +36,6 @@ public class NotificationHistoryFragment extends BaseFragment {
     private ListView listView;
     private TextView updateTextView;
 
-    private List<Notification> notificationList;
     private NotificationDAO notificationDAO;
     private NotificationAdapter notificationAdapter;
 
@@ -53,8 +54,8 @@ public class NotificationHistoryFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         notificationDAO = new NotificationDAO();
-        notificationList = notificationDAO.newest();
-        notificationAdapter = new NotificationAdapter(this.getActivity(), R.layout.row_notification_hist, notificationList);
+        notificationAdapter = new NotificationAdapter(this.getActivity(),
+                R.layout.row_notification_hist, notificationDAO.newest());
         listView.setAdapter(notificationAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -62,7 +63,9 @@ public class NotificationHistoryFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Notification notification = (Notification) parent.getItemAtPosition(position);
-                // TODO: 31/08/15 Display the full message
+                Intent intent = new Intent(getActivity(), NotificationActivity.class);
+                intent.putExtras(notification.getBundle());
+                startActivity(intent);
             }
         });
 
@@ -85,8 +88,7 @@ public class NotificationHistoryFragment extends BaseFragment {
             public void success(List<Notification> notifications, Response response) {
                 if(notifications != null) {
                     notificationDAO.createOrUpdate(notifications);
-                    notificationList = notificationDAO.newest();
-                    notificationAdapter.notifyDataSetChanged();
+                    notificationAdapter.update(notificationDAO.newest());
                 }
                 updateTextView.setVisibility(View.GONE);
             }
