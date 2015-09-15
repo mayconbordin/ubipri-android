@@ -53,7 +53,17 @@ public class NotificationActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.notificationActionDelete:
-                Log.d(TAG, "Delete option selected");
+                String op = "deleted";
+                if(!notification.isDeleted()) {
+                    notification.setState(Notification.STATE_DELETED);
+                } else {
+                    notification.setState(Notification.STATE_READ);
+                    op = "restored";
+                }
+                notification.save();
+                Log.i(TAG, "Notification " + op);
+                this.finish();
+                // FIXME: 15/09/15 Message list should be updated after deletion
                 break;
         }
 
