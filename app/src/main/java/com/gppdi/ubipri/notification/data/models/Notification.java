@@ -21,6 +21,7 @@ public class Notification extends Model {
     // Possible state values
     public static final int STATE_NEW = 0;
     public static final int STATE_READ = 1;
+    public static final int STATE_DELETED = 2;
 
     // Possible format values
     public static final int FORMAT_NONE = 0;
@@ -126,4 +127,7 @@ public class Notification extends Model {
         this.state = state;
     }
 
+    public boolean isDeleted() {
+        return getState() == STATE_DELETED;
+    }
 }
