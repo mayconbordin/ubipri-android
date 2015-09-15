@@ -65,7 +65,10 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
                 viewHolder.message.setTypeface(null, Typeface.BOLD);
                 break;
             case Notification.STATE_READ:
-                viewHolder.icon.setColorFilter(Color.LTGRAY);
+                viewHolder.message.setTypeface(null, Typeface.NORMAL);
+                break;
+            case Notification.STATE_DELETED:
+                viewHolder.message.setTypeface(null, Typeface.ITALIC);
                 break;
         }
 
