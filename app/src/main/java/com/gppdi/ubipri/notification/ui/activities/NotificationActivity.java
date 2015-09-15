@@ -19,6 +19,8 @@ public class NotificationActivity extends AppCompatActivity {
     private static final String TAG = "NotificationActivity";
     private static final String ARG_NOTIFICATION = "param_notification";
 
+    private Notification notification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +28,12 @@ public class NotificationActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-            fillViews(new Notification(bundle));
+            notification = new Notification(bundle);
+            fillViews(notification);
+            if(!notification.isDeleted()) {
+                notification.setState(Notification.STATE_READ);
+                notification.save();
+            }
         }
     }
 
