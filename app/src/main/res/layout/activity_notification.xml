@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:id="@+id/notificationHeader"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:elevation="5dp"
@@ -50,7 +50,7 @@
 
     <TextView
         android:id="@+id/notificationMessage"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="16dp"
