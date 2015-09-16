@@ -10,4 +10,15 @@
         android:icon="@drawable/ic_delete_black_24dp"
         />
 
+    <item android:id="@+id/notificationActionRestore"
+        android:title="@string/notification_action_restore"
+        android:orderInCategory="100"
+        android:visible="false"
+        />
+
+    <item android:id="@+id/notificationActionMarkAsUnread"
+        android:title="@string/notification_action_mark_as_unread"
+        android:orderInCategory="100"
+        />
+
 </menu>

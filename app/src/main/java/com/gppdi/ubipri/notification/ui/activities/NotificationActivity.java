@@ -2,7 +2,6 @@ package com.gppdi.ubipri.notification.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -15,9 +14,6 @@ import com.gppdi.ubipri.notification.utils.NotificationUtil;
 import java.text.SimpleDateFormat;
 
 public class NotificationActivity extends AppCompatActivity {
-
-    private static final String TAG = "NotificationActivity";
-    private static final String ARG_NOTIFICATION = "param_notification";
 
     private Notification notification;
 
@@ -41,6 +37,12 @@ public class NotificationActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_notification, menu);
+
+        if(notification.isDeleted()) {
+            menu.findItem(R.id.notificationActionDelete).setVisible(false);
+            menu.findItem(R.id.notificationActionRestore).setVisible(true);
+        }
+
         return true;
     }
 
@@ -52,21 +54,25 @@ public class NotificationActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+
             case R.id.notificationActionDelete:
-                String op = "deleted";
-                if(!notification.isDeleted()) {
-                    notification.setState(Notification.STATE_DELETED);
-                } else {
-                    notification.setState(Notification.STATE_READ);
-                    op = "restored";
-                }
+                notification.setState(Notification.STATE_DELETED);
                 notification.save();
-                Log.i(TAG, "Notification " + op);
-                this.finish();
-                // FIXME: 15/09/15 Message list should be updated after deletion
+                finish();
+                break;
+
+            case R.id.notificationActionRestore:
+                notification.setState(Notification.STATE_READ);
+                notification.save();
+                finish();
+                break;
+
+            case R.id.notificationActionMarkAsUnread:
+                notification.setState(Notification.STATE_NEW);
+                notification.save();
+                finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

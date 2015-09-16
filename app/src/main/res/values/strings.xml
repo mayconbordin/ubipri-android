@@ -16,6 +16,8 @@
     <string name="title_activity_notification">Notification</string>
 
     <string name="notification_action_delete">Delete</string>
+    <string name="notification_action_mark_as_unread">Mark as unread</string>
+    <string name="notification_action_restore">Restore</string>
     <string name="notification_update_in_progress">Updating…</string>
     <string name="notification_update_error">Unable to update. Try again later.</string>
     <string name="notification_type_none">Message</string>
