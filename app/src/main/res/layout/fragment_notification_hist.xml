@@ -17,12 +17,19 @@
         android:textStyle="italic"
         />
 
-    <ListView
-        android:id="@+id/notificationsList"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="@color/divider"
-        android:dividerHeight="1dp"
-        />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/notificationSwipeUpdater"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+
+        <ListView
+            android:id="@+id/notificationsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/divider"
+            android:dividerHeight="1dp"
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

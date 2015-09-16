@@ -2,6 +2,7 @@ package com.gppdi.ubipri.notification.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ public class NotificationHistoryFragment extends BaseFragment {
     @Inject ApiNotificationService apiNotificationService;
 
     private ListView listView;
+    private SwipeRefreshLayout swipeView;
     private TextView updateTextView;
 
     private NotificationDAO notificationDAO;
@@ -43,7 +45,15 @@ public class NotificationHistoryFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notification_hist, container, false);
         listView = (ListView) rootView.findViewById(R.id.notificationsList);
+        swipeView = (SwipeRefreshLayout) rootView.findViewById(R.id.notificationSwipeUpdater);
         updateTextView = (TextView) rootView.findViewById(R.id.notificationsUpdateMessage);
+
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateHistory();
+            }
+        });
 
         ButterKnife.inject(this, rootView);
         return rootView;
@@ -81,6 +91,7 @@ public class NotificationHistoryFragment extends BaseFragment {
     private void updateHistory() {
         updateTextView.setText(R.string.notification_update_in_progress);
         updateTextView.setVisibility(View.VISIBLE);
+        swipeView.setRefreshing(true);
 
         // Get the latest notification stored in the local database
         Notification lastNotification = notificationDAO.newestSingle();
@@ -97,6 +108,7 @@ public class NotificationHistoryFragment extends BaseFragment {
                     notificationAdapter.update(notificationDAO.newest());
                 }
                 updateTextView.setVisibility(View.GONE);
+                swipeView.setRefreshing(false);
             }
 
             @Override
@@ -104,6 +116,7 @@ public class NotificationHistoryFragment extends BaseFragment {
                 Log.e(TAG, "Unable to update the message history");
                 Log.e(TAG, error.toString());
                 updateTextView.setText(R.string.notification_update_error);
+                swipeView.setRefreshing(false);
             }
         });
     }
