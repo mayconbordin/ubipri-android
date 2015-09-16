@@ -72,6 +72,12 @@ public class NotificationHistoryFragment extends BaseFragment {
         updateHistory();
     }
 
+    @Override
+    public void onResume() {
+        notificationAdapter.update(notificationDAO.newest());
+        super.onResume();
+    }
+
     private void updateHistory() {
         updateTextView.setText(R.string.notification_update_in_progress);
         updateTextView.setVisibility(View.VISIBLE);
