@@ -36,7 +36,7 @@ public class NotificationDAO extends AbstractDAO<Notification> {
     public List<Notification> newestUnread() {
         return new Select()
                 .from(Notification.class)
-                .where("? == ?", Notification.FIELD_STATE, Notification.STATE_NEW)
+                .where(Notification.FIELD_STATE + " == ?", Notification.STATE_NEW)
                 .orderBy(Notification.FIELD_TIMESTAMP + " DESC")
                 .execute();
     }
