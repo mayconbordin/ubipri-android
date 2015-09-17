@@ -95,8 +95,8 @@ public class NotificationHistoryFragment extends BaseFragment {
     }
 
     private void updateHistory() {
-        updateTextView.setText(R.string.notification_update_in_progress);
-        updateTextView.setVisibility(View.VISIBLE);
+        // Uncomment the following line to display an "updating" message.
+        //displayMessage(R.string.notification_update_in_progress);
 
         // Get the latest notification stored in the local database
         Notification lastNotification = notificationDAO.newestSingle();
@@ -108,15 +108,15 @@ public class NotificationHistoryFragment extends BaseFragment {
         apiNotificationService.historyUpdate(lastNotification, new Callback<List<Notification>>() {
             @Override
             public void success(List<Notification> notifications, Response response) {
-                if(notifications != null) {
+                if (notifications != null) {
                     notificationDAO.createOrUpdate(notifications);
                     notificationAdapter.update(notificationDAO.newest());
                 }
                 swipeView.setRefreshing(false);
-                if(notificationAdapter.getCount() > 0) {
+                if (notificationAdapter.getCount() > 0) {
                     updateTextView.setVisibility(View.GONE);
                 } else {
-                    updateTextView.setText(R.string.notification_history_is_empty);
+                    displayMessage(R.string.notification_history_is_empty);
                 }
             }
 
@@ -125,8 +125,16 @@ public class NotificationHistoryFragment extends BaseFragment {
                 Log.e(TAG, "Unable to update the message history");
                 Log.e(TAG, error.toString());
                 swipeView.setRefreshing(false);
-                updateTextView.setText(R.string.notification_update_error);
+                displayMessage(R.string.notification_update_error);
             }
         });
+    }
+
+    private void displayMessage(String message) {
+        updateTextView.setText(message);
+        updateTextView.setVisibility(View.VISIBLE);
+    }
+    private void displayMessage(int resource) {
+        displayMessage(getResources().getString(resource));
     }
 }
