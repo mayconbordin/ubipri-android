@@ -72,7 +72,7 @@ public class NotificationHistoryFragment extends BaseFragment {
             }
         });
 
-        swipeView.setColorSchemeColors(R.color.orange_logo);
+        swipeView.setColorSchemeColors(getResources().getColor(R.color.orange_logo));
         swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
