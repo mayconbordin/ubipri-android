@@ -45,15 +45,8 @@ public class NotificationHistoryFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notification_hist, container, false);
         listView = (ListView) rootView.findViewById(R.id.notificationsList);
-        swipeView = (SwipeRefreshLayout) rootView.findViewById(R.id.notificationSwipeUpdater);
+        swipeView = (SwipeRefreshLayout) rootView.findViewById(R.id.notificationsSwipeUpdater);
         updateTextView = (TextView) rootView.findViewById(R.id.notificationsUpdateMessage);
-
-        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                updateHistory();
-            }
-        });
 
         ButterKnife.inject(this, rootView);
         return rootView;
@@ -66,8 +59,8 @@ public class NotificationHistoryFragment extends BaseFragment {
         notificationDAO = new NotificationDAO();
         notificationAdapter = new NotificationAdapter(this.getActivity(),
                 R.layout.row_notification_hist, notificationDAO.newest());
-        listView.setAdapter(notificationAdapter);
 
+        listView.setAdapter(notificationAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -79,6 +72,19 @@ public class NotificationHistoryFragment extends BaseFragment {
             }
         });
 
+        swipeView.setColorSchemeColors(R.color.orange_logo);
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateHistory();
+            }
+        });
+        swipeView.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeView.setRefreshing(true);
+            }
+        });
         updateHistory();
     }
 
@@ -91,7 +97,6 @@ public class NotificationHistoryFragment extends BaseFragment {
     private void updateHistory() {
         updateTextView.setText(R.string.notification_update_in_progress);
         updateTextView.setVisibility(View.VISIBLE);
-        swipeView.setRefreshing(true);
 
         // Get the latest notification stored in the local database
         Notification lastNotification = notificationDAO.newestSingle();
@@ -107,16 +112,20 @@ public class NotificationHistoryFragment extends BaseFragment {
                     notificationDAO.createOrUpdate(notifications);
                     notificationAdapter.update(notificationDAO.newest());
                 }
-                updateTextView.setVisibility(View.GONE);
                 swipeView.setRefreshing(false);
+                if(notificationAdapter.getCount() > 0) {
+                    updateTextView.setVisibility(View.GONE);
+                } else {
+                    updateTextView.setText(R.string.notification_history_is_empty);
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.e(TAG, "Unable to update the message history");
                 Log.e(TAG, error.toString());
-                updateTextView.setText(R.string.notification_update_error);
                 swipeView.setRefreshing(false);
+                updateTextView.setText(R.string.notification_update_error);
             }
         });
     }
