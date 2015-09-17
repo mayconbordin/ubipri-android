@@ -12,4 +12,9 @@
         <item name="android:background">@drawable/custom_btn_black_pearl</item>
         <item name="android:padding">10dip</item>
     </style>
+
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar">
+        <item name="colorPrimary">@color/orange_logo</item>
+        <item name="colorPrimaryDark">@color/orange_logo_dark</item>
+    </style>
 </resources>

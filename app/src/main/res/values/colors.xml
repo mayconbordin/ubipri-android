@@ -2,6 +2,7 @@
 <resources>
     <item name="light_gray_bg" type="color">#ffe8e8e8</item>
     <item name="orange_logo" type="color">#fff47f2f</item>
+    <item name="orange_logo_dark" type="color">#cc7033</item>
     <item name="border_gray" type="color">#d1d1d1</item>
     <item name="panel_title_gray" type="color">#a9a9a9</item>
 </resources>
